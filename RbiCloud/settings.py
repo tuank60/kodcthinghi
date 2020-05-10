@@ -88,7 +88,7 @@ DATABASES = {
          'PASSWORD': '333c72b0',
          'HOST': 'us-cdbr-east-06.cleardb.net',
          'PORT': '3306',
-         'OPTIONS': {'ssl': {'ca':'/path/to/ca-cert.pem', 'cert':'/path/to/cert.pem', 'key':'/path/to/key.pem'},},
+         # 'OPTIONS': {'ssl': {'ca':'/path/to/ca-cert.pem', 'cert':'/path/to/cert.pem', 'key':'/path/to/key.pem'},},
      }
   }
 

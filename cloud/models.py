@@ -1116,19 +1116,19 @@ class RwDataChart(models.Model):
 
 class ZUser(models.Model):
     id=models.AutoField(primary_key=True,blank=True,null=False,db_column='id')
-    name = models.CharField(max_length=60, blank=True, null=True)
+    name = models.CharField(max_length=60, blank=True, null=True,db_column='name')
     email = models.CharField(max_length=100, blank=True, null=True,db_column='email')
     phone = models.CharField(max_length=11, blank=True, null=True,db_column='phone')
-    adress = models.CharField(max_length=200, blank=True, null=True)
-    username = models.CharField(max_length=40, blank=True, null=True)
-    password = models.CharField(max_length=40, blank=True, null=True)
-    active = models.IntegerField(blank=True,null=False,default='0')
-    other_info = models.IntegerField(blank=True, null=True)
-    kind = models.CharField(max_length=20, blank=True, null=True)
+    adress = models.CharField(max_length=200, blank=True, null=True,db_column='adress')
+    username = models.CharField(max_length=40, blank=True, null=True,db_column='username')
+    password = models.CharField(max_length=40, blank=True, null=True,db_column='password')
+    active = models.IntegerField(blank=True,null=False,default='0',db_column='active')
+    other_info = models.IntegerField(blank=True, null=True,db_column='other_info')
+    kind = models.CharField(max_length=20, blank=True, null=True,db_column='kind')
     date_joined = models.DateTimeField(default=datetime.datetime.now())
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'z_user'
 
 
