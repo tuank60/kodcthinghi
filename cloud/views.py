@@ -3253,7 +3253,7 @@ def signin(request):
             # request.session['address'] = data[0].adress
             # request.session['email'] = data[0].email
             # request.session['other_info'] = data[0].other_info
-            # request.session.set_expiry(0)
+            request.session.set_expiry(0)
             if request.session['kind']=='citizen':
                 return redirect('citizenHome')
             elif request.session['kind']=='factory':
