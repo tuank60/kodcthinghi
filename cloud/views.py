@@ -3245,7 +3245,7 @@ def signin(request):
             xuser=request.POST.get('txtuser')
             xpass=request.POST.get('txtpass')
             data=models.ZUser.objects.filter(Q(username=xuser),Q(password=xpass),Q(active=1))
-            if data.count():
+            if data.count:
                 request.session['id']=data[0].id
                 request.session['name']=data[0].name
                 request.session['kind']=data[0].kind
