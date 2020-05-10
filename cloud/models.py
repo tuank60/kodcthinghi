@@ -1128,7 +1128,7 @@ class ZUser(models.Model):
     date_joined = models.DateTimeField(default=datetime.datetime.now())
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'z_user'
 
 
