@@ -3245,14 +3245,14 @@ def signin(request):
             xuser=request.POST.get('txtuser')
             xpass=request.POST.get('txtpass')
             data=models.ZUser.objects.filter(Q(username=xuser),Q(password=xpass),Q(active=1))
-            if data.count:
+            if data.count():
                 request.session['id']=data[0].id
-                # request.session['name']=data[0].name
-                # request.session['kind']=data[0].kind
-                # request.session['phone']=data[0].phone
-                # request.session['address'] = data[0].adress
-                # request.session['email'] = data[0].email
-                # request.session['other_info'] = data[0].other_info
+                request.session['name']=data[0].name
+                request.session['kind']=data[0].kind
+                request.session['phone']=data[0].phone
+                request.session['address'] = data[0].adress
+                request.session['email'] = data[0].email
+                request.session['other_info'] = data[0].other_info
                 request.session.set_expiry(0)
                 if request.session['kind']=='citizen':
                     return redirect('citizenHome')
