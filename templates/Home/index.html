@@ -32,26 +32,26 @@
 <form method="post">
 {% csrf_token %}
 <!-- The Modal -->
-  <div class="modal" id="formsignin" style="margin-top: 10%">
+  <div class="modal" id="formsignin">
     <div class="modal-dialog">
-      <div class="modal-content" style="width: 80%; margin: auto">
+      <div class="modal-content">
 
         <!-- Modal Header -->
         <div class="modal-header">
-          <span aria-hidden="true" style="font-size: 24px;font-weight: bold;color: #444444;font-family: Calibri;font-weight: bold;">Sign in to RBI-Cortek</span>
+          <span aria-hidden="true">Sign in to RBI-Cortek</span>
           <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
         </div>
 
         <!-- Modal body -->
-        <div class="modal-body" style="width: 90%;margin: auto">
+        <div class="modal-body">
             <div class="input-group">
-              <span class="input-group-addon" id="sizing-addon1" style="background-color: #4575B7;border-color:#4575B7;color: white;font-size: 16px">
+              <span class="input-group-addon" id="sizing-addon1">
                   <i class="fa fa-user"></i>
               </span>
               <input type="text" name="txtuser" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
             </div>
-            <div class="input-group" style="margin-top: 12px">
-              <span class="input-group-addon" id="sizing-addon1" style="background-color: #4575B7;border-color:#4575B7;color: white;font-size: 18px">
+            <div class="input-group">
+              <span class="input-group-addon" id="sizing-addon1">
                   <i class="fa fa-lock"></i>
               </span>
               <input type="password" name="txtpass" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
@@ -59,8 +59,8 @@
         </div>
 
         <!-- Modal footer -->
-        <div class="modal-footer" style="margin: auto; width: 90%">
-          <button type="submit" class="btn btn-success"  style="background-color: #4575B7; border: 1px solid #204d74">Sign In</button>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Sign In</button>
         </div>
       </div>
     </div>
