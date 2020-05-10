@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0f9c04ca-075e-4db6-8953-9a5b2fd6fe2f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cloud/views.py" afterPath="$PROJECT_DIR$/cloud/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cloud/models.py" afterPath="$PROJECT_DIR$/cloud/models.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -41,11 +40,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cloud/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="282">
-              <caret line="3255" column="45" lean-forward="true" selection-start-line="3255" selection-start-column="45" selection-end-line="3255" selection-end-column="45" />
+            <state relative-caret-position="129">
+              <caret line="3246" column="26" lean-forward="true" selection-start-line="3246" selection-start-column="26" selection-end-line="3246" selection-end-column="26" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -53,11 +52,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cloud/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2014">
-              <caret line="1131" column="19" lean-forward="false" selection-start-line="1131" selection-start-column="19" selection-end-line="1131" selection-end-column="19" />
+            <state relative-caret-position="306">
+              <caret line="1127" column="93" lean-forward="false" selection-start-line="1127" selection-start-column="93" selection-end-line="1127" selection-end-column="93" />
               <folding />
             </state>
           </provider>
@@ -109,9 +108,9 @@
       <list>
         <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/templates/Home/index.html" />
-        <option value="$PROJECT_DIR$/cloud/models.py" />
         <option value="$PROJECT_DIR$/RbiCloud/settings.py" />
         <option value="$PROJECT_DIR$/cloud/views.py" />
+        <option value="$PROJECT_DIR$/cloud/models.py" />
       </list>
     </option>
   </component>
@@ -352,14 +351,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cloud/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2014">
-          <caret line="1131" column="19" lean-forward="false" selection-start-line="1131" selection-start-column="19" selection-end-line="1131" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/manage.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -378,11 +369,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cloud/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="3255" column="45" lean-forward="true" selection-start-line="3255" selection-start-column="45" selection-end-line="3255" selection-end-column="45" />
+        <state relative-caret-position="129">
+          <caret line="3246" column="26" lean-forward="true" selection-start-line="3246" selection-start-column="26" selection-end-line="3246" selection-end-column="26" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cloud/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="1127" column="93" lean-forward="false" selection-start-line="1127" selection-start-column="93" selection-end-line="1127" selection-end-column="93" />
+          <folding />
         </state>
       </provider>
     </entry>

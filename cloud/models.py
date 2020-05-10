@@ -1125,7 +1125,7 @@ class ZUser(models.Model):
     active = models.IntegerField(blank=True,null=False,default='0',db_column='active')
     other_info = models.IntegerField(blank=True, null=True,db_column='other_info')
     kind = models.CharField(max_length=20, blank=True, null=True,db_column='kind')
-    date_joined = models.DateTimeField(default=datetime.datetime.now())
+    date_joined = models.DateTimeField(default=datetime.datetime.now(),db_column='date_joined')
 
     class Meta:
         managed = False
