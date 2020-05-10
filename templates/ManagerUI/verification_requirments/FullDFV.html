@@ -1,0 +1,178 @@
+{% extends 'BaseUI/BaseManager/baseRiskSummaryMana.html' %}
+
+{% load staticfiles %}
+
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactorMana' proposalID %}{% endblock %}
+{% block ca%}{% url 'fullyConsequenceMana' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrixMana' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChartMana' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'proposalDisplayMana' assess.componentid_id %}{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+<form method="post" id="fullDF">
+    {% csrf_token %}
+    <div class="input-data">
+        <fieldset class="scheduler-border">
+            <!-----------BLOCK DATA GENERAL FACTOR---------->
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border"><b>Initial Factorssdsds</b></legend>
+                <div class="row">
+                    <div class="col-md-1"><input type="checkbox" name="check" value="Thinning Type"></div>
+                    <div class="col-md-5">Thinning Type:</div>
+                    <div class="col-md-6"><select class="form-control" id="thinningType" name="thinningType">
+                        <option>Local</option>
+                        <option>General</option>
+                    </select></div>
+                    <script>
+                        $("#thinningType").val("{{ obj.thinningType }}");
+                    </script>
+                </div>
+                <div class="row">
+                    <div class="col-md-1"><input type="checkbox" name="check" value="Total Generic Frequence"></div>
+                    <div class="col-md-5">Total Generic Frequence:</div>
+                    <div class="col-md-6">{{ obj.gfftotal }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1"><input type="checkbox" name="check" value="Factor of Management System"></div>
+                    <div class="col-md-5">Factor of Management System:</div>
+                    <div class="col-md-6">{{ obj.fms }}</div>
+                </div>
+            </fieldset>
+            <!----------------END BLOCK----------------->
+
+            <!-------------- BLOCK DETAIL DAMAGE FACTOR ------------>
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border"><b>Damage Factors and Probability of Failure</b></legend>
+
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-5">Assessment Periods</div>
+                    <div class="col-md-2">0<br>months</div>
+                    <div class="col-md-2">36 months</div>
+                    <div class="col-md-2">72 months</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1"><input type="checkbox" name="check" value="Governing Thinning Damage Factor"></div>
+                    <div class="col-md-5">Governing Thinning Damage Factor:</div>
+                    <div class="col-md-2">{{ obj.thinningap1 }}</div>
+                    <div class="col-md-2">{{ obj.thinningap2 }}</div>
+                    <div class="col-md-2">{{ obj.thinningap3 }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1"><input type="checkbox" name="check" value="Governing Stress Corrosion Cracking"></div>
+                    <div class="col-md-5">Governing Stress Corrosion Cracking<br> Damage Factor:</div>
+                    <div class="col-md-2">{{ obj.sccap1 }}</div>
+                    <div class="col-md-2">{{ obj.sccap2 }}</div>
+                    <div class="col-md-2">{{ obj.sccap3 }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1"><input type="checkbox" name="check" value="Governing External Damage Factor"></div>
+                    <div class="col-md-5">Governing External Damage Factor:</div>
+                    <div class="col-md-2">{{ obj.externalap1 }}</div>
+                    <div class="col-md-2">{{ obj.externalap2 }}</div>
+                    <div class="col-md-2">{{ obj.externalap3 }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1"><input type="checkbox" name="check" value="High Temperature Hydrogen Attack Damage Factor"></div>
+                    <div class="col-md-5">High Temperature Hydrogen Attack Damage Factor:</div>
+                    <div class="col-md-2">{{ obj.htha_ap1 }}</div>
+                    <div class="col-md-2">{{ obj.htha_ap2 }}</div>
+                    <div class="col-md-2">{{ obj.htha_ap3 }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1"><input type="checkbox" name="check" value="Governing Brittle Fracture Damage Factor"></div>
+                    <div class="col-md-5">Governing Brittle Fracture Damage Factor:</div>
+                    <div class="col-md-2">{{ obj.brittleap1 }}</div>
+                    <div class="col-md-2">{{ obj.brittleap2 }}</div>
+                    <div class="col-md-2">{{ obj.brittleap3 }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1"><input type="checkbox" name="check" value="Piping Mechanical Fatigue<br> Damage Factor"></div>
+                    <div class="col-md-5">Piping Mechanical Fatigue<br> Damage Factor:</div>
+                    <div class="col-md-2">{{ obj.fatigueap1 }}</div>
+                    <div class="col-md-2">{{ obj.fatigueap2 }}</div>
+                    <div class="col-md-2">{{ obj.fatigueap3 }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1"><input type="checkbox" name="check" value="Other Damage Factor"></div>
+                    <div class="col-md-5">Other Damage Factor:</div>
+                    <div class="col-md-2">0.0</div>
+                    <div class="col-md-2">0.0</div>
+                    <div class="col-md-2">0.0</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1"><input type="checkbox" name="check" value="Total Damage Factor with General Thinning"></div>
+                    <div class="col-md-5">Total Damage Factor with General Thinning:</div>
+                    <div class="col-md-2">{{ obj.thinninggeneralap1 }}</div>
+                    <div class="col-md-2">{{ obj.thinninggeneralap2 }}</div>
+                    <div class="col-md-2">{{ obj.thinninggeneralap3 }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1"><input type="checkbox" name="check" value="Total Damage Factor with Local Thinning"></div>
+                    <div class="col-md-5">Total Damage Factor with Local Thinning:</div>
+                    <div class="col-md-2">{{ obj.thinninglocalap1 }}</div>
+                    <div class="col-md-2">{{ obj.thinninglocalap2 }}</div>
+                    <div class="col-md-2">{{ obj.thinninglocalap3 }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1"><input type="checkbox" name="check" value="Final Total Damage Factor"></div>
+                    <div class="col-md-5">Final Total Damage Factor:</div>
+                    <div class="col-md-2">{{ obj.totaldfap1 }}</div>
+                    <div class="col-md-2">{{ obj.totaldfap2 }}</div>
+                    <div class="col-md-2">{{ obj.totaldfap3 }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1"><input type="checkbox" name="check" value="Probability of Failure"></div>
+                    <div class="col-md-5">Probability of Failure:</div>
+                    <div class="col-md-2">{{ obj.pofap1 }}</div>
+                    <div class="col-md-2">{{ obj.pofap2 }}</div>
+                    <div class="col-md-2">{{ obj.pofap3 }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1"><input type="checkbox" name="check" value="Probability of Failure Category"></div>
+                    <div class="col-md-5">Probability of Failure Category:</div>
+                    <div class="col-md-2"><b>{{ obj.pofap1category }}</b></div>
+                    <div class="col-md-2"><b>{{ obj.pofap2category }}</b></div>
+                    <div class="col-md-2"><b>{{ obj.pofap3category }}</b></div>
+                </div>
+            </fieldset>
+            <!----------------END BLOCK ------------------------->
+        </fieldset>
+        <br>
+        <div class="row">
+            <div class="col-md-12" style="text-align: right"><button name="Verifica" type="submit" class="btn btn-primary" id="changeThinning">Verificaton</button></div>
+        </div>
+    </div>
+{#    <script>#}
+{#        function btnChangeClick() {#}
+{#            document.getElementById("fullDF").submit();#}
+{#            ShowLoading();#}
+{#            return false;#}
+{#        }#}
+{#        function ShowLoading() {#}
+{#            var div = document.createElement('div');#}
+{#            var img = document.createElement('img');#}
+{#            img.src = '{% static 'image/loading/Pacman-1s-100px.gif' %}';#}
+{#            div.style.cssText = "position: fixed;left: 50%; top: 30%; width: 300px; text-align: center; background: rgba(54, 25, 25, .00004); border: 0px solid #000;";#}
+{#            div.appendChild(img);#}
+{#            document.body.appendChild(div);#}
+{#            $("#changeThinning").attr('disabled',true);#}
+{#            return true;#}
+{#        }#}
+{#    </script>#}
+</form>
+{% endblock %}

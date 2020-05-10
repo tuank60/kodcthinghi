@@ -1,0 +1,61 @@
+{% extends 'BaseUI/BaseManager/ManagerHome.html' %}
+
+<!-------------- BLOCK MENU ---------------->
+{% block listmana %}{% url 'manager' siteID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplayMana' siteID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplayMana' siteID %}{% endblock %}
+<!----------------- END BLOCK----------------->
+
+{% block data-content %}
+    <form method="post">
+        {% csrf_token %}
+        <div style="text-align: center">
+            <caption><b style="font-size: 22px; color: #444444;">List of Management</b></caption>
+            <br><br>
+            <table class="table" id="mytable" >
+                <thead >
+                    <tr>
+                        <th width="200px" style="text-align: center"><i class="fa fa-tag"></i>&ensp;Name Company</th>
+                        <th width="200px" style="text-align: center"><i class="fa fa-bar-chart-o"></i>&ensp;Risk Summary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in obj %}
+                    <tr >
+                        <td align="center"><a href="{% url 'facilitiesDisplayMana' a.ID %}">{{ a.SideName }}</a></td>
+                        <td align="center"><a href="{% url 'exportData' a.ID 'Facility' %}"><i class="fa fa-print" ></i></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+{# Pagination div #}
+            <div>
+                {% if obj.has_other_pages %}
+              <ul class="pagination">
+                {% if obj.has_previous %}
+                  <li><a href="?page={{ obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in obj.paginator.page_range %}
+                  {% if obj.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                  {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if obj.has_next %}
+                  <li><a href="?page={{ obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+              </ul>
+            {% endif %}
+            </div>
+
+{# Tool div #}
+            <br>
+        </div>
+    </form>
+{% endblock %}

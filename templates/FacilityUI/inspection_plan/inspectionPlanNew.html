@@ -1,0 +1,118 @@
+{% extends 'BaseUI/BaseFacility/baseFacility.html' %}
+
+<!-------------- BLOCK MENU ---------------->
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' siteID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' siteID %}{% endblock %}
+{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}
+{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}
+{% block inspecPlan %}{% url 'inspectionPlan' siteID %}{% endblock %}
+<!----------------- END BLOCK----------------->
+{% block data-content %}
+<style>
+#customers,#searchs {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+
+#customers td, #customers th,#searchs td,#searchs th {
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+
+#customers,#searchs tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers,#searchs tr:hover {background-color: #ddd;}
+
+#customers,#searchs th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #4CAF50;
+  color: white;
+}
+</style>
+<form id="inspectionplan" method="post" >
+    {% csrf_token %}
+    <div style=" text-align: center"><caption><b style="font-size: 20px; color: #444444;">Inspection Coverages of the selected Inspection / Mitigation Plan</b></caption></div>
+    <div>
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border"><b>Inspection Coverage</b></legend>
+            <div style="text-align: left">
+                <a id="#search" class="btn btn-primary" data-toggle="modal" data-target="#searchPlan"><i class="fa fa-search" aria-hidden="true">Search Within Inspection Plans</i></a>
+                <button name="_creat" class="btn btn-primary" type="submit"><i class="fa fa-pencil">&emsp;Create New Inspection Plan</i></button>
+                <button name="_restore" class="btn btn-primary" type="submit"><i classearchs="fa fa-cloud" aria-hidden="true">&emsp;Restore Component</i></button>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-2">Inspection/Mitigation Plan:<span style="color: red">*</span></div>
+                <div class="col-md-2"><input type="text" class="form-control" name="InspectionPlan" value="{{name}}" disabled required/></div>
+                <div class="col-md-4" style="text-align: center"><button name="_add" class="btn btn-primary" type="submit">Add/Edit Inspection Plan Details</button></div>
+            </div>
+            {% if error.exist %}
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-8"><span style="color: red; font-size: 16px">{{ error.exist }}</span></div>
+                </div>
+            {% endif %}
+            <div class="row">
+                <div class="col-md-2">Inspection/Mitigation Plan Date:<span style="color: red">*</span></div>
+                <div class="col-md-2"><input type="text" class="form-control" name="InspectionDate" value="{{date}}" disabled required/></div>
+                <div class="col-md-4" style="text-align: center"><button name="_scheduled" class="btn btn-primary" type="submit">Scheduled or Carried</button></div>
+            </div>
+        </fieldset>
+        <br>
+        <table id="customers">
+            <tr>
+                <th>Inspection Plan ID</th>
+                <th>Inspection Plan Date</th>
+                <th>Equipment</th>
+                <th>Component</th>
+                <th>Remarks</th>
+                <th>Findings</th>
+            </tr>
+        </table>
+    </div>
+
+    <div class="modal" id="searchPlan" style="margin-top: 10%">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content" style="width: 80%; margin: auto">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <span aria-hidden="true" style="font-size: 24px;font-weight: bold;color: #444444;font-family: Calibri;font-weight: bold;">List of Inspection Plans</span>
+          <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body" style="width: 90%;margin: auto">
+            <table id="searchs">
+                <tr>
+                    <th width="100px" style="text-align: center"><input type="checkbox" id="chkHeader"></th>
+                    <th>Inspection/Migation Plan Name</th>
+                    <th>Inspection/Migation Plan Date</th>
+                </tr>
+                {% for a in inspection %}
+                <tr >
+                    <td align="center"><input type="checkbox" name="{{ a.id }}"></td>
+                    <td align="center">{{ a.inspectionplanname }}</td>
+                    <td align="center">{{ a.inspectiondate }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer" style="margin: auto; width: 90%">
+                <button name="_delete" type="submit" class="btn btn-warning" id="sub" onclick="Sub()" ><i class="fa fa-trash-o">&emsp;Delete Selected</i></button>
+                <button name="_select" class="btn btn-primary" type="submit"><i class="fa fa-pencil">Select</i></button>
+                <button type="button" class="btn btn-success"  style="background-color: #4575B7; border: 1px solid #204d74" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

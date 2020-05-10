@@ -1,0 +1,136 @@
+{% load staticfiles %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {# title block #}
+    <title>Forum</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forum.css' %}">
+
+{#    <link rel="stylesheet" href="{% static 'css/forum.css' %}">#}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    {# library block #}
+    {% block library %}{% endblock %}
+    <script type="text/javascript">
+{#        $(document).ready(function(){#}
+{#            $('[data-toggle="tooltip"]').tooltip('enabled');#}
+{#        });#}
+        $('[data-toggle="tooltip"]').tooltip();
+    </script>
+
+</head>
+<body style="background-color: #EBEBEB">
+<form method="post">
+    {% csrf_token %}
+
+{# header #}
+<div class="navbar navbar-fixed-top" style="border-bottom: 4px solid #000000 ">
+    <div class="header">
+        <img src= "{% static '/image/logo/forum.png' %}" style="height: 60px;padding-top: 2px;padding-left: 20px">
+
+        <a class="a-logout" href="{% url 'logout' %}" data-toggle="tooltip" data-placement="bottom" title="Sign Out"><i class="fa fa-sign-out"></i></a>
+        <a class="a-normal" href="" data-toggle="modal" data-target="#myModal" data-placement="bottom" title="Profile"><i class="fa fa-user"></i></a>
+        <a class="a-normal" href="{% url 'help' %}" data-toggle="tooltip" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a>
+        <a class="a-normal" href="" data-toggle="modal" data-target="#notiModal"  data-placement="bottom" title="Notification" onclick="hidenoti()" style="position: relative"><i class="fa fa-bell">{% if countnoti %}<span id="countnoti"  class="forum-notification" >{{ countnoti }}</span>{% endif %}</i></a>
+        <a class="a-normal" href="{% url 'messagesInbox' %}" data-toggle="tooltip" data-placement="bottom" title="Messages"><i class="fa fa-wechat">{% if count %}<span class="badge red" style="color: red">{{ count }}</span>{% endif %}</i></a>
+        <a class="a-normal active" href="{% url 'forum' %}" data-toggle="tooltip" data-placement="bottom" title="Forum"><i class="fa fa-dedent"></i></a>
+        <a class="a-normal" href="{% url 'home' %}" data-toggle="tooltip" data-placement="bottom" title="Home"><i class="fa fa-home"></i></a>
+    </div>
+</div>
+
+<div class="forum-content">
+    <div class="forum-post">
+        <div class="row" style="width: 96%;margin: auto">
+            <p class="post-title">{{ data.title }}</p>
+            <p class="post-time">{{ data.time }}</p>
+            <p class="forum-font" style="border: 0;background-color: transparent;width: 100%;height: auto" >{{ data.content }}</p>
+            <p>Create by <a href="">{{ nameuserpost }}</a></p>
+        </div>
+    </div>
+    <div class="forum-block-comment">
+        <table style="width: 100%">
+            {% for data in datacmt %}
+            <tr>
+                <td class="forum-font" style="width: 15%;padding-left: 6px"><i class="fa fa-user"></i> {{ data.name }}</td>
+                <td style="padding-left: 6px;padding-right: 6px;padding-top: 10px"><pre class="form-control forum-font" style="height: auto;border-radius: 15px">{{ data.content }}</pre></td>
+            </tr>
+            {% endfor %}
+        </table>
+        <table style="width: 100%">
+            <tr>
+                <td class="forum-font" style="width: 15%;padding-left: 6px"><i class="fa fa-user"></i> {{ session.name }}</td>
+                <td style="padding-left: 6px;padding-right: 6px;padding-top: 10px;width: 70%"><textarea name="txtcomment" class="form-control forum-font autoExpand" cols="1" rows="1" style="border-radius: 15px;" placeholder="Comment content.."></textarea></td>
+                <td><input name="btncomment" type="submit" value="Comment" class="btn btn-success"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<!-- Modal notification-->
+  <div class="modal" id="notiModal">
+
+      <div class="modal-content" style="margin-left: 60%;margin-top:60px;width: 40%;border-radius: 0px">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><a href=""><i class="fa fa-user"></i></a>Notification</h4>
+        </div>
+        <div class="modal-body">
+            {% for noti in noti %}
+            <div class="noti{{ noti.state }}" style="border-bottom: 1px solid #e3e3e3;border-top: 1px solid #e3e3e3;width: 100%;text-align: left;padding-left: 15px;padding-top: 15px;padding-bottom: 10px; font-family: Arial">
+            <a href="{% url 'posts' noti.link %}">
+                <span style="color: #204d74">{{ noti.subject }}</span><span style="color: black"> {{ noti.content }} </span><span style="color: #204d74">{{ noti.object }}</span>
+            </a>
+            </div>
+            {% endfor %}
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" style="color: white;background-color: #4575B7;" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+  </div>
+</form>
+
+<script>
+{#    Chức năng thông báo#}
+    $(document).ready(function () {
+        var x={{ countnoti }}
+        if(x==0){
+            $("#countnoti").hide();
+        }
+        $(".noti0").addClass("forum-noti-background");
+    })
+    function hidenoti() {
+        $("#countnoti").hide();
+    }
+$(document)
+    .one('focus.autoExpand', 'textarea.autoExpand', function(){
+        var savedValue = this.value;
+        this.value = '';
+        this.baseScrollHeight = this.scrollHeight;
+        this.value = savedValue;
+    })
+    .on('input.autoExpand', 'textarea.autoExpand', function(){
+        var minRows = this.getAttribute('data-min-rows')|0, rows;
+        this.rows = minRows;
+        rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 16);
+        this.rows = minRows + rows;
+    });
+</script>
+</body>
+</html>

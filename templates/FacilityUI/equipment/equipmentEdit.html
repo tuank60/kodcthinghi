@@ -1,0 +1,112 @@
+{% extends 'BaseUI/BaseFacility/baseEquipment.html' %}
+
+<!--------------- BLOCK MENU ------------->
+{% block listeq %}{% url 'equipmentDisplay' facilityID %}{% endblock %}
+{% block neweq %}{% url 'equipmentNew' facilityID %}{% endblock %}
+{% block backfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+<!--------------- END BLOCK -------------->
+
+{% block data-content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="input-data">
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border"><b>Equipment Information</b></legend>
+
+                <div class="row">
+                    <div class="col-md-4">Equipment Number:<span style="color: red">*</span></div>
+                    <div class="col-md-8"><input type="text" class="form-control" name="equipmentNumber" value="{{ data.equipmentnumber }}" placeholder="Input equipment number here!" required></div>
+                </div>
+                {% if error.exist %}
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-8"><span style="color: red; font-size: 16px;">{{ error.exist }}</span></div>
+                </div>
+                {% endif %}
+                <div class="row">
+                    <div class="col-md-4">Equipment Name:<span style="color: red">*</span></div>
+                    <div class="col-md-8"><input type="text" name="equipmentName" class="form-control" value="{{ data.equipmentname }}" placeholder="Input equipment name here!" required></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">Equipment Type:<span style="color: red">*</span></div>
+                    <div class="col-md-8">
+                        <select class="form-control" name="equipmentType" required>
+                            <option disabled selected>{{ data.equipmenttype }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">Design Code:<span style="color: red">*</span></div>
+                    <div class="col-md-8">
+                        <select class="form-control" name="designCode" required>
+                            <option disabled selected>Please select your design code..</option>
+                            {% for a in designcode %}
+                                {% if a.designcode == data.designcode %}
+                                <option selected>{{ a.designcode }}</option>
+                                {% else %}
+                                <option>{{ a.designcode }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">Manufacturer:<span style="color: red">*</span></div>
+                    <div class="col-md-8">
+                        <select class="form-control" name="manufacture" required>
+                            <option disabled selected>Please select one manufacture..</option>
+                            {% for a in manufacture %}
+                                {% if a.manufacturername == data.manufacture %}
+                                <option selected>{{ a.manufacturername }}</option>
+                                {% else %}
+                                <option>{{ a.manufacturername }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">CommissionDate:<span style="color: red">*</span></div>
+                    <div class="col-md-8">
+                        <input type="text" name="CommissionDate" class="form-control" id="commissiondate" value="{{ data.commissiondate }}" placeholder="yyyy-mm-dd" required>
+                    </div>
+                    <script>
+                        $( "#commissiondate" ).datepicker({
+                            dateFormat: 'yy-mm-dd'
+                        });
+                    </script>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">PDF No:</div>
+                    <div class="col-md-8">
+                        <input type="text"  name="PDFNo" class="form-control" value="{{ data.pdf }}" placeholder="Input PDF number here!">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">Process Description:</div>
+                    <div class="col-md-8">
+                        <textarea type="text" class="form-control" name="processDescription" placeholder="Write process desciprtion here!">{{ data.processdescrip }}</textarea>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">Description:</div>
+                    <div class="col-md-8">
+                        <textarea type="text"  class="form-control"  name="decription" placeholder="Write equipment description here!">{{ data.description }}</textarea>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="row"></div>
+            <div class="row">
+                <div class="col-md-12" style="text-align: right"><button type="submit" class="btn btn-primary">Submit</button></div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

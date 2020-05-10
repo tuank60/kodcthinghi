@@ -1,0 +1,79 @@
+{% extends 'BaseUI/BaseWeb/base.html' %}
+{% load staticfiles %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Home{% endblock %}
+
+{% block library %}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+{% endblock %}
+
+{% block navbar %}
+    <a id="#signin" class="a-login" data-toggle="modal" data-target="#formsignin"><i class="fa fa-sign-in"></i></a>
+{#    <a class="" href="{% url 'home' %}" data-toggle="tooltip" data-placement="bottom" title="Home"><i class="fa fa-home"></i></a>#}
+{% endblock %}
+
+{% block content %}
+        <div class="index-normal">
+            <div id="index-text" style="font-family: 'serif'; font-size: 20px;">
+                <img src="{% static 'image/logo/HUST150.png' %}">
+                <h1>Fast More. Exactly More.</h1>
+                <h3>Inspection As a Service helps millions of administrators,<br> businesses and users  in monitoring, maintaining<br> and replacing facilities immediately</h3><br>
+                <h4>Create your free account</h4>
+            </div>
+            <dv><br><br></dv>
+
+            <button class="index-red-btn" onclick="location.href='{% url 'accountcitizen' %}'"><i class="fa fa-group" >&emsp;I'm Citizen</i></button>
+            <button class="index-btn" onclick="location.href='{% url 'accountbusiness' %}'"><i class="fa fa-gear">&emsp;I'm Business</i></button>
+            <button class="index-btn" onclick="location.href='{% url 'accountmanagement' %}'"><i class="fa fa-gear">&emsp;I'm Management</i></button>
+        </div>
+<form method="post">
+{% csrf_token %}
+<!-- The Modal -->
+  <div class="modal" id="formsignin" style="margin-top: 10%">
+    <div class="modal-dialog">
+      <div class="modal-content" style="width: 80%; margin: auto">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <span aria-hidden="true" style="font-size: 24px;font-weight: bold;color: #444444;font-family: Calibri;font-weight: bold;">Sign in to RBI-Cortek</span>
+          <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body" style="width: 90%;margin: auto">
+            <div class="input-group">
+              <span class="input-group-addon" id="sizing-addon1" style="background-color: #4575B7;border-color:#4575B7;color: white;font-size: 16px">
+                  <i class="fa fa-user"></i>
+              </span>
+              <input type="text" name="txtuser" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group" style="margin-top: 12px">
+              <span class="input-group-addon" id="sizing-addon1" style="background-color: #4575B7;border-color:#4575B7;color: white;font-size: 18px">
+                  <i class="fa fa-lock"></i>
+              </span>
+              <input type="password" name="txtpass" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
+            </div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer" style="margin: auto; width: 90%">
+          <button type="submit" class="btn btn-success"  style="background-color: #4575B7; border: 1px solid #204d74">Sign In</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+   <script> {# Notification Account or pass false#}
+    var error ='{{ error }}';
+        if(error!=''){
+            if (confirm("{{ error }}\nVui lòng đăng nhập lại !")) {
+                $("#formsignin").modal();
+            }
+        }
+    </script>
+
+{% endblock %}

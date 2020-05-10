@@ -1,0 +1,36 @@
+{% extends 'BaseUI/BaseMessages/BaseMessages.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block title %}Letter sent{% endblock %}
+
+
+{% block data-content %}
+<form method="post">
+{% csrf_token %}
+    <h2>Email sent </h2>
+    {% for data in datacontent %}
+    <button type="submit" class="container darker" style="width: 1000px">
+        <table>
+            <tr>
+                <td><a style="width: 300px"><h4>{{ data.Emailt }}</h4></a></td>
+            </tr>
+            <tr>
+                <td><a></a></td>
+                <td>
+                    <p><h4 style="color: #101010">{{ data.subject }}:</h4></p>
+                    <p style="color: #333333">{{ data.content }}</p>
+                </td>
+            </tr>
+            <input class="time-right" type="submit" style="color:#333333;background-color: #ddd" value="X" id="{{ data.id }}" name="{{ data.id }}">
+            <input class="time-left" type="checkbox" id="sent" name="sent" value="" style="width: 20px;padding: 20px">
+            <tr>
+                <td><span class="time-left" >{{ data.date }}</span></td>
+                <td></td><td></td>
+                <td><input class="time-down" type="submit" id="sent" name="sent" value="Trả Lời"></td>
+            </tr>
+        </table>
+    </button>
+    {% endfor %}
+</form>
+{% endblock %}

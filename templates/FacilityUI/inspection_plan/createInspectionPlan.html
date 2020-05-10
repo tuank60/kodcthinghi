@@ -1,0 +1,51 @@
+{% extends 'BaseUI/BaseFacility/baseFacility.html' %}
+
+<!-------------- BLOCK MENU ---------------->
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' siteID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' siteID %}{% endblock %}
+{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}
+{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}
+{% block inspecPlan %}{% url 'inspectionPlan' siteID %}{% endblock %}
+<!----------------- END BLOCK----------------->
+{% block data-content %}
+        <form method="post" >
+        {% csrf_token %}
+            <div class="input-data">
+            <fieldset class="scheduler-border">
+            <legend class="scheduler-border" ><b>Inspection/Mitigation Plan</b></legend>
+            <fieldset class="scheduler-border">
+            <legend class="scheduler-border" ><b>New Inspection/Mitigation Plan</b></legend>
+                <div class="row">
+                    <div class="col-md-4">Plan Name:<span style="color: red">*</span></div>
+                    <div class="col-md-8"><input type="text" name="InspectionPlan" class="form-control" placeholder="Input Plan name here!" value="" required/></div>
+                </div>
+                {% if error.exist %}
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-8"><span style="color: red; font-size: 16px">{{ error.exist }}</span></div>
+                </div>
+                {% endif %}
+                <div class="row">
+                    <div class="col-md-4">Plan Date:<span style="color: red">*</span></div>
+                    <div class="col-md-8">
+                        <input type="text" name="InspectionDate" class="form-control" id="inspectiondate" value="{{ data.inspectiondate }}" placeholder="yyyy-mm-dd" required>
+                    </div>
+                    <script>
+                        $( "#inspectiondate" ).datepicker({
+                            dateFormat: 'yy-mm-dd'
+                        });
+                        $("#inspectiondate").datepicker('setDate', new Date());
+                    </script>
+                </div>
+            </fieldset>
+
+            <div class="row">
+            </div>
+            <div class="row">
+                <div class="col-md-12" style="text-align: right"><button type="submit" class="btn btn-primary">Submit</button></div>
+             </div>
+            </div>
+        </form>
+{% endblock %}

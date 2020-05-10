@@ -1,0 +1,100 @@
+{% extends 'BaseUI/BaseManager/baseRiskSummaryMana.html' %}
+
+{% load staticfiles %}
+
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactorMana' proposalID %}{% endblock %}
+{% block ca%}{% url 'fullyConsequenceMana' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrixMana' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChartMana' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'proposalDisplayMana' ass.componentid_id %}{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+    <form method="post">
+    {% csrf_token %}
+        <div class="input-data">
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border"><b>Fully-Quantitative Financial Cosequense of Failure and Category</b></legend>
+                <!----------- BLOCK INPUT ---------->
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Input</b></legend>
+                    <div class="row">
+                        <div class="col-md-1"><input type="checkbox" name="check" value="Cost of lost production due to downtime to repair equipment, $/day"></div>
+                        <div class="col-md-7">Cost of lost production due to downtime to repair equipment, $/day:</div>
+                        <div class="col-md-4">{{ data.production_cost }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1"><input type="checkbox" name="check" value="Equipment cost, $/m2"></div>
+                        <div class="col-md-7">Equipment cost, $/m2:</div>
+                        <div class="col-md-4">{{ data.equipment_cost }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1"><input type="checkbox" name="check" value="Population density of personal or employees in the unit, personal/m2"></div>
+                        <div class="col-md-7">Population density of personal or employees in the unit, personal/m2:</div>
+                        <div class="col-md-4">{{ data.personal_density }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1"><input type="checkbox" name="check" value="Environmental clean-up cost, $/barrel"></div>
+                        <div class="col-md-7">Environmental clean-up cost, $/barrel:</div>
+                        <div class="col-md-4">{{ data.evironment_cost }}</div>
+                    </div>
+                </fieldset>
+
+                <!-------- BLOCK CONSEQUENCE ------->
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Consequence of Failure and Category</b></legend>
+                    <div class="row">
+                        <div class="col-md-1"><input type="checkbox" name="check" value="Financial Consequence Area of Component Damage Flamable, m"></div>
+                        <div class="col-md-7">Financial Consequence Area of Component Damage Flamable, m<sup>2</sup>:</div>
+                        <div class="col-md-4">{{ data.ca_cmd }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1"><input type="checkbox" name="check" value="Financial Consequence Area of Personnel Injury Flamable, m"></div>
+                        <div class="col-md-7">Financial Consequence Area of Personnel Injury Flamable, m<sup>2</sup>:</div>
+                        <div class="col-md-4">{{ data.ca_inj_flame }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1"><input type="checkbox" name="check" value="Financial Consequence of Component Damage Costs, $"></div>
+                        <div class="col-md-7">Financial Consequence of Component Damage Costs, $:</div>
+                        <div class="col-md-4">{{ data.fc_cmd }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1"><input type="checkbox" name="check" value="Financial Consequence of Affected Area, $"></div>
+                        <div class="col-md-7">Financial Consequence of Affected Area, $:</div>
+                        <div class="col-md-4">{{ data.fc_affa }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1"><input type="checkbox" name="check" value="Financial Consequence of Business Interruption Costs, $"></div>
+                        <div class="col-md-7">Financial Consequence of Business Interruption Costs, $:</div>
+                        <div class="col-md-4">{{ data.fc_prod }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1"><input type="checkbox" name="check" value="Financial Consequence of Potential Injury Costs, $"></div>
+                        <div class="col-md-7">Financial Consequence of Potential Injury Costs, $:</div>
+                        <div class="col-md-4">{{ data.fc_inj }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1"><input type="checkbox" name="check" value="Financial Consequence of Environmental Cleanup Costs, $"></div>
+                        <div class="col-md-7">Financial Consequence of Environmental Cleanup Costs, $:</div>
+                        <div class="col-md-4">{{ data.fc_envi }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1"><input type="checkbox" name="check" value="Financial Consequence of Falure, $"></div>
+                        <div class="col-md-7">Financial Consequence of Falure, $:</div>
+                        <div class="col-md-4">{{ data.fc_total }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1"><input type="checkbox" name="check" value="Consequence of Failure Category"></div>
+                        <div class="col-md-7">Consequence of Failure Category:</div>
+                        <div class="col-md-4"><b>{{ data.fcof_category }}</b></div>
+                    </div>
+                </fieldset>
+            </fieldset>
+            <br>
+            <div class="row">
+                <div class="col-md-12" style="text-align: right"><button type="submit" name="Verifica" class="btn btn-primary" id="changeThinning" onclick="btnChangeClick()">Verificaton</button></div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

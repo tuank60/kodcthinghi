@@ -1,0 +1,21 @@
+{% extends 'BaseUI/BaseManager/VerificationBase.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Facility Management{% endblock %}
+
+{% block vertical %}
+    <div class="vertical-menu">
+        <a class="active">Verification</a>
+        <a href="{% block listfaci %}{% endblock %}"><i class="fa fa-list">&emsp;List of Facilities</i></a>
+        <a href="{% block newfaci %}{% endblock %}"><i class="fa fa-building">&emsp;New Facility</i></a>
+        <a href="{% block design %}{% endblock %}"><i class="fa fa-barcode">&emsp;Design Code</i></a>
+        <a href="{% block manu %}{% endblock %}"><i class="fa fa-cubes">&emsp;Manufacture</i></a>
+        <a href="{% block uploadInsp %}{% endblock %}"><i class="fa fa-file">&emsp;Upload History</i></a>
+        <a href="{% block uploadPlant %}{% endblock %}"><i class="fa fa-file-excel-o">&emsp;Upload Plan</i></a>
+    </div>
+{% endblock %}

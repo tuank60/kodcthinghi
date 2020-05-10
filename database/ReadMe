@@ -1,0 +1,8 @@
+This is a folder storaged database dump file.
+
+* for postgresql :
+    - Create dump: pg_dump -U user db_name > archive_name.sql
+    - Restored from dump: psql -U user db_name < /directory/archive.sql
+
+* for mysql:
+    - Restored: mysql -u username -p -h hostname DATA-BASE-NAME < /directory/dumpfile.sql

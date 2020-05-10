@@ -1,0 +1,128 @@
+/*body {*/
+ /*line-height: 1.254em;*/
+ /*margin: 0;*/
+ /*padding: 0;*/
+/*}*/
+/*#wrapper{*/
+    /*width: auto;*/
+    /*margin: 0px ;*/
+/*}*/
+/*#header {*/
+    /*height: 75px;*/
+    /*border: 1px solid #369ff5;*/
+    /*background: #3276FE ;*/
+    /*position: absolute;*/
+    /*padding: 0;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*width: 100%;*/
+    /*overflow: auto;*/
+/*}*/
+/*img{*/
+    /*padding-left: 40px;*/
+    /*padding-top: 40px;*/
+/*}*/
+/*#content{*/
+    /*min-height: 600px;*/
+    /*width: 100%;*/
+    /*top: 75px;*/
+    /*margin: 0 ;*/
+    /*padding: 20px;*/
+    /*text-align: center;*/
+    /*overflow: auto;*/
+/*}*/
+/*#text{*/
+    /*font-family: "Times New Roman";*/
+    /*color: #3276FE;*/
+    /*padding-top: 1px;*/
+    /*font-size: 40px;*/
+/*}*/
+/*a {*/
+    /*font-family: "Times New Roman";*/
+    /*font-size: 20px;*/
+    /*float:right;*/
+    /*padding-top: 25px ;*/
+    /*padding-bottom: 25px;*/
+    /*padding-right: 200px;*/
+    /*text-decoration: none;*/
+    /*display: block;*/
+/*}*/
+
+
+.business-normal {
+  padding: 16px;
+  margin-top: 80px;
+  min-height: 500px;
+  width: 100%;
+  margin-bottom: 80px;
+  overflow: hidden;
+  height: 100%;
+}
+/* Cai sidenav chinh la vertical-menu */
+.sidenav { 
+    height:auto;
+    width: 240px;
+    position: fixed;
+    z-index: 1;
+    top: 62px;
+    bottom: 2px;
+    left: 0;
+    background-color: #eee;
+    overflow-x: hidden;
+    padding-top: 0px;
+    margin-bottom: 40px;
+    font-family: "Times New Roman", Times, serif;
+}
+
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    color: black;
+    display: block;
+    font-size: 20px;
+    background-color: #eee;
+    line-height: 1.5;
+}
+
+.sidenav a.active{
+    font-size: 20px;
+}
+.sidenav a:hover {
+    background-color: #ccc;
+}
+
+.main {
+  /*padding: 10px;*/
+  margin-top: -10px;
+  margin-left: 230px;
+  min-width: 80%;
+  min-height: 500px;
+  /*margin-bottom: 50px;*/
+  height: 100%; /* Used in this example to enable scrolling */
+  top: 0px;
+  bottom: 0;
+  right: 0;
+  overflow: hidden;
+  /*background-color: #5bc0de;*/
+}
+
+.input-data{
+    /*margin-top: 70px;*/
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+    min-height: 400px;
+    height: 100%;
+    text-decoration: none;
+    font-size: 20px;
+    display: block;
+    color: black;
+    font-family: "Times New Roman", Times, serif;
+    clear: both;
+    overflow: hidden;
+    /*background-color: #dbb1f5;*/
+}
+
+.input-data div{
+    padding-bottom: 4px;
+}

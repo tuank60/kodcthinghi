@@ -1,0 +1,75 @@
+{% extends 'ManagerUI/verification_requirments/VerificationHome.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Verification_requirments{% endblock %}
+
+{% block content %}
+    <form method="post" style="padding-top: 90px;padding-bottom: 90px">
+        {% csrf_token %}
+        {% for veri in veri %}
+            {% for faci in faci %}
+
+        <div class="container" style="width: 1000px;background-color: #d9d9d9">
+            <header>
+                <h3 style="text-align: center">YÊU CẦU KIỂM ĐỊNH</h3>
+                <br>
+            </header>
+            <body style="padding-left: 10px">
+                <div style="padding-left: 30px">
+                    <p>Manager requirments:<a>{{ veri.manager }}</a></p>
+                    <p>DATE:{{ veri.date }}</p>
+                    TO:<br>
+                    <table style="width: 600px;padding-left: 5px">
+                        <tr>
+                            <td>&emsp;Proposal:</td>
+                            <td>&emsp;Component:</td>
+                            <td>&emsp;Equipment:</td>
+                            <td>&emsp;Facility:</td>
+                        </tr>
+                        <tr>
+                            <td>&emsp;<a>{{ veri.proposal }}</a></td>
+                            <td>&emsp;<a>{{ veri.com }}</a></td>
+                            <td>&emsp;<a>{{ veri.eq }}</a></td>
+                            <td>&emsp;<a>{% if veri.facility == faci.facilityid %}{{ faci.facilityname }}{% endif %}</a></td>
+                        </tr>
+                    </table>
+                </div>
+                <br>
+                <div style="border-top: 1px solid #5a6268">
+                    <div style="padding-left: 30px">
+                        <br>
+                        <p>YẾU TỐ CẦN KIỂM DỊNH CHO <a>{{ veri.proposal }}</a> CỦA NHA MÁY <a>{{ faci.facilityname }}</a> LÀ:</p>
+                        <div style="padding-left: 50px">
+                        
+                                    {% for cont in arr %}
+                                        {% for con in cont %}
+                                            {% if con.Verification.id == veri.id %}
+                                                <p>{{ con.content }}</p>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                            <p>+ Cost of lost production due to downtime to repair equipment, $/day</p>
+                            <p>+ Factor of Management System</p>
+                        </div>
+                    </div>
+                </div>
+            </body>
+            <br>
+            <footer>
+                <div style="text-align: right;padding-bottom: 20px">
+                    <button name="_check" class="btn btn-primary" type="submit" value="{{veri.id}}"><i class="fa fa-pencil">&emsp;Check Selected</i></button>
+                    <button type="submit" class="btn btn-warning" id="sub"><i class="fa fa-trash-o">&emsp;Delete Selected</i></button>
+                    {% if veri.Is_active %}<p style="float: left;padding-left: 30px;color: #9d9d9d">đã xem</p>{% endif %}
+                </div>
+            </footer>
+        </div>
+            <br>
+            {% endfor %}
+        {% endfor %}
+    </form>
+{% endblock %}

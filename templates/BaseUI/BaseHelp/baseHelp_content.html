@@ -1,0 +1,17 @@
+{% extends 'BaseUI/BaseHelp/BaseHelp.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+{% endblock %}
+
+{% block content-a %}
+    <div class="navigation" >
+        <div class="nav" style="border-right: 2px solid #f1f1f1;width: 200px;padding-left: 20px;float: left">
+            {% block vaco %}{% endblock %}
+        </div>
+        <div class="main-container" style="float: right;width: 1100px;padding-bottom: 50px">
+            {% block data-content %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

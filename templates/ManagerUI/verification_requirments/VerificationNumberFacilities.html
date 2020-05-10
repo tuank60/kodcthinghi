@@ -1,0 +1,17 @@
+{% extends 'ManagerUI/verification_requirments/VerificationHome.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Verification_requirments{% endblock %}
+
+{% block content %}
+    <form method="post" style="padding-top: 90px;padding-bottom: 90px">
+        {% csrf_token %}
+        {% for faci in faci %}
+            <a href="{% url 'VerificationHome' faci.facilityid %}">{{ faci.facilityname }}</a><br>
+        {% endfor %}
+        {% endblock %}

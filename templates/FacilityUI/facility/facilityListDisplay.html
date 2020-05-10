@@ -1,0 +1,76 @@
+{% extends 'BaseUI/BaseFacility/baseFacility.html' %}
+
+<!-------------- BLOCK MENU ---------------->
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' siteID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' siteID %}{% endblock %}
+{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}
+{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}
+{% block inspecPlan %}{% url 'inspectionPlan' siteID %}{% endblock %}
+<!----------------- END BLOCK----------------->
+
+{% block data-content %}
+    <form method="post">
+        {% csrf_token %}
+        <div style="text-align: center">
+            <caption><b style="font-size: 22px; color: #444444;">List of Facilities</b></caption>
+            <br><br>
+            <table class="table" id="mytable" >
+                <thead >
+                    <tr>
+                        <th width="100px" style="text-align: center"><input type="checkbox" id="chkHeader"></th>
+                        <th width="200px" style="text-align: center"><i class="fa fa-tag"></i>&ensp;Facility</th>
+                        <th width="200px" style="text-align: center"><i class="fa fa-compass"></i>&ensp;Facility Management Factor</th>
+                        <th width="200px" style="text-align: center"><i class="fa fa-bullseye"></i>&ensp;Facility Risk Target</th>
+                        <th width="200px" style="text-align: center"><i class="fa fa-bar-chart-o"></i>&ensp;Risk Summary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in obj %}
+                    <tr >
+                        <td align="center"><input type="checkbox" name="{{ a.ID }}"></td>
+                        <td align="center"><a href="{% url 'equipmentDisplay' a.ID %}">{{ a.FacilitiName }}</a></td>
+                        <td align="center">{{ a.ManagementFactor }}</td>
+                        <td align="center">{{ a.RiskTarget }}</td>
+                        <td align="center"><a href="{% url 'exportData' a.ID 'Facility' %}"><i class="fa fa-print" ></i></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+{#          Pagination div  #}
+            <div>
+                {% if obj.has_other_pages %}
+              <ul class="pagination">
+                {% if obj.has_previous %}
+                  <li><a href="?page={{ obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in obj.paginator.page_range %}
+                  {% if obj.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                  {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if obj.has_next %}
+                  <li><a href="?page={{ obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+              </ul>
+            {% endif %}
+            </div>
+
+{#        Tool div #}
+            <br>
+            <div>
+                <button name="_edit" class="btn btn-primary" type="submit"><i class="fa fa-pencil">&emsp;Edit Selected</i></button>
+                <button name="_delete" type="submit" class="btn btn-warning" id="sub" onclick="Sub()" ><i class="fa fa-trash-o">&emsp;Delete Selected</i></button>
+                <button name="_new" class="btn btn-primary" type="submit"><i class="fa fa-pencil">&emsp;New Facility</i></button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

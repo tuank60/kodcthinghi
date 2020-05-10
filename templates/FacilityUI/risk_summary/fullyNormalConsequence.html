@@ -1,0 +1,160 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+
+{% load staticfiles %}
+
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block ca%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'proposalDisplay' ass.componentid_id %}{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+    <!--suppress ALL -->
+    <form method="post">
+    {% csrf_token %}
+        <div class="input-data">
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border"><b>Fully-Quantitative Financial Cosequense of Failure and Category</b></legend>
+                <!----------- BLOCK INPUT ---------->
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Input</b></legend>
+                    <div class="row">
+                        <div class="col-md-8" id="moneytaryUnit">Moneytary Unit</div>
+                        <div class="col-md-4" id="selectUnit">    
+                            <select id="myselect" oninput="myfunction()">
+                            <option value="$">$
+                            <option value="Vnd">Vnd
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8" id="pro1">Cost of lost production due to downtime to repair equipment, $/day:</div>
+                        <div class="col-md-4" id="pro2">{{ data.production_cost }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8" id="equip1">Equipment cost, $/m2:</div>
+                        <div class="col-md-4" id="equip2">{{ data.equipment_cost }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8" >Population density of personal or employees in the unit, personal/m2:</div>
+                        <div class="col-md-4" value="{{ data.personal_density }}">{{ data.personal_density }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8" id="envi1">Environmental clean-up cost, $/barrel:</div>
+                        <div class="col-md-4" id="envi2">{{ data.evironment_cost }}</div>
+                    </div>
+                </fieldset>
+
+                <!-------- BLOCK CONSEQUENCE ------->
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Consequence of Failure and Category</b></legend>
+                    <div class="row">
+                        <div class="col-md-8">Financial Consequence Area of Component Damage Flamable, m<sup>2</sup>:</div>
+                        <div class="col-md-4">{{ data.ca_cmd }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">Financial Consequence Area of Personnel Injury Flamable, m<sup>2</sup>:</div>
+                        <div class="col-md-4">{{ data.ca_inj_flame }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8" id="comp1">Financial Consequence of Component Damage Costs, $:</div>
+                        <div class="col-md-4" id="comp2">{{ data.fc_cmd }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8" id="area1">Financial Consequence of Affected Area, $:</div>
+                        <div class="col-md-4" id="area2">{{ data.fc_affa }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8" id="inter1">Financial Consequence of Business Interruption Costs, $:</div>
+                        <div class="col-md-4" id="inter2">{{ data.fc_prod }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8" id="inju1">Financial Consequence of Potential Injury Costs, $:</div>
+                        <div class="col-md-4" id="inju2"> {{ data.fc_inj }}</div>
+                    </div>F
+                    <div class="row">
+                        <div class="col-md-8" id="clea1">Financial Consequence of Environmental Cleanup Costs, $:</div>
+                        <div class="col-md-4" id="clea2"> {{ data.fc_envi }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8" id="falu1">Financial Consequence of Falure, $:</div>
+                        <div class="col-md-4" id="falu2"> {{ data.fc_total }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">Consequence of Failure Category:</div>
+                        <div class="col-md-4"><b>{{ data.fcof_category }}</b></div>
+                    </div>
+                </fieldset>
+            </fieldset>
+        </div>
+    <script >
+        function myfunction() {
+            var x = document.getElementById("myselect").value, pro1 = document.getElementById("pro1"), pro2 = document.getElementById("pro2"),
+                equip1 = document.getElementById("equip1"), equip2 = document.getElementById("equip2"), envi1 = document.getElementById("envi1"),
+                envi2 = document.getElementById("envi2"), comp1 = document.getElementById("comp1"), comp2 = document.getElementById("comp2"),
+                area1 = document.getElementById("area1"), area2 = document.getElementById("area2"), inter1 = document.getElementById("inter1"),
+                inter2 = document.getElementById("inter2"), inju1 = document.getElementById("inju1"), inju2 = document.getElementById("inju2"),
+                clea1 = document.getElementById("clea1"), clea2 = document.getElementById("clea2"), falu1 = document.getElementById("falu1"),
+                falu2 = document.getElementById("falu2"),
+                a1 = "{{ data.production_cost }}", a2 = "{{ data.equipment_cost }}",
+                a3 = "{{ data.evironment_cost }}", a4 = "{{ data.fc_cmd }}", a5="{{ data.fc_affa }}",a6="{{ data.fc_prod }}",
+                a7 = "{{ data.fc_inj }}", a8 = "{{ data.fc_envi }}", a9 = "{{ data.fc_total }}";
+            if(x === "Vnd") {
+                a1 = a1 * 23507;
+                a2 = a2 * 23507;
+                a3 = a3 * 23507;
+                a4 = a4 * 23507;
+                a5 = a5 * 23507;
+                a6 = a6 * 23507;
+                a7 = a7 * 23507;
+                a8 = a8 * 23507;
+                a9 = a9 * 23507;
+                pro2.innerHTML = a1;
+                equip2.innerHTML = a2;
+                envi2.innerHTML = a3;
+                comp2.innerHTML = a4;
+                area2.innerHTML = a5;
+                inter2.innerHTML = a6;
+                inju2.innerHTML = a7;
+                clea2.innerHTML = a8;
+                falu2.innerHTML = a9;
+                pro1.innerHTML = "Cost of lost production due to downtime to repair equipment, Vnd/day:"
+                equip1.innerHTML = "Equipment cost, Vnd/m2:"
+                envi1.innerHTML = "Environmental clean-up cost, Vnd/barrel:"
+                comp1.innerHTML = "Financial Consequence of Component Damage Costs, Vnd:"
+                area1.innerHTML = "Financial Consequence of Affected Area, Vnd:"
+                inter1.innerHTML = "Financial Consequence of Business Interruption Costs, Vnd:"
+                inju1.innerHTML = "Financial Consequence of Potential Injury Costs, Vnd:"
+                clea1.innerHTML = "Financial Consequence of Environmental Cleanup Costs, Vnd:"
+                falu1.innerHTML = "Financial Consequence of Falure, Vnd:"
+
+                }
+            else {
+                pro2.innerHTML = a1;
+                equip2.innerHTML = a2;
+                envi2.innerHTML = a3;
+                comp2.innerHTML = a4;
+                area2.innerHTML = a5;
+                inter2.innerHTML = a6;
+                inju2.innerHTML = a7;
+                clea2.innerHTML = a8;
+                falu2.innerHTML = a9;
+                pro1.innerHTML = "Cost of lost production due to downtime to repair equipment, $/day:"
+                equip1.innerHTML = "Equipment cost, $/m2:"
+                envi1.innerHTML = "Environmental clean-up cost, $/barrel:"
+                comp1.innerHTML = "Financial Consequence of Component Damage Costs, $:"
+                area1.innerHTML = "Financial Consequence of Affected Area, $:"
+                inter1.innerHTML = "Financial Consequence of Business Interruption Costs, $:"
+                inju1.innerHTML = "Financial Consequence of Potential Injury Costs, $:"
+                clea1.innerHTML = "Financial Consequence of Environmental Cleanup Costs, $:"
+                falu1.innerHTML = "Financial Consequence of Falure, $:"
+
+            }
+        }
+    </script>
+    </form>
+
+{% endblock %}

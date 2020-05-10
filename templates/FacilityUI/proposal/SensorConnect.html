@@ -1,0 +1,40 @@
+{% extends 'BaseUI/BaseFacility/baseProposal.html' %}
+{% load staticfiles %}
+
+{% block library %}
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+<!----------BLOCK MENU----------->
+{% block listProposal %}{% url 'proposalDisplay' componentID %}{% endblock %}
+{% block newsensor %}{% url 'newsensor' componentID %}{% endblock %}
+{% block backComp %}{% url 'componentDisplay' equipmentID %}{% endblock %}
+<!----------END BLOCK----------->
+
+{% block data-content %}
+    <form method="post" id="listProposal">
+    {% csrf_token %}
+    <div>
+        <table>
+            <tr style="width: 500px;height: 20px">
+                <td style="text-align: center"><h4>Sensor: {{ sensorName }}</h4></td>
+                <td></td>
+                <td style="text-align: center"><h4>Component: {{ comp.componentname }}</h4></td>
+            </tr>
+            <tr style="width: 200px;height: 200px">
+                <td>
+                    <img src={% static '/image/Sensor/sensor.png' %} alt="Flowers" style="width:200px;height: 200px">
+                </td>
+                <td>
+                    <img src={% static '/image/Sensor/connect_logo.PNG' %} alt="Flowers" style="width:150px;height: 50px">
+                    <br>
+                    <img src={% static '/image/Sensor/connect.png' %} alt="Flowers" style="width:150px;height: 100px">
+                </td>
+                <td>
+                    <img src={% static '/image/Sensor/facility.PNG' %} alt="Flowers" style="width:200px;height: 200px">
+                </td>
+            </tr>
+        </table>
+    </div>
+    </form>
+{% endblock %}

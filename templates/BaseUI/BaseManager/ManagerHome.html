@@ -1,0 +1,17 @@
+{% extends 'BaseUI/BaseManager/baseManager.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Facility Management{% endblock %}
+
+{% block vertical %}
+    <a class="active">LIST<br>Management</a>
+    <a href="{% block listmana %}{% endblock %}" class="{% if page == 'listManagement' %}activeLink{% endif %}"><i class="fa fa-list">&emsp;List of Management</i></a>
+    <a href="{% block design %}{% endblock %}" class="{% if page == 'listDesign' %}activeLink{% endif %}"><i class="fa fa-barcode">&emsp;Design Code</i></a>
+    <a href="{% block manu %}{% endblock %}" class="{% if page == 'listManu' %}activeLink{% endif %}"><i class="fa fa-cubes">&emsp;Manufacture</i></a>
+{% endblock %}
+

@@ -1,0 +1,11 @@
+{% extends 'BaseUI/BaseFacility/baseBusiness.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block title %}Proposal{% endblock %}
+{% block vertical %}
+    <a class="active">Proposal Management</a>
+    <a href="{% block listProposal %}{% endblock %}" class="{% if page == 'listProposal' or page == 'listProposalTank' %}activeLink{% endif %}"><i class="fa fa-list">&emsp;List of Proposals</i></a>
+    <a href="{% block newsensor %}{% endblock %}" class="{% if page == 'newsensor' %}activeLink{% endif %}"><i class="fa fa-anchor">&emsp;New Sensor</i></a>
+    <a href="{% block backComp %}{% endblock %}" ><i class="fa fa-arrow-left">&emsp;Back to Component</i></a>
+{% endblock %}

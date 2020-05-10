@@ -1,0 +1,122 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+body {margin:0;}
+
+.header {
+  overflow: hidden;
+  background-color: #4575B7;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 60px;
+}
+
+.header a {
+    float: right;
+    width: 4.5%;
+    height: 60px;
+    text-align: center;
+    padding: 12px 0;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 26px;
+}
+
+.header img{
+    padding-left: 40px;
+    padding-top: 40px;
+}
+
+/*.header a:hover {*/
+    /*background-color: #122b40;*/
+    /*color: white;*/
+/*}*/
+.header a.a-normal:hover, a.a-normal:active {color: white;background-color: #122b40;}
+
+.header a.a-login:hover, a.a-login:active {color: white;background-color: #4CAF50 ;}
+
+.header a.a-logout:hover, a.a-logout:active {color: white;background-color: #f55a10 ;}
+
+.active {
+    background-color: #444444 !important;
+    color: white !important;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    font-size: 22px !important;
+}
+.activeLink {
+    background-color: #888888 !important;
+    color: white !important;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    font-size: 22px !important;
+        }
+
+.logout {
+  background-color: #f55a10 !important;
+}
+.alogin {
+    background-color: red;
+}
+
+.footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   height: 40px;
+   background-color: #4575B7;
+   color: #dff0d8;
+   text-align: center;
+    /*padding-top: 0;*/
+   padding-top: 10px;
+}
+.footer img{
+    padding-left: 10px;
+    padding-top: 0;
+}
+
+.tab{
+    display: none;
+}
+
+/* Make circles that indicate the steps of the form: */
+.step {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbbbbb;
+  border: none;
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.5;
+}
+
+.step.active {
+  opacity: 1;
+}
+
+/* Mark the steps that are finished and valid: */
+.step.finish {
+  background-color: #4CAF50;
+}
+
+input.invalid {
+  background-color: #ffdddd;
+}
+
+button {
+  background-color: #4CAF50;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 17px;
+  font-family: Raleway;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+#prevBtn {
+  background-color: #bbbbbb;
+}

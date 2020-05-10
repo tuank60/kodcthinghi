@@ -1,0 +1,92 @@
+
+.forum-menu{
+    margin-top: 60px;
+    height: 30px;
+    width: 100%;
+    background-color: black;
+}
+.forum-content  {
+    width: 80%;
+    height: auto;
+    margin-top: 76px;
+    margin-left: 10%;
+}
+.forum-nomal{
+    width: 100%;
+    background-color: white;
+    height: 1500px;
+}
+.forum-title{
+    width: 100%;
+    height: 45px;
+    line-height: 45px;
+    background-color: #4575B7;
+    border-radius: 5px;
+}
+.forum-post{
+    width: 100%;
+    height: auto;
+    background-color: white;
+    border-radius: 5px;
+    height: auto;
+}
+.forum-title span {
+    color: white;
+    margin-left: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+.forum-font{
+    font-size: 16px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.forum-icon{
+    font-size: 22px;
+    color: #5a6268;
+    margin-left: 10px;
+}
+.forum-listposts{
+    width: 100%;
+}
+.post-title{
+    color: #4575B7;
+    font-size: 30px;
+    margin-top: 15px;
+}
+
+.post-time{
+    font-size: 13px;
+}
+
+.forum-block-comment{
+
+    width: 100%;
+    height: 100%;
+    background-color: #d5d5d5;
+}
+.forum-block-comment tr{
+    border: 1px solid #8c8c8c ;
+    opacity: 5;
+}
+.forum-user-comment{
+    height: 70px;
+    width: 6.5%;
+}
+.forum-comment{
+    height: auto;
+    width: 93%;
+}
+.forum-notification{
+    position: absolute;
+    top: 30%;
+    right: 24%;
+    background-color: red;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 30%;
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}

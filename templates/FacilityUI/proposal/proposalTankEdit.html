@@ -1,0 +1,1325 @@
+{% extends 'BaseUI/BaseFacility/baseProposal.html' %}
+
+{% load staticfiles %}
+
+<!----------BLOCK MENU----------->
+{% block listProposal %}{% url 'proposalDisplay' componentID %}{% endblock %}
+{% block newProposal %}{% url 'tankNew' componentID %}{% endblock %}
+{% block backComp %}{% url 'componentDisplay' equipmentID %}{% endblock %}
+<!----------END BLOCK------------>
+
+{% block data-content %}
+    <form id="tank" method="post">
+    {% csrf_token %}
+        <div class="input-data">
+            <!------------ TAB 1-------------->
+            <div class="tab">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Assessment</b></legend>
+                    <div class="row">
+                        <div class="col-md-4">Assessment Name:<span style="color: red">*</span></div>
+                        <div class="col-md-8"><input type="text" class="form-control" name="AssessmentName" value="{{ rwAss.proposalname }}" placeholder="Input assessment name here!" required/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Assessment Date:<span style="color: red">*</span></div>
+                        <div class="col-md-8"><input type="text" name="assessmentdate" class="form-control" id="assessmentdate" value="{{ assDate }}" placeholder="yyyy-mm-dd" required></div>
+                        <script>
+                            $( "#assessmentdate" ).datepicker({
+                            dateFormat: 'yy-mm-dd'
+                        });
+                        $("#assessmentdate").datepicker('setDate', new Date());
+                        </script>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Assessment Method:<span style="color: red">*</span></div>
+                        <div class="col-md-8"><select class="form-control" name="AssessmentMethod" id="AssessmentMethod">
+                            <option>Semi-Quantitative PoF and Semi-Quantitative CoF</option>
+                            <option>Semi-Quantitative PoF and Fully-Quantitative CoF</option>
+                            <option>Fully-Quantitative PoF and Semi-Quantitative CoF</option>
+                            <option>Fully-Quantitative PoF and Fully-Quantitative CoF</option>
+                         </select> </div>
+                        <script>
+                            {% if rwAss.assessmentmethod %}
+                                $("#AssessmentMethod").val("{{ rwAss.assessmentmethod }}");
+                            {% else %}
+                                $("#AssessmentMethod").prop("selectedIndex", 0);
+                            {% endif %}
+                        </script>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Risk Analysis Period (months):</div>
+                        <div class="col-md-8"><input type="text" class="form-control" name="RiskAnalysisPeriod" value="36" readonly></div>
+                    </div>
+                </fieldset>
+            </div>
+            <!------------ TAB 2-------------->
+            <div class="tab">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Equipment Properties</b></legend>
+                    <!------------ BLOCK 1-------------->
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Generic Properties</b></legend>
+                        <div class="row">
+                            <div class="col-md-5">PWHT</div>
+                            <div class="col-md-1"><input type="checkbox" name="PWHT" id="PWHT"/></div>
+                            <script>
+                                if({{ rwEq.downtimeprotectionused }})
+                                    $("#Downtime").attr('checked', 'checked');
+                                if({{ rwEq.pwht }})
+                                    $("#PWHT").attr('checked', 'checked');
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Online Monitoring</div>
+                            <div class="col-md-6"><select class="form-control" name="OnlineMonitoring" id="OnlineMonitoring">
+                                <option value="" selected disabled>Please select online monitoring..
+                                <option>Amine high velocity corrosion - Corrosion coupons</option>
+                                <option>Amine high velocity corrosion - Electrical resistance probes</option>
+                                <option>Amine high velocity corrosion - Key process variable</option>
+                                <option>Amine low velocity corrosion - Corrosion coupons</option>
+                                <option>Amine low velocity corrosion - Electrical resistance probes</option>
+                                <option>Amine low velocity corrosion - Key process variable</option>
+                                <option>HCL corrosion - Corrosion coupons</option>
+                                <option>HCL corrosion - Electrical resistance probes</option>
+                                <option>HCL corrosion - Key process variable</option>
+                                <option>HCL corrosion - Key process variable & Electrical resistance probes</option>
+                                <option>HF corrosion - Corrosion coupons</option>
+                                <option>HF corrosion - Electrical resistance probes</option>
+                                <option>HF corrosion - Key process variable</option>
+                                <option>High temperature H2S/H2 corrosion - Corrosion coupons</option>
+                                <option>High temperature H2S/H2 corrosion - Electrical resistance probes</option>
+                                <option>High temperature H2S/H2 corrosion - Key process parameters</option>
+                                <option>High temperature Sulfidic / Naphthenic acid corrosion - Corrosion coupons</option>
+                                <option>High temperature Sulfidic / Naphthenic acid corrosion - Electrical resistance probes</option>
+                                <option>High temperature Sulfidic / Naphthenic acid corrosion - Key process variable</option>
+                                <option>No online monitoring</option>
+                                <option>Other corrosion - Corrosion coupons</option>
+                                <option>Other corrosion - Electrical resistance probes</option>
+                                <option>Other corrosion - Key process variable</option>
+                                <option>Sour water high velocity corrosion - Corrosion coupons</option>
+                                <option>Sour water high velocity corrosion - Electrical resistance probes</option>
+                                <option>Sour water high velocity corrosion - Key process variable</option>
+                                <option>Sour water low velocity corrosion - Corrosion coupons</option>
+                                <option>Sour water low velocity corrosion - Electrical resistance probes</option>
+                                <option>Sour water low velocity corrosion - Key process variable</option>
+                                <option>Sulfuric acid (H2S/H2) corrosion high velocity - Corrosion coupons</option>
+                                <option>Sulfuric acid (H2S/H2) corrosion high velocity - Electrical resistance probes</option>
+                                <option>Sulfuric acid (H2S/H2) corrosion high velocity - Key process parameters</option>
+                                <option>Sulfuric acid (H2S/H2) corrosion high velocity - Key process parameters & electrical resistance probes</option>
+                                <option>Sulfuric acid (H2S/H2) corrosion low velocity - Corrosion coupons</option>
+                                <option>Sulfuric acid (H2S/H2) corrosion low velocity - Electrical resistance probes</option>
+                                <option>Sulfuric acid (H2S/H2) corrosion low velocity - Key process parameters</option>
+                            </select></div>
+                            <script>
+                                {% if rwEq.onlinemonitoring %}
+                                    $("#OnlineMonitoring").val("{{ rwEq.onlinemonitoring }}");
+                                {% else %}
+                                    $("#OnlineMonitoring").prop("selectedIndex", 0);
+                                {% endif %}
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Equipment Volume, m<sup>3</sup>:<span style="color: red">*</span></div>
+                            <div class="col-md-6"><input type="number" min="0" max="1000000" step="0.01" class="form-control" value="{{ rwEq.volume }}" name="EquipmentVolume" placeholder="Equipment volume" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">Administrative Control for Upset Management</div>
+                            <div class="col-md-1"><input type="checkbox" name="Admin" id="Admin"/></div>
+                            <script>
+                                if({{ rwEq.adminupsetmanagement }})
+                                    $("#Admin").attr('checked','checked');
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5" style="color: red">Cylic Operation</div>
+                            <div class="col-md-1"><input type="checkbox" name="CylicOper" id="CylicOper"/></div>
+                            <div class="col-md-5">Highly Effective Inspection for Deadlegs</div>
+                            <div class="col-md-1"><input type="checkbox" name="Highly" id="Highly"/></div>
+                            <script>
+                                if({{ rwEq.highlydeadleginsp }})
+                                    $("#Highly").attr('checked','checked');
+                                if({{ rwEq.cyclicoperation }})
+                                    $("#CylicOper").attr('checked', 'checked');
+                            </script>
+                        </div>
+                    </fieldset>
+                    <!------------ BLOCK 2-------------->
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Governing Thinning Damage Factor Properties</b></legend>
+                        <div class="row">
+                            <div class="col-md-5">Liner Online Monitoring</div>
+                            <div class="col-md-1"><input type="checkbox" name="LOM" id="LOM"/></div>
+                            <script>
+                                if({{ rwEq.lineronlinemonitoring }})
+                                    $("#LOM").attr('checked', 'checked');
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Adjustment for Settlement:</div>
+                            <div class="col-md-6"><select class="form-control" name="AdjForSettlement" id="AdjForSettlement">
+                                <option value="" selected disabled>Please select adjust settlement..</option>
+                                <option>Recorded settlement exceeds API 653 criteria</option>
+                                <option>Recorded settlement meets API 653 criteria</option>
+                                <option>Settlement never evaluated</option>
+                                <option>Concrete foundation, no settlement</option>
+                            </select></div>
+                            <script>
+                                {% if rwEq.adjustmentsettle %}
+                                $("#AdjForSettlement").val("{{ rwEq.adjustmentsettle }}");
+                                {% endif %}
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">Component is Welded</div>
+                            <div class="col-md-1"><input type="checkbox" name="ComponentWelded" id="ComponentWelded"/></div>
+                            <div class="col-md-5">Tank Is Maintained in Accordance with API 653</div>
+                            <div class="col-md-1"><input type="checkbox" name="TMA" id="TMA"/></div>
+                            <script>
+                                if({{ rwEq.componentiswelded }})
+                                    $("#ComponentWelded").attr('checked', 'checked');
+                                if({{ rwEq.tankismaintained }})
+                                    $("#TMA").attr('checked','checked');
+                            </script>
+                        </div>
+                    </fieldset>
+                    <!------------ BLOCK 3-------------->
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Governing External Damage Factor Properties</b></legend>
+                        <div class="row">
+                            <div class="col-md-7" style="color: red">Material is Exposed to Fluids, Mists or Solids Containing Chlorine Externally</div>
+                            <div class="col-md-2"><input type="checkbox" name="MFTF" id="MFTF"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7">Interface at Soil or Water</div>
+                            <div class="col-md-2"><input type="checkbox" name="InterfaceSoilWater" id="InterfaceSoilWater"/></div>
+                            <script>
+                                if({{ rwEq.materialexposedtoclext }})
+                                    $("#MFTF").attr('checked', 'checked');
+                                if({{ rwEq.interfacesoilwater }})
+                                    $("#InterfaceSoilWater").attr('checked', 'checked');
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">External Environment</div>
+                            <div class="col-md-6"><select class="form-control" name="ExternalEnvironment">
+                                <option value="" selected disabled>Please select extern environ..</option>
+                                <option>Arid/dry</option>
+                                <option>Marine</option>
+                                <option>Severe</option>
+                                <option>Temperate</option>
+                            </select></div>
+                            <script>
+                                {% if rwEq.externalenvironment %}
+                                $("#ExternalEnvironment").val("{{ rwEq.externalenvironment }}");
+                                {% endif %}
+                            </script>
+                        </div>
+                    </fieldset>
+                    <!------------ BLOCK 4-------------->
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Governing Stress CorrosionCracking Damage Factor Properties</b></legend>
+                        <div class="row">
+                            <div class="col-md-5">Downtime Protection Used</div>
+                            <div class="col-md-1"><input type="checkbox" name="Downtime" id="Downtime"/></div>
+                            <div class="col-md-5">Steamed Out Prior to Water Flushing</div>
+                            <div class="col-md-1"><input type="checkbox" name="Steamed" id="Steamed"/></div>
+                            <div class="col-md-5">Heat Traced</div>
+                            <div class="col-md-1"><input type="checkbox" name="HeatTraced" id="HeatTraced"/></div>
+                            <script>
+                                if({{ rwEq.downtimeprotectionused }})
+                                    $("#Downtime").attr('checked', 'checked');
+                                if({{ rwEq.steamoutwaterflush }})
+                                    $("#Steamed").attr('checked', 'checked');
+                                if({{ rwEq.heattraced }})
+                                    $("#HeatTraced").attr('checked', 'checked');
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">Presence of Sulphides, Moisture and Oxygen During Operation</div>
+                            <div class="col-md-1"><input type="checkbox" name="PresenceofSulphides" id="PresenceofSulphides"/></div>
+                            <div class="col-md-5">Presence of Sulphides, Moisture and Oxygen During Shutdown</div>
+                            <div class="col-md-1"><input type="checkbox" name="PresenceofSulphidesShutdow" id="PresenceofSulphidesShutdow"/></div>
+                            <script>
+                                if({{ rwEq.presencesulphideso2 }})
+                                    $("#PresenceofSulphides").attr('checked', 'checked');
+                                if({{ rwEq.presencesulphideso2shutdown }})
+                                    $("#PresenceofSulphidesShutdow").attr('checked', 'checked');
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Thermal History</div>
+                            <div class="col-md-6"><select  class="form-control" name="ThermalHistory" id="ThermalHistory">
+                                <option value="" selected disabled>Please select thermal history..</option>
+                                <option>None</option>
+                                <option>Solution Annealed</option>
+                                <option>Stabilised After Welding</option>
+                                <option>Stabilised Before Welding</option>
+                            </select></div>
+                            <script>
+                                {% if rwEq.thermalhistory %}
+                                $("#ThermalHistory").val("{{ rwEq.thermalhistory }}");
+                                {% endif %}
+                            </script>
+                        </div>
+                    </fieldset>
+                    <!------------ BLOCK 5-------------->
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Governing Brittle Fracture Damage Factor Properties</b></legend>
+                        <div class="row">
+                            <div class="col-md-5">Pressurisation Controlled by Admin</div>
+                            <div class="col-md-1"><input type="checkbox" name="PressurisationControlled" id="PressurisationControlled"/></div>
+                            <div class="col-md-5">Equipment is Operating for Many Years at Lowest Expected Temperature</div>
+                            <div class="col-md-1"><input type="checkbox" name="lowestTemp" id="lowestTemp"/></div>
+                            <script>
+                                if({{ rwEq.pressurisationcontrolled }})
+                                    $("#PressurisationControlled").attr('checked', 'checked');
+                                if({{ rwEq.yearlowestexptemp }})
+                                    $("#lowestTemp").attr('checked', 'checked');
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Min. Required Temperature Before Pressurisation Allowed by Admin, &deg;C:<span style="color: red">*</span></div>
+                        <div class="col-md-6"><input type="number" step="0.01" max="100000" class="form-control" name="MinReq" value="{{ rwEq.minreqtemperaturepressurisation }}" placeholder="Min req temp" required/></div>
+                        </div>
+                    </fieldset>
+                    <!------------ BLOCK 6-------------->
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Tank Consequence of Failure Properties</b></legend>
+                        <div class="row">
+                            <div class="col-md-6">Type of Soil:</div>
+                            <div class="col-md-6"><select class="form-control" name="typeofSoil" id="typeofSoil">
+                                <option value="" selected disabled>Please select soil type..</option>
+                                <option>Coarse Sand</option>
+                                <option>Fine Sand</option>
+                                <option>Very Fine Sand</option>
+                                <option>Silt</option>
+                                <option>Sandy Clay</option>
+                                <option>Clay</option>
+                                <option>Concrete-Asphalt</option>
+                            </select></div>
+                            <script>
+                                {% if rwEq.typeofsoil %}
+                                $("#typeofSoil").val("{{ rwEq.typeofsoil }}");
+                                {% endif %}
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Environment Sensitivity</div>
+                            <div class="col-md-6"><select class="form-control" name="EnvironmentSensitivity" id="EnvironmentSensitivity">
+                                <option value="" selected disabled>Please select environ sensitivity..</option>
+                                <option>High</option>
+                                <option>Medium</option>
+                                <option>Low</option>
+                            </select></div>
+                            <script>
+                                {% if rwEq.environmentsensitivity %}
+                                $("#EnvironmentSensitivity").val("{{ rwEq.environmentsensitivity }}")
+                                {% endif %}
+                            </script>
+                        </div>
+                        <div class="row">
+{#                            tuan#}
+{#                            {% if isshell %}#}
+{#                             <!----- do nothing ------>#}
+{#                            {% else %}#}
+                            <div class="col-md-6">Distance To Ground Water, m:<span style="color: red">*</span></div>
+                            <div class="col-md-6"><input type="number" step="0.01" max="100000" class="form-control" min="0" name="Distance" value="{{ rwEq.distancetogroundwater }}" placeholder="Distance to ground water" required/></div>
+{#                            {% endif %}#}
+                        </div>
+                    </fieldset>
+                </fieldset>
+            </div>
+            <!------------ TAB 3-------------->
+            <div class="tab">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Component Properties</b></legend>
+                    <!------------ BLOCK 1-------------->
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Generic Properties</b></legend>
+                        <div class="row">
+                            <div class="col-md-6">Level Of Confidence In Corrosion Rate</div>
+                            <div class="col-md-6"><select class="form-control" name="ConfidenceCR" id="ConfidenceCR">
+                                <option value="" selected disabled>Please select level of confidence..</option>
+                                <option>Low</option>
+                                <option>Medium</option>
+                                <option>High</option>
+                            </select> </div>
+                            <script>
+                                {% if rwComp.confidencecorrosionrate %}
+                                $("#ConfidenceCR").val("{{ rwComp.confidencecorrosionrate }}")
+                                {% endif %}
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">Tank Diameter, in:<span style="color: red">*</span></div>
+                            <div class="col-md-3"><input type="number" step="0.01" max="100000" class="form-control" min="0" value="{{ rwComp.nominaldiameter }}" name="TankDiameter" placeholder="Tank diameter" required/></div>
+                            <div class="col-md-3">Nominal Thickness, mm:<span style="color: red">*</span></div>
+                            <div class="col-md-3"><input type="number" step="0.01" max="100000" class="form-control" min="0" value="{{ rwComp.nominalthickness }}" name="NominalThickness" placeholder="Normal thickness" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">Current Thickness, mm:<span style="color: red">*</span></div>
+                            <div class="col-md-3"><input type="number" step="0.01" max="100000" class="form-control" value="{{ rwComp.currentthickness }}" min="0" name="CurrentThickness" placeholder="Current thickness" required/></div>
+                            <div class="col-md-3">Min. Required Thickness, mm:<span style="color: red">*</span></div>
+                            <div class="col-md-3"><input type="number" step="0.01" min="0" max="100000" class="form-control" value="{{ rwComp.minreqthickness }}" name="MinReqThick" placeholder="Req thickness" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">Structural Thickness, mm:</div>
+                            <div class="col-md-3"><input type="number" class="form-control" step="0.01" min="0" max="1000" placeholder="StructuralThickness" value="{{ rwComp.structuralthickness }}" name="StructuralThickness" required/></div>
+                            <div class="col-md-3">Current Corrosion Rate, mm/yr:<span style="color: red">*</span></div>
+                            <div class="col-md-3"><input type="number" step="0.01" min="0" max="1000" class="form-control" value="{{ rwComp.currentcorrosionrate }}" name="CurrentCorrosionRate" placeholder="Corrosion rate" required/></div>
+{#                            {% if isshell %}#}
+{#                            <div class="col-md-3">Shell Course Height, m:<span style="color: red">*</span></div>#}
+{#                            <div class="col-md-3"><input type="number" step="0.01" class="form-control" max="1000" value="{{ rwComp.shellheight }}" min="0" name="shellHeight" placeholder="Shell course height" required/></div>#}
+{#                            {% endif %}#}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">Damage Found During Inspection</div>
+                            <div class="col-md-1"><input type="checkbox" name="DFDI" id="DFDI"/></div>
+                            <div class="col-md-5">Presence of Cracks</div>
+                            <div class="col-md-1"><input type="checkbox" name="PresenceCracks" id="PresenceCracks"/></div>
+                            <script>
+                                if({{ rwComp.damagefoundinspection }})
+                                    $("#DFDI").attr('checked', 'checked');
+                                if({{ rwComp.crackspresent }})
+                                    $("#PresenceCracks").attr('checked','checked');
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">Minimum Structural Thickness Governs</div>
+                            <div class="col-md-1"><input type="checkbox" name="MinStructural" id="MinStructural"></div>
+{#                            <div class="col-md-5">Tramp Elements</div>#}
+{#                            <div class="col-md-1"><input type="checkbox" name="TrampElements" id="TrampElements"/></div>#}
+                            <div class="col-md-3">Weld Joint Efficiency</div>
+                            <div class="col-md-3"><input id="maxN" onkeyup="MaximumN()" type="number" maxlength="10" class="form-control" step="0.01" min="0" value="0" max="1" placeholder="WeldJointEff" name="WeldJointEff" id="WeldJointEff" required/></div>
+                            <script>
+                                function MaximumN(){
+                                    var max = document.getElementById("maxN").value;
+                                    if(max>1.00) {
+                                        alert("the value must be equal or lesser than 1");
+                                    }
+                                }
+                            </script>
+                        </div>
+                        <script>
+                            if({{ rwComp.minstructuralthickness }})
+                                $("#MinStructural").attr('checked', 'checked');
+                            if({{ rwComp.weldjointefficiency }})
+                                $("#WeldJointEff").attr('checked', 'checked');
+                        </script>
+                        <div class="row">
+                            <div class="col-md-3">Component Volume, m<sup>3</sup>:</div>
+                            <div class="col-md-3"><input type="number" class="form-control" step="0.01" min="0" value="{{ rwComp.componentvolume }}" max="1000" placeholder="CompVolume" name="CompVolume" required/></div>
+                            <div class="col-md-3">Allowable Stress at Assessment Temperature, psi:<span style="color: red">*</span></div>
+                            <div class="col-md-3"><input type="number" step="0.01" min="0" max="100000" class="form-control" value="{{ rwComp.allowablestress }}" name="ASAT" placeholder="Allow stress" required/></div>
+                        </div>
+                    </fieldset>
+                    <!------------ BLOCK 2-------------->
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Governing External Damage Factor Properties</b></legend>
+                        <div class="row">
+                            <div class="col-md-6">Complexity of Protrusions</div>
+                            <div class="col-md-6"><select class="form-control" name="ComplexityProtrusions" id="ComplexityProtrusions">
+                                <option value="" selected disabled>Please select complex protrusions..</option>
+                                <option>Above average</option>
+                                <option>Average</option>
+                                <option>Below average</option>
+                            </select></div>
+                            <script>
+                                {% if rwComp.complexityprotrusion %}
+                                    $("#ComplexityProtrusions").val("{{ rwComp.complexityprotrusion }}");
+                                {% endif %}
+                            </script>
+                        </div>
+                    </fieldset>
+                    <!------------ BLOCK 3-------------->
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Governing Stress Corrosion Cracking Damage Factor Properties</b></legend>
+                        <div class="row">
+                        <div class="col-md-6">Maximum Brinnell Hardness of Weld</div>
+                        <div class="col-md-6"><select class="form-control" list="MBHW" name="MBHW" id="MBHW">
+                            <option value="" selected disabled>Please select brinnel hardness..</option>
+                            <option>Below 200</option>
+                            <option>Between 200 and 237</option>
+                            <option>Greater than 237</option>
+                        </select></div>
+                        <script>
+                            {% if rwComp.brinnelhardness %}
+                                $("#MBHW").val("{{ rwComp.brinnelhardness }}");
+                            {% endif %}
+                        </script>
+                    </div>
+                    <!------------ BLOCK 4-------------->
+                    </fieldset>
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Governing Brittle Fracture Damage Factor Properties</b></legend>
+
+                        <div class="row">
+                            <div class="col-md-10">It is fabricated from P-1 and P-3 steels where the design temperature is less than or equal to 343&deg;C (650&deg;F).</div>
+                            <div class="col-md-2"><input type="checkbox" name="P1AndP3" id="P1AndP3"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10">The equipment satisfied all requirements of a recognized code or standard at the time of fabrication.</div>
+                            <div class="col-md-2"><input type="checkbox" name="EquipmentRequirements" id="EquipmentRequirements"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10">The nominal operating conditions have been essentially the same and consistent with the specified design
+                            conditions for a significant period of time, and more severe conditions (i.e.,lower temperature and/or higher stress) are not expected in the future.</div>
+                            <div class="col-md-2"><input type="checkbox" name="OperatingConditions" id="OperatingConditions"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10">The CET at the MAWP is greater than or equal to -29&deg;C (-20&deg;F)
+                            if it is a pressure vessel or -104&deg;C (-155&deg;F) if is a piping circuit.</div>
+                            <div class="col-md-2"><input type="checkbox" name="CETtheMAWP" id="CETtheMAWP"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10">Cyclic service, fatigue or vibration service is not a design requirement
+                            per design code.</div>
+                            <div class="col-md-2"><input type="checkbox" name="CyclicService" id="CyclicService"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10">The equipment or circuit is not subject to shock chilling.</div>
+                            <div class="col-md-2"><input type="checkbox" name="EquipmentorCircuit" id="EquipmentorCircuit"></div>
+                        </div>
+                        <script>
+                            if({{ rwComp.fabricatedsteel }})
+                                $("#P1AndP3").attr('checked', 'checked');
+                            if({{ rwComp.equipmentsatisfied }})
+                                $("#EquipmentRequirements").attr('checked', 'checked');
+                            if({{ rwComp.nominaloperatingconditions }})
+                                $("#OperatingConditions").attr('checked', 'checked');
+                            if({{ rwComp.cetgreaterorequal }})
+                                $("#CETtheMAWP").attr('checked', 'checked');
+                            if({{ rwComp.cyclicservice }})
+                                $("#CyclicService").attr('checked', 'checked');
+                            if({{ rwComp.equipmentcircuitshock }})
+                                $("#EquipmentorCircuit").attr('checked', 'checked');
+                        </script>
+                        <div class="row">
+                            <div class="col-md-8">Brittle Fracture Governing Thickness, mm:<span style="color: red">*</span></div>
+                            <div class="col-md-3"><input type="number" step="0.01" min="0" max="100000" class="form-control" value="{{ rwComp.brittlefracturethickness }}" name="BFGT" placeholder="Brittle thickness" required/></div>
+                        </div>
+                    </fieldset>
+                    <!------------ BLOCK 4-------------->
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Governing Fatigue Damage Factor Properties</b></legend>
+                        <div class="row">
+                        <div class="col-md-6">Severity of Vibration</div>
+                        <div class="col-md-6"><select class="form-control" name="SeverityVibration" id="SeverityVibration">
+                            <option value="" selected disabled>Please select severity vibration..</option>
+                            <option>None</option>
+                            <option>High</option>
+                            <option>Medium</option>
+                            <option>Low</option>
+                            </select></div>
+                        </div>
+                        <script>
+                            {% if rwComp.severityofvibration %}
+                            $("#SeverityVibration").val("{{ rwComp.severityofvibration }}");
+                            {% endif %}
+                        </script>
+                    </fieldset>
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Tank Consequence of Failure Properties</b></legend>
+{#                        {% if isshell %}#}
+{#                        <!----------do no thing------------>#}
+{#                        {% else %}#}
+                        <div class="row">
+                            <div class="col-md-5">Release Prevention Barrier</div>
+                            <div class="col-md-1"><input type="checkbox" name="ReleasePreventionBarrier" id="ReleasePreventionBarrier"/></div>
+                            <div class="col-md-5">Concrete or Asphalt Foundation</div>
+                            <div class="col-md-1"><input type="checkbox" name="ConcreteFoundation" id="ConcreteFoundation"/></div>
+                            <script>
+                                if({{ rwComp.releasepreventionbarrier }})
+                                    $("#ReleasePreventionBarrier").attr('checked','checked');
+                                if({{ rwComp.concretefoundation }})
+                                    $("#ConcreteFoundation").attr('checked', 'checked');
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7">Height of Each Shell Course<span style="color: red">*</span></div>
+                            <div class="col-md-3"><input type="number" step="0.01" min="0" value="{{ rwComp.shellheight }}" max="100000" class="form-control" name="HeightEShellC" placeholder="Height of Each Shell Course" required/></div>
+                        </div>
+{#                        {% endif %}#}
+                    </fieldset>
+                </fieldset>
+            </div>
+            <!------------ TAB 4-------------->
+            <div class="tab">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Operating Condition</b></legend>
+                    <div class="row">
+                        <div class="col-md-3" style="color: red">Maximum Operating Temperature, &deg;C:<span style="color: red">*</span></div>
+                        <div class="col-md-3"><input type="number" class="form-control" step="0.01" max="100000" value="{{ rwStream.maxoperatingtemperature }}" name="MaxOT" placeholder="Maximum operator temp" required/></div>
+                        <div class="col-md-3">Maximum Operating Pressure, psi:<span style="color: red">*</span></div>
+                        <div class="col-md-3"><input type="number" step="0.01" max="100000" class="form-control" value="{{ rwStream.maxoperatingpressure }}" name="MaxOP" placeholder="Maximum operator pressure" required/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3" style="color: red">Min.Operating Temperature, &deg;C:<span style="color: red">*</span></div>
+                        <div class="col-md-3"><input type="number" class="form-control" max="100000" step="0.01" value="{{ rwStream.minoperatingtemperature }}" name="MinOT" placeholder="Minimum operator temp" required/></div>
+                        <div class="col-md-3">Min.Operating Pressure, psi:<span style="color: red">*</span></div>
+                        <div class="col-md-3"><input type="number" class="form-control" max="100000" step="0.01" value="{{ rwStream.minoperatingpressure }}" name="MinOP" placeholder="Minimum operator pressure" required/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3" style="color: red">Operating Hydrogen Partial Pressure, psi:<span style="color: red">*</span></div>
+                        <div class="col-md-3"><input type="number" class="form-control" max="1000000000" step="0.01" min="0" value="{{ rwStream.h2spartialpressure }}" name="OHPP" placeholder="Operator hydrogen pressure" required/></div>
+                        <div class="col-md-3" style="color: red">Critical Exposure Temperature, &deg;C:<span style="color: red">*</span></div>
+                        <div class="col-md-3"><input type="number" class="form-control" max="100000" step="0.01" value="{{ rwStream.criticalexposuretemperature }}" name="CET" placeholder="Critical temp" required/></div>
+                    </div>
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Operating Temperature in Different Temperature Ranger</b></legend>
+                        <div class="row">
+                            <div class="col-md-8">% Operating at -12&deg;C to -8&deg;C:</div>
+                            <div class="col-md-4"><input type="number" step="0.01" min="0" max="100" value="{{ rwExcot.minus12tominus8 }}" class="form-control" name="Operating1" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">% Operating at -8&deg;C to 6&deg;C:</div>
+                            <div class="col-md-4"><input type="number" step="0.01" min="0" max="100" value="{{ rwExcot.minus8toplus6 }}" class="form-control" name="Operating2" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">% Operating at 6&deg;C to 32&deg;C:</div>
+                            <div class="col-md-4"><input type="number" step="0.01" min="0" max="100" value="{{ rwExcot.plus6toplus32 }}" class="form-control" name="Operating3" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">% Operating at 32&deg;C to 71&deg;C:</div>
+                            <div class="col-md-4"><input type="number" step="0.01" min="0" max="100" value="{{ rwExcot.plus32toplus71 }}" class="form-control" name="Operating4" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">% Operating at 71&deg;C to 107&deg;C:</div>
+                            <div class="col-md-4"><input type="number" step="0.01" min="0" max="100" value="{{ rwExcot.plus71toplus107 }}" class="form-control" name="Operating5" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">% Operating at 107&deg;C to 121&deg;C:</div>
+                            <div class="col-md-4"><input type="number" step="0.01" min="0" max="100" value="{{ rwExcot.plus107toplus121 }}" class="form-control" name="Operating6" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">% Operating at 121&deg;C to 135&deg;C</div>
+                            <div class="col-md-4"><input type="number" step="0.01" max="100" min="0" value="{{ rwExcot.plus121toplus135 }}" class="form-control" name="Operating7" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">% Operating at 135&deg;C to 162&deg;C:</div>
+                            <div class="col-md-4"><input type="number" step="0.01" min="0" max="100" value="{{ rwExcot.plus135toplus162 }}" class="form-control" name="Operating8" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">% Operating at 162&deg;C to 176&deg;C:</div>
+                            <div class="col-md-4"><input type="number" step="0.01" min="0" max="100" value="{{ rwExcot.plus162toplus176 }}" class="form-control" name="Operating9" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">% Operating at 176&deg;C or above:</div>
+                            <div class="col-md-4"><input type="number" step="0.01" min="0" max="100" value="{{ rwExcot.morethanplus176 }}" class="form-control" name="Operating10" required/></div>
+                        </div>
+                    </fieldset>
+                </fieldset>
+            </div>
+            <!------------ TAB 5-------------->
+            <div class="tab">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Material</b></legend>
+                    <!------------ BLOCK 1-------------->
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Generic Properties</b></legend>
+                        <div class="row">
+                            <div class="col-md-3">Material:<span style="color: red">*</span></div>
+                            <div class="col-md-9"><input class="form-control" type="text" name="materialname" value="{{ rwMaterial.materialname }}" placeholder="Input material here!" required></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">Design Pressure, psi:<span style="color: red">*</span></div>
+                            <div class="col-md-3"><input type="number "step="0.01" min="0" max="100000" class="form-control" name="DesignPressure" value="{{ rwMaterial.designpressure }}" placeholder="Design pressure" required/></div>
+                            <div class="col-md-3">Max.Design Temperature, &deg;C:<span style="color: red">*</span></div>
+                            <div class="col-md-3"><input type="number" step="0.01" max="100000" class="form-control" value="{{ rwMaterial.designtemperature }}" name="MaxDesignTemp" placeholder="Maximum design temp" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5" style="color: red">Carbon or Low Alloy Steel</div>
+                            <div class="col-md-1"><input type="checkbox" name="CoLAS" id="CoLAS"/></div>
+                            <div class="col-md-5" style="color:red">Austenitic Steel</div>
+                            <div class="col-md-1"><input type="checkbox" name="AusteniticSteel" id="AusteniticSteel"/></div>
+                            <script>
+                                if({{ rwMaterial.carbonlowalloy }})
+                                    $("#CoLAS").attr('checked', 'checked');
+                                if({{ rwMaterial.austenitic }})
+                                    $("#AusteniticSteel").attr('checked', 'checked');
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">Yield Strength, MPa</div>
+                            <div class="col-md-3"><input type="number" step="0.01" min="0" max="100" value="{{ rwMaterial.yieldstrength }}" class="form-control" name="YieldStrength" placeholder="Yield Strength" required/></div>
+                            <div class="col-md-3">Tensile Strength, MPa</div>
+                            <div class="col-md-3"><input type="number" step="0.01" min="0" max="100" value="{{ rwMaterial.tensilestrength }}" class="form-control" name="TensileStrength" placeholder="Tensile Strength" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Material Cost Factor:<span style="color: red">*</span></div>
+                            <div class="col-md-6"><input type="number" class="form-control" min="0" max="1000" step="0.01" value="{{ rwMaterial.costfactor }}" name="MaterialCostFactor" placeholder="Material cost factor" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Production Cost, $/day:<span style="color: red">*</span></div>
+                            <div class="col-md-6"><input type="number" class="form-control" min="0" step="0.01" max="1000000000" value="{{ rwInputCa.productioncost }}" name="ProductionCost" placeholder="Production cost" required/></div>
+                        </div>
+                    </fieldset>
+                    <!------------ BLOCK 2-------------->
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Governing Thinning Damage Factor Properties</b></legend>
+                        <div class="row">
+                            <div class="col-md-7">Corrosion Allowance, mm:<span style="color: red">*</span></div>
+                            <div class="col-md-3"><input type="number" step="0.01" max="10000" min="0" value="{{ rwMaterial.corrosionallowance }}" class="form-control" name="CorrosionAllowance" placeholder="Corrosion allow" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Heat Treatment</div>
+                            <div class="col-md-6"><select class="form-control" name="heatTreatment" id="heatTreatment">
+                                <option value="" disabled selected>Please select heat treatment..</option>
+                                <option>Annealed</option>
+                                <option>None</option>
+                                <option>Normalised Temper</option>
+                                <option>Quench Temper</option>
+                                <option>Stress Relieved</option>
+                                <option>Sub Critical PWHT</option>
+                            </select></div>
+                            <script>
+                                {% if rwMaterial.heattreatment %}
+                                $("#heatTreatment").val("{{ rwMaterial.heattreatment }}");
+                                {% endif %}
+                            </script>
+                        </div>
+                    </fieldset>
+                    <!------------ BLOCK 3-------------->
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Governing Stress Corrosion Cracking Damage Factor Properties</b></legend>
+                        <div class="row">
+                            <div class="col-md-5" style="color: red">Nickel-based Alloy</div>
+                            <div class="col-md-1"><input type="checkbox" name="NickelAlloy" id="NickelAlloy"/></div>
+                            <script>
+                                if({{ rwMaterial.nickelbased }})
+                                    $("#NickelAlloy").attr('checked', 'checked');
+                                if({{ rwMaterial.ispta }})
+                                    $("#PTATank").attr('checked', 'checked');
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Sulfur Content</div>
+                            <div class="col-md-6"><select class="form-control" name="SulfurContent" id="SulfurContent">
+                                <option value="" selected disabled>Please select sulfur content..</option>
+                                <option>High > 0.01%</option>
+                                <option>Low 0.002 - 0.01%</option>
+                                <option>Ultra Low < 0.002%</option>
+                            </select></div>
+                            <script>
+                                {% if rwMaterial.sulfurcontent == "High > 0.01%" %}
+                                    $("#SulfurContent").val("High > 0.01%");
+                                {% elif  rwMaterial.sulfurcontent == "Low 0.002 - 0.01%" %}
+                                    $("#SulfurContent").val("Low 0.002 - 0.01%");
+                                {% elif rwMaterial.sulfurcontent == "Ultra Low < 0.002%" %}
+                                    $("#SulfurContent").val("Ultra Low < 0.002%");
+                                {% endif %}
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">Material Grade to Evaluate Severity of PTA</div>
+                            <div class="col-md-1"><input type="checkbox" id="PTATank" name="MGTEPTA" id="PTATank"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">PTA Material Grade</div>
+                            <div class="col-md-6"><select id="PTAMaterialTank" class="form-control" name="PTAMaterialGrade" id="PTAMaterialGrade">
+                                <option value="" selected disabled>Please select PTA material..</option>
+                                <option>321 Stainless Stee</option>
+                                <option>347 Stainless Steel, Alloy 20, Alloy 625, All austenitic weld overlay</option>
+                                <option>Regular 300 series Stainless Steels and Alloys 600 and 800</option>
+                                <option>H Grade 300 series Stainless Steels</option>
+                                <option>L Grade 300 series Stainless Steels</option>
+                                <option>Not Applicable</option>
+                            </select></div>
+                            <script>
+                                {% if rwMaterial.ptamaterialcode %}
+                                    $("#PTAMaterialGrade").val("{{ rwMaterial.ptamaterialcode }}")
+                                {% endif %}
+                            </script>
+                        </div>
+                    </fieldset>
+                    <!------------ BLOCK 4-------------->
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Governing Brittle Facture Factor Properties</b></legend>
+                        <div class="row">
+                            <div class="col-md-3">Reference Temperature, &deg;C:<span style="color: red">*</span></div>
+                            <div class="col-md-3"><input type="number" step="0.01" max="100000" class="form-control" value="{{ rwMaterial.referencetemperature }}" name="ReferenceTemperature" placeholder="Ref temp" required/></div>
+                            <div class="col-md-3">Min.Design Temperature, &deg;C:<span style="color: red">*</span>></div>
+                            <div class="col-md-3"><input type="number" step="0.01" max="100000" class="form-control" value="{{ rwMaterial.mindesigntemperature }}" name="MinDesignTemp" placeholder="Minimum design temp" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5" style="color: red">Chromium &ge;12%</div>
+                            <div class="col-md-1"><input type="checkbox" name="Chromium" id="Chromium"/></div>
+                            <script>
+                                if({{ rwMaterial.chromemoreequal12 }})
+                                    $("#Chromium").attr('checked', 'checked');
+                            </script>
+                        </div>
+                    </fieldset>
+                </fieldset>
+                <!---------------PTA CHECKED---------------->
+                 <script>
+                     $(document).ready(function () {
+                         var check = $("#PTATank").is(':checked');
+                         if(check){
+                             $("#PTAMaterialTank").attr('disabled', false);
+                         }
+                         else {
+                             $("#PTAMaterialTank").prop('selectedIndex',0);
+                             $("#PTAMaterialTank").attr('disabled', true);
+                         }
+                         $("#PTATank").click(function () {
+                             if($("#PTATank").prop('checked') == true){
+                                 $("#PTAMaterialTank").attr('disabled', false);
+                             }
+                             else {
+                                 $("#PTAMaterialTank").prop('selectedIndex',0);
+                                 $("#PTAMaterialTank").attr('disabled', true);
+                             }
+                         })
+                     })
+                 </script>
+            </div>
+            <!------------ TAB 6-------------->
+            <div class="tab">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Coating, Cladding, Lining, Insulation</b></legend>
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Coating</b></legend>
+                        <div class="row">
+                            <div class="col-md-6">Internal Coating</div>
+                            <div class="col-md-6"><input type="checkbox" name="InternalCoating" id="InternalCoating"></div>
+                            <script>
+                                if({{ rwCoat.internalcoating }})
+                                    $("#InternalCoating").attr('checked', 'checked');
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6" style="color: red">External Coating</div>
+                            <div class="col-md-6"><input type="checkbox" id="extCoat" name="ExternalCoating"></div>
+                            <script>
+                                if({{ rwCoat.externalcoating }})
+                                    $("#extCoat").attr('checked', 'checked');
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">External Coating Installation Date</div>
+                            <div class="col-md-6"><input type="text" class="form-control" id="datepickerTank" value="{{ extDate }}" data-format="yyyy-mm-dd" name="ExternalCoatingID"></div>
+                            <script>
+                                $( "#datepickerTank" ).datepicker({
+                                    dateFormat: 'yy-mm-dd'
+                                });
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">External Coating Quality</div>
+                            <div class="col-md-6"><select class="form-control" id ="externalCoatQuality" name="ExternalCoatingQuality">
+                                <option value=\"\" selected disabled>Please select coat quality..</option>
+                                <option>High coating quality</option>
+                                <option>Medium coating quality</option>
+                                <option>No coating or poor quality</option>
+                            </select></div>
+                            <script>
+                                {% if rwCoat.externalcoatingquality %}
+                                $("#externalCoatQuality").val("{{ rwCoat.externalcoatingquality }}")
+                                {% endif %}
+                            </script>
+                        </div>
+                        <script>
+                            $(document).ready(function () {
+                                var check = $("#extCoat").is(':checked');
+                                if(check){
+                                    $("#externalCoatQuality").attr('disabled', false);
+                                    $("#datepickerTank").attr('disabled', false);
+                                }
+                                else {
+                                    $("#externalCoatQuality").prop('selectedIndex',0);
+                                    $("#externalCoatQuality").attr('disabled', true);
+                                    $("#datepickerTank").attr('disabled', true);
+                                }
+                                $("#extCoat").click(function () {
+                                    if($("#extCoat").prop('checked') == true){
+                                        $("#externalCoatQuality").attr('disabled', false);
+                                        $("#datepickerTank").attr('disabled', false);
+                                    }
+                                    else {
+                                        $("#externalCoatQuality").prop('selectedIndex',0);
+                                        $("#externalCoatQuality").attr('disabled', true);
+                                        $("#datepickerTank").attr('disabled', true);
+                                    }
+                                })
+                            })
+                        </script>
+                        <div class="row">
+                            <div class="col-md-6">Support Configuration Which Does Not Allow Coating Maintenance</div>
+                            <div class="col-md-6"><input type="checkbox" name="SCWD" id="SCWD"/></div>
+                            <script>
+                                if({{ rwCoat.supportconfignotallowcoatingmaint }})
+                                    $("#SCWD").attr('checked', 'checked');
+                            </script>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Cladding</b></legend>
+                        <div class="row">
+                            <div class="col-md-6">Internal Cladding</div>
+                            <div class="col-md-6"><input type="checkbox" name="InternalCladding" id="InternalCladding"/></div>
+                            <script>
+                                if({{ rwCoat.internalcladding }})
+                                    $("#InternalCladding").attr('checked', 'checked');
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Cladding Thinkness, mm/yr:<span style="color: red">*</span></div>
+                            <div class="col-md-6"><input type="number" class="form-control" id="CladdingThinkness" name="CladdingThinkness" value="{{ rwCoat.claddingthickness }}" max="1000" step="0.01" min="0" placeholder="Clad Thinkness" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Cladding Corrosion Rate, mm/yr:<span style="color: red">*</span></div>
+                            <div class="col-md-6"><input type="number" id="CladdingCorrosionRate" class="form-control" name="CladdingCorrosionRate" value="{{ rwCoat.claddingcorrosionrate }}" step="0.01" min="0" max="1000" placeholder="Clad corrosion rate" required/></div>
+                        </div>
+                        <script>
+                            $(document).ready(function () {
+                                var check = $("#InternalCladding").is(':checked');
+                                if(check){
+                                    $("#CladdingCorrosionRate").attr('disabled', false);
+                                    $("#CladdingThinkness").attr('disabled', false);
+                                }
+                                else {
+                                    $("#CladdingCorrosionRate").attr('disabled', true);
+                                    $("#CladdingThinkness").attr('disabled', true);
+                                }
+                                $("#InternalCladding").click(function () {
+                                    if($("#InternalCladding").prop('checked') == true){
+                                        $("#CladdingCorrosionRate").attr('disabled', false);
+                                        $("#CladdingThinkness").attr('disabled', false);
+                                    }
+                                    else {
+                                        $("#CladdingCorrosionRate").attr('disabled', true);
+                                        $("#CladdingThinkness").attr('disabled', true);
+                                    }
+                                })
+                            })
+                        </script>
+                    </fieldset>
+
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Lining</b></legend>
+                        <div class="row">
+                            <div class="col-md-6" style="color: red">Internal Lining</div>
+                            <div class="col-md-6"><input type="checkbox" id="InterLinningTank" name="InternalLining"/></div>
+                            <script>
+                                if({{ rwCoat.internallining }})
+                                    $("#InterLinningTank").attr('checked', 'checked');
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Internal Liner Type</div>
+                            <div class="col-md-6"><select class="form-control" id="InterLinningTankType" name="InternalLinerType">
+                                <option value="" disabled selected>Please select inter linning..</option>
+                                <option>Acid Brick</option>
+                                <option>Castable refractory</option>
+                                <option>Castable refractory severe condition</option>
+                                <option>Fiberglass</option>
+                                <option>Glass lined</option>
+                                <option>Organic</option>
+                                <option>Strip lined alloy</option>
+                            </select></div>
+                            <script>
+                                {% if rwCoat.internallinertype %}
+                                $("#InterLinningTankType").val("{{ rwCoat.internallinertype }}");
+                                {% endif %}
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Internal Liner Condition</div>
+                            <div class="col-md-6"><select class="form-control" id="InterLinningConditionTank" name="InternalLinerCondition">
+                                <option value="" disabled selected>Please select linning condition..</option>
+                                <option>Average</option>
+                                <option>Good</option>
+                                <option>Poor</option>
+                                <option>Unknown</option>
+                            </select></div>
+                            <script>
+                                {% if rwCoat.internallinercondition %}
+                                $("#InterLinningConditionTank").val("{{ rwCoat.internallinercondition }}")
+                                {% endif %}
+                            </script>
+                        </div>
+
+                    <!-----------LINNING CHECKED---------->
+                    <script>
+                        $(document).ready(function () {
+                            var check = $("#InterLinningTank").is(':checked');
+                            if(check){
+                                $("#InterLinningTankType").attr('disabled', false);
+                                $("#InterLinningConditionTank").attr('disabled', false);
+                            }
+                            else {
+                                $("#InterLinningTankType").prop('selectedIndex',0);
+                                $("#InterLinningConditionTank").prop('selectedIndex',0);
+                                $("#InterLinningTankType").attr('disabled', true);
+                                $("#InterLinningConditionTank").attr('disabled', true);
+                            }
+                            $("#InterLinningTank").click(function () {
+                                if($("#InterLinningTank").prop('checked') == true){
+                                    $("#InterLinningTankType").attr('disabled', false);
+                                    $("#InterLinningConditionTank").attr('disabled', false);
+                                }
+                                else {
+                                    $("#InterLinningTankType").prop('selectedIndex',0);
+                                    $("#InterLinningConditionTank").prop('selectedIndex',0);
+                                    $("#InterLinningTankType").attr('disabled', true);
+                                    $("#InterLinningConditionTank").attr('disabled', true);
+                                }
+                            })
+                        })
+                    </script>
+                    </fieldset>
+
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Insulation</b></legend>
+                        <div class="row">
+                            <div class="col-md-6" style="color: red">External Insulation</div>
+                            <div class="col-md-6"><input type="checkbox" id="ExtInsulationTank" name="ExternalInsulation"/></div>
+                            <script>
+                                if({{ rwCoat.externalinsulation }})
+                                    $("#ExtInsulationTank").attr('checked', 'checked');
+                            </script>
+                       </div>
+                       <div class="row">
+                            <div class="col-md-6">Insulation Contains Chlorides</div>
+                            <div class="col-md-6"><input type="checkbox" name="ICC" id="ICC"/></div>
+                           <script>
+                                if({{ rwCoat.insulationcontainschloride }})
+                                    $("#ICC").attr('checked', 'checked');
+                            </script>
+                       </div>
+                       <div class="row">
+                            <div class="col-md-6">External Insulation Type</div>
+                            <div class="col-md-6"><select class="form-control" id="ExtInsulationTypeTank" name="ExternalInsulationType" >
+                                <option value="" selected disabled>Please select insulation type..</option>
+                                <option>Asbestos</option>
+                                <option>Calcium Silicate</option>
+                                <option>Fiberglass</option>
+                                <option>Foam Glass</option>
+                                <option>Mineral Wool</option>
+                                <option>Pearlite</option>
+                            </select></div>
+                           <script>
+                                {% if rwCoat.externalinsulationtype %}
+                                $("#ExtInsulationTypeTank").val("{{ rwCoat.externalinsulationtype }}")
+                                {% endif %}
+                            </script>
+                       </div>
+                       <div class="row">
+                            <div class="col-md-6" style="color: red">Insulation Condition</div>
+                            <div class="col-md-6"><select class="form-control" id="InsuConditionTank" name="InsulationCondition">
+                                <option value="" selected disabled>Please select insulation condition..</option>
+                                <option>Above average</option>
+                                <option>Average</option>
+                                <option>Below average</option>
+                            </select></div>
+                           <script>
+                                {% if rwCoat.insulationcondition %}
+                                $("#InsuConditionTank").val("{{ rwCoat.insulationcondition }}");
+                                {% endif %}
+                            </script>
+                       </div>
+
+
+                        <!----------------EXTERNAL INSULATION CHECKED----------------->
+                        <script>
+                            $(document).ready(function () {
+                                    var check = $("#ExtInsulationTank").is(':checked');
+                                    if(check){
+                                        $("#ExtInsulationTypeTank").attr('disabled', false);
+                                        $("#InsuConditionTank").attr('disabled', false);
+                                    }
+                                    else {
+                                        $("#ExtInsulationTypeTank").prop('selectedIndex',0);
+                                        $("#InsuConditionTank").prop('selectedIndex',0);
+                                        $("#ExtInsulationTypeTank").attr('disabled', true);
+                                        $("#InsuConditionTank").attr('disabled', true);
+                                    }
+                                    $("#ExtInsulationTank").click(function () {
+                                        if($("#ExtInsulationTank").prop('checked') == true){
+                                            $("#ExtInsulationTypeTank").attr('disabled', false);
+                                            $("#InsuConditionTank").attr('disabled', false);
+                                        }
+                                        else {
+                                            $("#ExtInsulationTypeTank").prop('selectedIndex',0);
+                                            $("#InsuConditionTank").prop('selectedIndex',0);
+                                            $("#ExtInsulationTypeTank").attr('disabled', true);
+                                            $("#InsuConditionTank").attr('disabled', true);
+                                        }
+                                    })
+                                })
+                        </script>
+                    </fieldset>
+                </fieldset>
+            </div>
+            <!------------ TAB 7-------------->
+            <div class="tab">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Stream</b></legend>
+                    <!------------ BLOCK 1-------------->
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Fluid</b></legend>
+                        <div class="row">
+                            <div class="col-md-7">Fluid:<span style="color: red">*</span></div>
+                            <div class="col-md-4"><select class="form-control" name="Fluid" id="Fluid">
+                                <option value="" selected disabled>Please select tank fluid..</option>
+                                <option>Gasoline</option>
+                                <option>Light Diesel Oil</option>
+                                <option>Heavy Diesel Oil</option>
+                                <option>Fuel Oil</option>
+                                <option>Crude Oil</option>
+                                <option>Heavy Fuel Oil</option>
+                                <option>Heavy Crude Oil</option>
+                            </select></div>
+                            <script>
+                                {% if rwInputCa.tank_fluid %}
+                                    $("#Fluid").val("{{ rwInputCa.tank_fluid }}");
+                                {% endif %}
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7">Fluid Height, m:<span style="color: red">*</span></div>
+                            <div class="col-md-4"><input type="number" step="0.01" min="0" max="1000" class="form-control" value="{{ rwInputCa.fluid_height }}" name="FluidHeight" placeholder="Fluid height" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7">Percentage of Fluid Leaving the Dike, %:<span style="color: red">*</span></div>
+                            <div class="col-md-4"><input type="number" step="0.01" min="0" max="100" class="form-control" value="{{ rwInputCa.p_lvdike }}" name="PFLD" placeholder="Percent fluid leave dike" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7">Percentage of Fluid Leaving the Dike but Remains on Site, %:<span style="color: red">*</span></div>
+                            <div class="col-md-4"><input type="number" step="0.01" max="100" min="0" class="form-control" value="{{ rwInputCa.p_onsite }}" name="PFLDRS" placeholder="Percent fluid on site" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7">Percentage of Fluid Going offsite, %:<span style="color: red">*</span></div>
+                            <div class="col-md-4"><input type="number" step="0.01" max="100" min="0" class="form-control" value="{{ rwInputCa.p_offsite }}" name="PFLDGoffsite" placeholder="Percent fluid offsite" required/></div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><b>Environment Condition</b></legend>
+                        <div class="row">
+                            <div class="col-md-3">NaOH Concentration, %:<span style="color: red">*</span></div>
+                            <div class="col-md-3"><input type="number"step="0.01" min="0" max="100" value="{{ rwStream.naohconcentration }}" class="form-control" name="NaOHConcentration" placeholder="NaOH concent" required/></div>
+                            <div class="col-md-3">Release Fluid Percent Toxic, %:<span style="color: red">*</span></div>
+                            <div class="col-md-3"><input type="number" step="0.01" min="0" max="100" value="{{ rwStream.releasefluidpercenttoxic }}" class="form-control" name="RFPT" placeholder="Fluid percent toxic" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">Chloride Ion, ppm:<span style="color: red">*</span></div>
+                            <div class="col-md-3"><input type="number" step="0.01" max="1000000" value="{{ rwStream.chloride }}" class="form-control" name="ChlorideIon" placeholder="Chloride ion" required/></div>
+                            <div class="col-md-3">CO3 Concentration in Water, ppm:<span style="color: red">*</span></div>
+                            <div class="col-md-3"><input type="number" step="0.01" min="0" max="1000000" value="{{ rwStream.co3concentration }}" class="form-control" name="CO3" placeholder="CO3 concent" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">H2S Content in Water, ppm:<span style="color: red">*</span></div>
+                            <div class="col-md-3"><input type="number" step="0.01" min="0" max="1000000" value="{{ rwStream.h2sinwater }}" class="form-control" name="H2SContent" placeholder="H2S content" required/></div>
+                            <div class="col-md-3">PH of Water:<span style="color: red">*</span></div>
+                            <div class="col-md-3"><input type="number" step="0.01" min="0" max="14" value="{{ rwStream.waterph }}" class="form-control" name="PHWater" placeholder="PH" required/></div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-5" style="color: red">Exposed To Acid Gas Treating Amine</div>
+                            <div class="col-md-1"><input type="checkbox" name="EAGTA" id="EAGTA"/></div>
+                            <script>
+                            if({{ rwStream.exposedtogasamine }})
+                                $("#EAGTA").attr('checked','checked');
+                        </script>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">Amine Solution Composition</div>
+                            <div class="col-md-3"><select class="form-control" name="AmineSolution" id="AmineSolution">
+                                                    <option value="" selected disabled>Please select solution..</option>
+                                                    <option>Diethanolamine DEA</option>
+                                                    <option>Diglycolamine DGA</option>
+                                                    <option>Disopropanolamine DIPA</option>
+                                                    <option>Methyldiethanolamine MDEA</option>
+                                                    <option>Monoethanolamine MEA</option>
+                                                    <option>Sulfinol</option>
+                                                </select></div>
+                            <script>
+                                {% if rwStream.aminesolution %}
+                                $("#AmineSolution").val("{{ rwStream.aminesolution }}");
+                                {% endif %}
+                            </script>
+                            <div class="col-md-3">Exposure to Amine</div>
+                            <div class="col-md-3"><select class="form-control" name="ExposureAmine" id="ExposureAmine">
+                                    <option value="" selected disabled>Please select exposure..</option>
+                                    <option>High Rich Amine</option>
+                                    <option>Low Lean Amine</option>
+                                    <option>None</option>
+                                </select></div>
+                            <script>
+                                {% if rwStream.exposuretoamine %}
+                                $("#ExposureAmine").val("{{ rwStream.exposuretoamine }}");
+                                {% endif %}
+                            </script>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-5" style="color: red">Aqueous Phase During Operation</div>
+                            <div class="col-md-1"><input type="checkbox" name="APDO"/></div>
+                            <script>
+                                if({{ rwStream.aqueousoperation }})
+                                    $("#APDO").attr('checked','checked');
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5" style="color: red">Environment Contains H2S</div>
+                            <div class="col-md-1"><input type="checkbox" name="EnvironmentCH2S" id="EnvironmentCH2S"/></div>
+
+                            <div class="col-md-5" style="color: red">Aqueous Phase During Shut Down</div>
+                            <div class="col-md-1"><input type="checkbox" name="APDSD" id="APDSD"/></div>
+                            <script>
+                                if({{ rwStream.h2s }})
+                                    $("#EnvironmentCH2S").attr('checked', 'checked');
+                                if({{ rwStream.aqueousshutdown }})
+                                    $("#APDSD").attr('checked', 'checked');
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">Presence of Cyanides</div>
+                            <div class="col-md-1"><input type="checkbox" name="PresenceCyanides" id="PresenceCyanides"/></div>
+                            <div class="col-md-5">Presence of Hydrofluoric Acid</div>
+                            <div class="col-md-1"><input type="checkbox" name="presenceHF" id="presenceHF"/></div>
+                            <script>
+                                if({{ rwStream.cyanide }})
+                                    $("#PresenceCyanides").attr('checked', 'checked');
+                                if({{ rwStream.hydrofluoric }})
+                                    $("#presenceHF").attr('checked', 'checked');
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5" style="color: red">Environment Contains Caustic in Any Concentration</div>
+                            <div class="col-md-1"><input type="checkbox" name="ECCAC" id="ECCAC"/></div>
+                            <div class="col-md-5" style="color: red">Process Contains Hydrogen</div>
+                            <div class="col-md-1"><input type="checkbox" name="PCH" id="PCH"/></div>
+                            <script>
+                                if({{ rwStream.hydrogen }})
+                                    $("#PCH").attr('checked', 'checked');
+                                if({{ rwStream.caustic }})
+                                    $("#ECCAC").attr('checked', 'checked');
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5" style="color: red">Material is Exposed to Fluids, Mists, or Solids Containing Chlorine Internally</div>
+                            <div class="col-md-1"><input type="checkbox" name="MEFMSCC" id="MEFMSCC"/></div>
+                            <div class="col-md-5" style="color: red">Exposed to Sulphur-Bearing Compounds</div>
+                            <div class="col-md-1"><input type="checkbox" name="ESBC" id="ESBC"/></div>
+                            <script>
+                                if({{ rwStream.materialexposedtoclint }})
+                                    $("#MEFMSCC").attr('checked', 'checked');
+                                if({{ rwStream.exposedtosulphur }})
+                                    $("#ESBC").attr('checked', 'checked');
+                            </script>
+                        </div>
+                    </fieldset>
+                </fieldset>
+            </div>
+
+            <div style="overflow:auto;">
+                <div style="float:right;">
+                  <button type="button" class="btn btn-default" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                  <button type="button" class="btn btn-success" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                </div>
+            </div>
+            <!-- Circles which indicates the steps of the form: -->
+            <div style="text-align:center;margin-top:40px;">
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+            </div>
+        </div>
+    </form>
+    <script>
+        var currentTab = 0; // Current tab is set to be the first tab (0)
+        showTab(currentTab); // Display the crurrent tab
+
+        function showTab(n) {
+          // This function will display the specified tab of the form...
+          var x = document.getElementsByClassName("tab");
+          x[n].style.display = "block";
+          //... and fix the Previous/Next buttons:
+          if (n == 0) {
+            document.getElementById("prevBtn").style.display = "none";
+          } else {
+            document.getElementById("prevBtn").style.display = "inline";
+          }
+          if (n == (x.length - 1)) {
+            document.getElementById("nextBtn").innerHTML = "Submit";
+          } else {
+            document.getElementById("nextBtn").innerHTML = "Next";
+          }
+          //... and run a function that will display the correct step indicator:
+          fixStepIndicator(n)
+        }
+
+        function nextPrev(n) {
+          // This function will figure out which tab to display
+          var x = document.getElementsByClassName("tab");
+          // Exit the function if any field in the current tab is invalid:
+          if (n == 1 && !validateForm()) return false;
+          // Hide the current tab:
+          x[currentTab].style.display = "none";
+          // Increase or decrease the current tab by 1:
+          currentTab = currentTab + n;
+          // if you have reached the end of the form...
+          if (currentTab >= x.length) {
+            // ... the form gets submitted:
+            document.getElementById("tank").submit();
+            ShowLoading();
+            return false;
+          }
+          // Otherwise, display the correct tab:
+          showTab(currentTab);
+        }
+
+        function validateForm() {
+          // This function deals with validation of the form fields
+          var x, y, i, valid = true;
+          x = document.getElementsByClassName("tab");
+          y = x[currentTab].getElementsByTagName("input");
+          // A loop that checks every input field in the current tab:
+          for (i = 0; i < y.length; i++) {
+            // If a field is empty...
+            if (y[i].value == "") {
+              // add an "invalid" class to the field:
+              y[i].className += " invalid";
+              // and set the current valid status to false
+              valid = false;
+            }
+          }
+          // If the valid status is true, mark the step as finished and valid:
+          if (valid) {
+            document.getElementsByClassName("step")[currentTab].className += " finish";
+          }
+          return valid; // return the valid status
+        }
+
+        function fixStepIndicator(n) {
+          // This function removes the "active" class of all steps...
+          var i, x = document.getElementsByClassName("step");
+          for (i = 0; i < x.length; i++) {
+            x[i].className = x[i].className.replace(" active", "");
+          }
+          //... and adds the "active" class on the current step:
+          x[n].className += " active";
+        }
+
+         function ShowLoading() {
+            var div = document.createElement('div');
+            var img = document.createElement('img');
+            img.src = '{% static 'image/loading/Pacman-1s-100px.gif' %}';
+            div.style.cssText = "position: fixed;left: 50%; top: 30%; width: 300px; text-align: center; background: rgba(54, 25, 25, .00004); border: 0px solid #000;";
+            div.appendChild(img);
+            document.body.appendChild(div);
+            $("#nextBtn").attr('disabled',true);
+            $("#prevBtn").attr('disabled',true);
+            return true;
+        }
+    </script>
+{% endblock %}
