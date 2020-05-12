@@ -22,10 +22,11 @@ import django.views.static
 from RbiCloud import settings
 
 urlpatterns = [
-    # path('static/(?P<path>.*)$', django.views.static.serve, {'document_root': settings.STATIC_ROOT, 'show_indexes': settings.DEBUG}),
+    path('static/(?P<path>.*)$', django.views.static.serve, {'document_root': settings.STATIC_ROOT, 'show_indexes': settings.DEBUG}),
     ########################## Base ################################
     path('admin/', admin.site.urls),
-    path('', views.signin, name='home'),
+    path('', views.Home, name='home'),
+    path('signin/',views.signin, name='signin'),
     path('basecitizen/',views.Base_citizen,name='basecitizen'),
     path('basemanagement/', views.base_manager, name= 'basemanager'),
     path('basebusiness/',views.base_business,name='basebusiness'),
@@ -124,8 +125,5 @@ urlpatterns = [
     #############connect thingsboard _____ sensor, gateway #############
     path('newsensor/<int:componentID>/', views.NewSensor, name='newsensor')
 ]
-'''
-Dkm cuong luong
-'''
-handler500 = 'cloud.views.handler404'
 handler404 = 'cloud.views.handler404'
+handler500 = 'cloud.views.handler404'
