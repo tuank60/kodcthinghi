@@ -34,6 +34,25 @@
   background-color: #4CAF50;
   color: white;
 }
+.city{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+.city td, .city th{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+.city tr:nth-child(even){background-color: #f2f2f2;}
+.city tr:hover {background-color: #ddd;}
+.city th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #0C5BED;
+  color: white;
+}
 </style>
 <form id="inspectionplan" method="post" >
     {% csrf_token %}
@@ -65,16 +84,28 @@
             </div>
         </fieldset>
         <br>
-        <table id="customers">
-            <tr>
-                <th>Inspection Plan ID</th>
-                <th>Inspection Plan Date</th>
-                <th>Equipment</th>
-                <th>Component</th>
-                <th>Remarks</th>
-                <th>Findings</th>
-            </tr>
-        </table>
+        <div class="city" style="font-size: 13px; color: #444444;background-color:white">
+            <table width=100%>
+                <tr>
+                    <th>Inspection Plan ID</th>
+                    <th>Inspection Plan Date</th>
+                    <th>Equipment</th>
+                    <th>Component</th>
+                    <th>Remarks</th>
+                    <th>Findings</th>
+                </tr>
+                {% for a in data %}
+                    <tr >
+                        <td align="center">{{ a.InspectionPlanID }}</td>
+                        <td align="center">{{ a.InspectionPlanDate }}</td>
+                        <td align="center">{{ a.Equipment }}</td>
+                        <td align="center">{{ a.Component }}</td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 
     <div class="modal" id="searchPlan" style="margin-top: 10%">
@@ -99,7 +130,7 @@
                 <tr >
                     <td align="center"><input type="checkbox" name="{{ a.id }}"></td>
                     <td align="center">{{ a.inspectionplanname }}</td>
-                    <td align="center">{{ a.inspectiondate }}</td>
+                    <td align="center">{{ a.inspectionplandate }}</td>
                 </tr>
                 {% endfor %}
             </table>

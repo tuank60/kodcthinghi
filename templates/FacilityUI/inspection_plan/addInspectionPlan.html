@@ -11,123 +11,1137 @@
 <!----------------- END BLOCK----------------->
 {% block data-content %}
 <style>
-.city,#menu0,#searchs{
+div.a {
+  white-space: nowrap;
+  width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+div.a:hover {
+  overflow: visible;
+}
+#searchs{
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 100%;
   font-size: 13px;
 }
-
-.city td, .city th,#menu0 td, #menu0 th,#searchs td,#searchs th {
+.city{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#search3{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#proposal
+{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#search2{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#searchs td,#searchs th {
   border: 1px solid #ddd;
   padding: 0px;
   text-align: center;
 }
+.city td, .city th{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#search2 th,#search2 td{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#search3 th,#search3 td{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#proposal th,#proposal td{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#searchs tr:nth-child(even){background-color: #f2f2f2;}
+.city tr:nth-child(even){background-color: #f2f2f2;}
+#search2 tr:nth-child(even){background-color: #f2f2f2;}
+#search3 tr:nth-child(even){background-color: #f2f2f2;}
+#proposal tr:nth-child(even){background-color: #f2f2f2;}
+#searchs tr:hover {background-color: #ddd;}
+.city tr:hover {background-color: #ddd;}
+#search2 tr:hover {background-color: #ddd;}
+#search3 tr:hover {background-color: #ddd;}
+#proposal tr:hover {background-color: #ddd;}
 
-.citys tr,#menu0 tr,#searchs tr:nth-child(even){background-color: #f2f2f2;}
-
-.city tr, #menu0tr,#searchs tr:hover {background-color: #ddd;}
-
-.city th,#menu0 th,#searchs th {
+#searchs th {
   padding-top: 10px;
   padding-bottom: 10px;
-  background-color: #4CAF50;
+  background-color: #0C5BED;
   color: white;
 }
-</style>
-<div class="container">
-  <div style=" text-align: left">
-      <caption><b style="font-size: 15px; color: #444444;">Inspection Plan Name:{{name}}</b></caption>
-      <br>
-      <caption><b style="font-size: 15px; color: #444444;">Inspection Plan Date:{{date}}</b></caption>
-  </div>
-  <ul class="nav nav-pills">
-    <li class="active"><a data-toggle="pill" href="#menu0" style="padding-top: 10px;padding-bottom: 10px;background-color: #4CAF50;color: white;">Inspection Scope</a></li>
-    <li><a data-toggle="pill" style="padding-top: 10px;padding-bottom: 10px;background-color: #4CAF50;color: white;" href="#menu1">Inspection Method</a></li>
-    <li><a data-toggle="pill" style="padding-top: 10px;padding-bottom: 10px;background-color: #4CAF50;color: white;" href="#menu2">Damage Mechanism</a></li>
-    <li><a data-toggle="pill" style="padding-top: 10px;padding-bottom: 10px;background-color: #4CAF50;color: white;" href="#menu3">Inspection Findings/Description</a></li>
-  </ul>
-<!-------------- Body ---------------->
-  <div class="tab-content">
-      <!-------------- Inspection Scope ---------------->
+.city th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #0C5BED;
+  color: white;
+}
+#search2 th{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #0C5BED;
+  color: white;
+}
+#search3 th{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color :#0C5BED;
+  color: white;
+}
+#proposal th{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #0C5BED;
+  color: white;
+}
 
-    <div id="menu0" class="tab-pane fade in active">
-        <form method="POST">
-            {% csrf_token %}
+.containerflex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+
+    padding: 2px;
+    background: white;
+    min-width: 1250px;
+    height: 230px;
+    margin: auto;
+}
+
+.flexitem {
+    width: 530px;
+    height: 220px;
+    padding: 0px;
+    background: #0AA6DB;
+    margin: 1px;
+    font-weight: bold;
+}
+</style>
+<form id="inspectionplan2" method="post" >
+    {% csrf_token %}
+    <div class="container">
+        <div style=" text-align: left">
+          <caption><b style="font-size: 15px; color: #444444;">Inspection Plan Name:{{name}}</b></caption>
+          <br>
+          <caption><b style="font-size: 15px; color: #444444;">Inspection Plan Date:{{date}}</b></caption>
+        </div>
+        <ul class="nav nav-pills">
+            <li class="active"><a data-toggle="pill" href="#menu0" style="padding-top: 10px;padding-bottom: 10px;background-color: #4CAF50;color: white;">Inspection Scope</a></li>
+            <li><a data-toggle="pill" style="padding-top: 10px;padding-bottom: 10px;background-color: #4CAF50;color: white;" href="#menu1">Inspection Method</a></li>
+            <li><a data-toggle="pill" style="padding-top: 10px;padding-bottom: 10px;background-color: #4CAF50;color: white;" href="#menu2">Damage Mechanism</a></li>
+            <li><a data-toggle="pill" style="padding-top: 10px;padding-bottom: 10px;background-color: #4CAF50;color: white;" href="#menu3">Inspection Findings/Description</a></li>
+        </ul>
+
+    <!-------------- Body ---------------->
+      <div class="tab-content">
+          <!-------------- Inspection Scope ---------------->
+        <div id="menu0" class="tab-pane fade in active">
             <div class="city" style="font-size: 15px; color: #444444;background-color:white">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <p style="color: red">Select the Site,Facility and Equipment for Inspection Plan.</p>
                 <div class="form-inline">
                     <div class="form-group">
-                    <label>Site:</label>
-                        <a class="btn btn-primary" data-toggle="modal" data-target="#choosesite"><i class="fa fa-search" aria-hidden="true">Choose the Facility</i></a>
-                    <div class="form-group">
-                      <label for="faci">Facility:</label>
-                      <input type="text" class="form-control" id="faci" placeholder="Choose the Facility" name="faci">
+                        <caption><strong>Site Name:</strong></caption>
+                        <a id="#search" class="btn btn-primary" data-toggle="modal" data-target="#searchPlan">
+                            {% if allSite %}
+                                All
+                            {% else %}
+                                {{siteT.sitename}}
+                            {% endif %}
+                        </a>
                     </div>
                     <div class="form-group">
-                      <label for="equip">Equipment:</label>
-                      <input type="text" class="form-control" id="equip" placeholder="Choose the Equipment" name="equip">
+                       <caption><strong>Facility Name:</strong></caption>
+                        <a id="#searchFac" class="btn btn-primary" data-toggle="modal" data-target="#searchFacility">
+                            {% if allSite %}
+                                All
+                            {% else %}
+                                {{facName}}
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="form-group">
+                        <caption><strong>Equipment Name:</strong></caption>
+                        <a id="#searchEquip" class="btn btn-primary" data-toggle="modal" data-target="#searchEquipment" >
+                            {% if allSite %}
+                                All
+                            {% else %}
+                                {{equipName.equipmentname}}
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="modal" id="searchPlan" style="margin-top: 10%">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content" style="width: 80%; margin: auto">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                          <span aria-hidden="true" style="font-size: 24px;font-weight: bold;color: #444444;font-family: Calibri;font-weight: bold;">List of the Sites</span>
+                          <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body" style="width: 90%;margin: auto">
+                            <table id="searchs">
+                                <tr>
+                                    <th width="100px" style="text-align: center"><input type="checkbox"></th>
+                                    <th>Site Name</th>
+                                    <th>Site Date</th>
+                                </tr>
+                                {% for a in site %}
+                                <tr >
+                                    <td align="center"><input type="checkbox" name="{{ a.siteid }}"></td>
+                                    <td align="center">{{ a.sitename }}</td>
+                                    <td align="center">{{ a.create }}</td>
+                                </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td align="center"><input type="checkbox" name="allSite"></td>
+                                    <td align="center">All</td>
+                                    <td align="center">All</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                            <!-- Modal footer -->
+                            <div class="modal-footer" style="margin: auto; width: 90%">
+                                <button name="_delete" type="submit" class="btn btn-warning" onclick="Sub()" ><i class="fa fa-trash-o">&emsp;Delete Selected</i></button>
+                                <button name="_select" class="btn btn-primary" type="submit"><i class="fa fa-pencil">Select</i></button>
+                                <button type="button" class="btn btn-success"  style="background-color: #4575B7; border: 1px solid #204d74" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                   <!-------------------------------------Search Facility------------------------------------------------->
+                    <div class="modal" id="searchFacility" style="  margin-top: 10%">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content" style="width: 80%; margin: auto">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                          <span aria-hidden="true" style="font-size: 24px;font-weight: bold;color: #444444;font-family: Calibri;font-weight: bold;">List of the Faciltiy</span>
+                          <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body" style="width: 90%;margin: auto">
+                            <table id="search2">
+                                <tr>
+                                    <th width="100px" style="text-align: center"><input type="checkbox"></th>
+                                    <th>Facility Name</th>
+                                    <th>Facility Date</th>
+                                </tr>
+                                {% for a in facility %}
+                                <tr >
+                                    <td align="center"><input type="checkbox" name="{{ a.facilityid }}"></td>
+                                    <td align="center">{{ a.facilityname }}</td>
+                                    <td align="center">{{ a.create }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+
+                            <!-- Modal footer -->
+                            <div class="modal-footer" style="margin: auto; width: 90%">
+                                <button name="_deleteFac" type="submit" class="btn btn-warning" onclick="Sub()" ><i class="fa fa-trash-o">&emsp;Delete Selected</i></button>
+                                <button name="_selectFac" class="btn btn-primary" type="submit"><i class="fa fa-pencil">Select</i></button>
+                                <button type="button" class="btn btn-success"  style="background-color: #4575B7; border: 1px solid #204d74" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    <!---------------------------- Search Equipment------------------------------------>
+                    <div class="modal" id="searchEquipment" style="margin-top: 10%">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content" style="width: 80%; margin: auto">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                          <span aria-hidden="true" style="font-size: 24px;font-weight: bold;color: #444444;font-family: Calibri;font-weight: bold;">List of the Equipment</span>
+                          <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body" style="width: 90%;margin: auto">
+                            <table id="search3">
+                                <tr>
+                                    <th width="100px" style="text-align: center"><input type="checkbox" id="chkHeader"></th>
+                                    <th>Equipment Name</th>
+                                    <th>Equipment Date</th>
+                                </tr>
+                                {% for a in equip %}
+                                <tr >
+                                    <td align="center"><input type="checkbox" name="{{ a.equipmentid }}"></td>
+                                    <td align="center">{{ a.equipmentname }}</td>
+                                    <td align="center">{{ a.equipmentnumber }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+
+                            <!-- Modal footer -->
+                            <div class="modal-footer" style="margin: auto; width: 90%">
+                                <button name="_deleteEquip" type="submit" class="btn btn-warning" id="sub" onclick="Sub()" ><i class="fa fa-trash-o">&emsp;Delete Selected</i></button>
+                                <button name="_selectEquip" class="btn btn-primary" type="submit"><i class="fa fa-pencil">Select</i></button>
+                                <button type="button" class="btn btn-success"  style="background-color: #4575B7; border: 1px solid #204d74" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
                     </div>
                 </div>
+                <!--------------------------- Proposal----------------------------->
+                <div class="city">
+                    <ul class="nav nav-pills">
+                        <li class="active"><a data-toggle="pill" href="#process" style="padding-top: 2px;padding-bottom: 2px;background-color: #0AA6DB;color: #03090C;">Process Plant</a></li>
+                        <li><a data-toggle="pill" style="padding-top: 2px;padding-bottom: 2px;background-color: #0AA6DB;color: #03090C;" href="#tank">Tank</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <!---------------- Process Plant------------------>
+                        <div id="process" class="tab-pane fade in active">
+                            <div class="city" style="font-size: 13px; color: #444444;background-color:white">
+                                <div class="container">
+                                    <div class="table-responsive">
+                                      <!----hide or show column--------->
+                                      <!--<script>
+                                          $(document).ready(function(){
+                                                $('#portests ,#portests1').on('click',function(){
+                                                    $('.test').toggle();
+                                                });
+                                            });
+                                      </script>-->
+                                    <table width=100% id="testing">
+                                      <thead>
+                                      <tr>
+                                          <!--<th style="background-color:#387BF9;font-size: 15px;font-family: 'Spartan', sans-serif; color:White" colspan="17"><input type = "button" name = "-" id="portests1" style="color:black;" value = "Proposal"></th>-->
+                                          <th style="background-color:#387BF9;font-size: 15px;font-family: 'Spartan', sans-serif; color:White" colspan="17">Proposal</th>
+                                          <th style="background-color:#387BF9;font-size: 15px;font-family: 'Spartan', sans-serif; color:White" colspan="21">Equipment Properties</th>
+                                          <th style="background-color:#387BF9;font-size: 15px;font-family: 'Spartan', sans-serif; color:White" colspan="23">Component Properties</th>
+                                          <th style="background-color:#387BF9;font-size: 15px;font-family: 'Spartan', sans-serif; color:White" colspan="26">Stream /Process Flow</th>
+                                          <th style="background-color:#387BF9;font-size: 15px;font-family: 'Spartan', sans-serif; color:White" colspan="14">Material</th>
+                                          <th style="background-color:#387BF9;font-size: 15px;font-family: 'Spartan', sans-serif; color:White" colspan="14">Coating, Cladding,Lining and Insulation</th>
+                                      </tr>
+                                        <tr>
+                                            <!------- Proposal-------->
+                                          <th width="100px" style="text-align: center"><input type="checkbox" id="check"></th>
+                                          <th >Equipment Number</th>
+                                            <th>Conponent</th>
+                                          <th>Conponent Number</th>
+                                          <th>Site</th>
+                                          <th>Facility</th>
+                                          <th>AP1</th>
+                                          <th>AP2</th>
+                                          <th>AP3</th>
+                                          <th >RLI9(months)</th>
+                                          <th>Assessment Name</th>
+                                          <th>Assessment Date</th>
+                                          <th>Commission Date</th>
+                                          <th style="overflow: auto; white-space: nowrap;">Risk Analysis<br> Period</th>
+                                          <th>Equipment Type</th>
+                                          <th >Component Type</th>
+                                          <th style="overflow: auto;white-space: nowrap;">Inspection Due<br>Date</th>
+                                          <th>Design Code</th>
+                                            <!------- Equipment Properties-------->
+                                          <th style="overflow: auto; white-space: nowrap;">Administrative Control<br>for Upset Management</th>
+                                          <th>Contains Deadlegs</th>
+                                          <th style="overflow: auto; white-space: nowrap;">Presence of Sulphides,Moisture <br>and Oxygen During Operation</th>
+                                          <th style="overflow: auto; white-space: nowrap;">Steamed Out Prior to<br>Water Flushing</th>
+                                          <th>Thermal History</th>
+                                          <th style="overflow: auto; white-space: nowrap;">System Management<br>Factor</th>
+                                          <th>PWHT</th>
+                                          <th style="overflow: auto; white-space: nowrap;">Pressurisation<br>Controlled by Admin</th>
+                                          <th style="overflow: auto; white-space: nowrap;">Presence of Sulphides, Moisture<br>and Oxygen During Shutdown</th>
+                                          <th>Online Monitorin</th>
+                                          <th style="overflow: auto; white-space: nowrap;">Min.Required Temperature Before<br> Pressuresation Allowed by Admin(&deg;C)</th>
+                                          <th style="overflow: auto; white-space: nowrap;">Material is Exposed to Fluids,Mists<br> or Solids Containing Chlorine Externally</th>                 <!--------------------- doing------------------------>
+                                          <th >Cylic Operation</th>
+                                          <th style="overflow: auto; white-space: nowrap;">Linner Online<br>Monitoring</th>
+                                          <th style="overflow: auto; white-space: nowrap;">Downtime<br>Protection Used</th>
+                                          <th style="overflow: auto; white-space: nowrap;">Equipment is Operating for Many<br>Years at Lowest Expected Temperature</th>
+                                          <th style="overflow: auto; white-space: nowrap;">Equipment Volume (m<sup>3</sup>)</th>
+                                          <th style="overflow: auto; white-space: nowrap;">Interface at<br>Soil or Water</th>
+                                          <th style="overflow: auto; white-space: nowrap;">External Environment</th>
+                                          <th>Heat Traced</th>
+                                          <th style="overflow: auto; white-space: nowrap;">Highly Effective <br>Inspection for Deadlegs</th>
+                                            <!------- Component Properties-------->
+                                            <th style="overflow: auto; white-space: nowrap;">Minimum Measured<br>Thickness(mm)</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Nominal Thickness<br>(mm)</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Nominal Diameter<br>(mm)</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Min.Required <br>Thickness(mm)</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Current Corrosion<br>Rate(mm/yr)</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Presence of<br>Cracks</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Previous Failures</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Damage Found <br>During Inspection</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Presence of Injection<br> Mix Point</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Highly Effective Inspection for<br>Corrosion at Injection Mix Point</th>
+                                            <th>Tramp Elements</th>
+                                            <th>Delta FATT</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Cylic Loading <br>Connected within 15.25m</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Maximum Brinnell<br>Hardness of Weld</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Number of Fittings<br> on Pipe</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Joint Type<br>of Branch</th>
+                                            <th>Pipe Condition</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Visible or Audible<br>Sharking Detected</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Accumulated Time<br>Shaking of the Pipe</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Corrective Action to<br> Mitigate Vibration</th>
+                                            <th>Branch Diameter</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Complexity of<br>Protrusion</th>
+                                            <!------- Stream/Process Flow-------->
+                                            <th style="overflow: auto; white-space: nowrap;">Maximum Operating<br>Temperature(&deg;C)</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Minimum Operating<br>Temperature(&deg;C)</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Maximum Operating<br>Pressure(MPa)</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Minimum Operating<br>Pressure(MPa)</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Critical Exposure<br>Temperature(&deg;C)</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Amine Solution<br>Composition</th>
+                                            <th>NaOH Concentration(%)</th>
+                                            <th style="overflow: auto; white-space: nowrap;">H2S Content<br>in Water(ppm)</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Material is Exposed to Fluids,Mists,or,<br>Solids Containing Chlorine Internally</th>
+                                            <th>Flow Rate(m<sup>3</sup>)</th>
+                                            <th>pH of Water</th>
+                                            <th>Toxic Constituents</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Release Fluid<br>Percent Toxic(%)</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Process Contains<br> Hydrogen</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Presence of <br>Hydrofluoric Acid</th>
+                                            <th>Exposure to Amine</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Presence of<br>Cyanides</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Operating Hydrogen<br>Partial Pressure(MPa)</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Exposed to Sulphur-Bearing<br>Compounds</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Exposed to Acid Gas<br>Treating Amine</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Environment<br>Contains H2S</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Environment Contians Caustic<br>in Any Concentration</th>
+                                            <th style="overflow: auto; white-space: nowrap;">CO3 Concentraion in<br>Water(ppm)</th>
+                                            <th>Chloride Ion(ppm)</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Aqueous Phase<br>During Operation</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Aqueous Phase<br>During Shut Down</th>
+                                            <!------- Material-------->
+                                            <th>Design Temperature(&deg;C)</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Allowable Stress at<br>Assessment Temperature(MPa)</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Design Pressure<br>(MPa)</th>
+                                            <th >Susceptible to Temper</th>
+                                            <th>Sulfur Content</th>
+                                            <th>Sigma Phase(%)</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Reference Temperature<br>(&deg;C)</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Nickel-based<br>Alloy</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Material Cost<br>Factor</th>
+                                            <th>Heat Treatment</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Corrosion Allowance<br>(mm)</th>
+                                            <th>Chromium ≥12%</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Carbon or Low<br>Alloy Steel</th>
+                                            <th>Austenitic Steel</th>
+                                            <th>Internal Coating</th>
+                                            <th>External Coating</th>
+                                            <th style="overflow: auto; white-space: nowrap;">External Coating<br>Installation Date</th>
+                                            <th style="overflow: auto; white-space: nowrap;">External Coating<br>Quality</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Support Configuration Which Does<br>Not Allow Coating Maintenance</th>
+                                            <th >Internal Lining</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Internal<br>Liner Type</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Internal Liner<br>Condition</th>
+                                            <th>Internal Cladding</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Cladding Corrosion<br>Rate(mmm/yr)</th>
+                                            <th>External Insulation</th>
+                                            <th style="overflow: auto; white-space: nowrap;">External<br>Insulation Type</th>
+                                            <th>Insulation Condition</th>
+                                            <th style="overflow: auto; white-space: nowrap;">Insulation Contains<br>Chlorides</th>
+                                            <th ></th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                      {% if allSite %}
+                                      {% for s in site %}
+                                      {% for f in faci %}
+                                        {% if s.siteid == f.siteid_id %}
+                                        {% for e in equi %}
+                                            {% if f.facilityid == e.facilityid_id %}
+                                            {% for c in comp %}
+                                                {% if e.equipmentid == c.equipmentid_id %}
+                                                    {% for p in pros %}
+                                                        {% if c.componentid == p.componentid_id %}
+                                                        {% ifnotequal c.componenttypeid_id 8 %}
+                                                        {% ifnotequal c.componenttypeid_id 12 %}
+                                                        {% ifnotequal c.componenttypeid_id 14 %}
+                                                        {% ifnotequal c.componenttypeid_id 15 %}
+                                                            <tr class="a">
+                                                                {% if c.componentid in dataF %}
+                                                                <td><input type="checkbox" name="{{p.id}}" checked></td>
+                                                                {% else %}
+                                                                <td><input type="checkbox" name="{{p.id}}" ></td>
+                                                                {% endif %}
+                                                              <td><div class="a">{{e.equipmentnumber}}</div></td>
+                                                              <td><div class="a">{{c.componentname}}</div></td>
+                                                              <td><div class="a">{{c.componentnumber}}</div></td>
+                                                              <td><div class="a">{{s.sitename}}</div></td>
+                                                              <td><div class="a">{{f.facilityname}}</div></td>
+
+                                                                {% if p.id in datapof %}
+                                                                    {% for pof in rwfullpof %}
+                                                                        {% for fcof in rwfullfcof %}
+                                                                            {% if p.id == pof.id_id %}
+                                                                                {% if p.id == fcof.id_id %}
+                                                                              <td ><div class="a">{{pof.pofap1category}}{{fcof.fcofcategory}}</div></td>
+                                                                              <td ><div class="a">{{pof.pofap2category}}{{fcof.fcofcategory}}</div></td>
+                                                                              <td ><div class="a">{{pof.pofap3category}}{{fcof.fcofcategory}}</div></td>
+                                                                              <td ><div class="a">{{pof.rli}}</div></td>
+                                                                                {% endif %}
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    {% endfor %}
+                                                                {% else %}
+                                                                <td ><div class="a">none</div></td>
+                                                                <td ><div class="a">none</div></td>
+                                                                <td ><div class="a">none</div></td>
+                                                                <td ><div class="a">none</div></td>
+                                                                {% endif %}
+
+                                                              <td><div class="a">{{p.proposalname}}</div></td>
+                                                              <td><div class="a">{{p.assessmentdate}}</div></td>
+                                                              <td><div class="a">{{e.commissiondate}}</div></td>
+                                                              <td><div class="a">{{p.riskanalysisperiod}}</div></td>
+
+                                                                {% for etype in equiptype %}
+                                                                {% if etype.equipmenttypeid == e.equipmenttypeid_id %}
+                                                              <td><div class="a">{{etype.equipmenttypename}}</div></td>
+                                                                 {% endif %}
+                                                                {% endfor %}
+
+                                                                {% for ctype in comptype %}
+                                                                {% if ctype.componenttypeid == c.componenttypeid_id %}
+                                                              <td><div class="a">{{ctype.componenttypename}}</div></td>
+                                                                 {% endif %}
+                                                                {% endfor %}
+
+                                                                {% if p.id in datarw %}
+                                                                {% for rw in rwdam %}
+                                                                {% if p.id == rw.id_dm_id %}
+                                                              <td ><div class="a">{{rw.inspduedate}}</div></td>
+                                                                {% endif %}
+                                                                {% endfor %}
+                                                                {% else %}
+                                                                <td ><div class="a">none</div></td> <!------- cần set gia tri--------->
+                                                                {% endif %}
+
+
+                                                                {% for de in desi %}
+                                                                {% if de.designcodeid == e.designcodeid_id %}
+                                                              <td><div class="a">{{de.designcode}}</div></td>
+                                                                 {% endif %}
+                                                                {% endfor %}
+
+                                                                {% for rwe in rwequip %}
+                                                                {% if p.id == rwe.id_id %}
+                                                                <td><input type="checkbox"  name="adminControlUpset" id="{{p.id}}" disabled></td>
+                                                                <td><input type="checkbox"  name="ContainsDeadlegs" id="{{p.id}}1" disabled></td>
+                                                                <td ><input type="checkbox"  name="PresenceofSulphides" id="{{p.id}}2" disabled></td >
+                                                                <td><input type="checkbox"  name="SteamedOut" id="{{p.id}}3" disabled></td>
+                                                                <td><div class="a">{{rwe.thermalhistory}}</div></td>
+                                                                <td><div class="a">{{rwe.managementfactor}}</div></td>
+                                                                <td><input type="checkbox"  name="PWHT" id="{{p.id}}4" disabled></td>
+                                                                <td><input type="checkbox"  name="PressurisationControlled" id="{{p.id}}5" disabled></td>
+                                                                <td><input type="checkbox"  name="PresenceofSulphidesShutdow" id="{{p.id}}6" disabled></td>
+                                                                <td ><div class="a">{{rwe.onlinemonitoring}}</div></td>
+                                                                <td><div class="a">{{rwe.minreqtemperaturepressurisation}}</div></td>
+                                                                <td><input type="checkbox"  name="MFTF" id="{{p.id}}8" disabled></td>
+                                                                <td><input type="checkbox"  name="CylicOper" id="{{p.id}}9" disabled></td>
+                                                                <td><input type="checkbox"  name="LOM" id="{{p.id}}7" disabled></td>
+                                                                <td><input type="checkbox"  name="Downtime" id="{{p.id}}10" disabled></td>
+                                                                <td><input type="checkbox"  name="EquOper" id="{{p.id}}11" disabled></td>
+                                                                <td>{{rwe.volume}}</td>
+                                                                <td><input type="checkbox"  name="InterfaceSoilWater" id="{{p.id}}12" disabled></td>
+                                                                <td><div class="a">{{rwe.externalenvironment}}</div></td>
+                                                                <td><input type="checkbox"  name="HeatTraced" id="{{p.id}}13" disabled></td>
+                                                                <td><input type="checkbox"  name="Highly" id="{{p.id}}14" disabled></td>
+                                                                <script>
+                                                                    if({{ rwe.adminupsetmanagement }})
+                                                                        $("#{{p.id}}").attr('checked', 'checked');
+                                                                    if({{ rwe.containsdeadlegs }})
+                                                                        $("#{{p.id}}1").attr('checked', 'checked');
+                                                                    if({{ rwe.presencesulphideso2 }})
+                                                                        $("#{{p.id}}2").attr('checked', 'checked');
+                                                                    if({{ rwe.steamoutwaterflush }})
+                                                                        $("#{{p.id}}3").attr('checked', 'checked');
+                                                                    if({{ rwe.pwht }})
+                                                                        $("#{{p.id}}4").attr('checked', 'checked');
+                                                                    if({{ rwe.pressurisationcontrolled }})
+                                                                        $("#{{p.id}}5").attr('checked', 'checked');
+                                                                    if({{ rwe.presencesulphideso2shutdown }})
+                                                                        $("#{{p.id}}6").attr('checked', 'checked');
+                                                                    if({{ rwe.lineronlinemonitoring }})
+                                                                        $("#{{p.id}}7").attr('checked', 'checked');
+                                                                    if({{ rwe.materialexposedtoclext }})
+                                                                        $("#{{p.id}}8").attr('checked', 'checked');
+                                                                    if({{ rwe.cyclicoperation }})
+                                                                        $("#{{p.id}}9").attr('checked', 'checked');
+                                                                    if({{ rwe.downtimeprotectionused }})
+                                                                        $("#{{p.id}}10").attr('checked', 'checked');
+                                                                    if({{ rwe.yearlowestexptemp }})
+                                                                        $("#{{p.id}}11").attr('checked', 'checked');
+                                                                    if({{ rwe.interfacesoilwater }})
+                                                                        $("#{{p.id}}12").attr('checked', 'checked');
+                                                                    if({{ rwe.heattraced }})
+                                                                        $("#{{p.id}}13").attr('checked', 'checked');
+                                                                    if({{ rwe.highlydeadleginsp }})
+                                                                        $("#{{p.id}}14").attr('checked', 'checked');
+                                                                </script>
+                                                                 {% endif %}
+                                                                {% endfor %}
+
+                                                                {% for rwComp in rwcomponent %}
+                                                                {% if p.id == rwComp.id_id %}
+                                                                    <td><div class="a">{{rwComp.currentthickness}}</div></td>
+                                                                    <td><div class="a">{{rwComp.nominalthickness}}</div></td>
+                                                                    <td><div class="a">{{rwComp.nominaldiameter}}</div></td>
+                                                                    <td><div class="a">{{rwComp.minreqthickness}}</div></td>
+                                                                    <td><div class="a">{{rwComp.currentcorrosionrate}}</div></td>
+                                                                    <td><input type="checkbox"  name="PresenceCracks" id="{{p.id}}15" disabled></td>
+                                                                    <td><div class="a">{{rwComp.previousfailures}}</div></td>
+                                                                    <td><input type="checkbox"  name="DFDI" id="{{p.id}}16" disabled></td>
+                                                                    <td><input type="checkbox"  name="DFDI" id="{{p.id}}17" disabled></td>
+                                                                    <td><input type="checkbox"  name="HFICI" id="{{p.id}}18" disabled></td>
+                                                                    <td><input type="checkbox"  name="TrampElements" id="{{p.id}}19" disabled></td>
+                                                                    <td><div class="a">{{rwComp.deltafatt}}</div></td>
+                                                                    <td><div class="a">{{rwComp.cyclicloadingwitin15_25m}}</div></td>
+                                                                    <td><div class="a">{{rwComp.brinnelhardness}}</div></td>
+                                                                    <td><div class="a">{{rwComp.numberpipefittings}}</div></td>
+                                                                    <td><div class="a">{{rwComp.branchjointtype}}</div></td>
+                                                                    <td><div class="a">{{rwComp.pipecondition}}</div></td>
+                                                                    <td><input type="checkbox"  name="VASD" id="{{p.id}}20" disabled></td>
+                                                                    <td><div class="a">{{rwComp.shakingamount}}</div></td>
+                                                                    <td><div class="a">{{rwComp.correctiveaction}}</div></td>
+                                                                    <td><div class="a">{{rwComp.branchdiameter}}</div></td>
+                                                                    <td><div class="a">{{rwComp.complexityprotrusion}}</div></td>
+                                                                <script>
+                                                                    if({{ rwComp.crackspresent }})
+                                                                        $("#{{p.id}}15").attr('checked', 'checked');
+                                                                    if({{ rwComp.damagefoundinspection }})
+                                                                        $("#{{p.id}}16").attr('checked', 'checked');
+                                                                    if({{ rwComp. }})//loi can fix
+                                                                        $("#{{p.id}}17").attr('checked', 'checked');
+                                                                    if({{ rwComp.highlyinjectioninsp }})//loi can fix
+                                                                        $("#{{p.id}}18").attr('checked', 'checked');
+                                                                    if({{ rwComp.trampelements }})
+                                                                        $("#{{p.id}}19").attr('checked', 'checked');
+                                                                    if({{ rwComp.shakingdetected }})
+                                                                        $("#{{p.id}}20").attr('checked', 'checked');
+                                                                </script>
+                                                                {% endif %}
+                                                                {% endfor %}
+
+                                                                {% for rwStre in rwstream %}
+                                                                {% if p.id == rwStre.id_id %}
+                                                                    <td><div class="a">{{rwStre.maxoperatingtemperature}}</div></td>
+                                                                    <td><div class="a">{{rwStre.minoperatingtemperature}}</div></td>
+                                                                    <td><div class="a">{{rwStre.maxoperatingtemperature}}</div></td>
+                                                                    <td><div class="a">{{rwStre.minoperatingpressure}}</div></td>
+                                                                    <td><div class="a">{{rwStre.criticalexposuretemperature}}</div></td>
+                                                                    <td><div class="a">{{rwStre.aminesolution}}</div></td>
+                                                                    <td><div class="a">{{rwStre.naohconcentration}}</div></td>
+                                                                    <td><div class="a">{{rwStre.h2sinwater}}</div></td>
+                                                                    <td><input type="checkbox"  name="VASD" id="{{p.id}}21" disabled></td>
+                                                                    <td><div class="a">{{rwStre.flowrate}}</div></td>
+                                                                    <td><div class="a">{{rwStre.waterph}}</div></td>
+                                                                    <td><input type="checkbox"  name="ToxicConstituents" id="{{p.id}}22" disabled></td>
+                                                                    <td><div class="a">{{rwStre.releasefluidpercenttoxic}}</div></td>
+                                                                    <td><input type="checkbox"  name="PCH" id="{{p.id}}23" disabled></td>
+                                                                    <td><input type="checkbox"  name="PHA" id="{{p.id}}24" disabled></td>
+                                                                    <td><div class="a">{{rwStre.exposuretoamine}}</div></td>
+                                                                    <td><input type="checkbox"  name="PresenceCyanides" id="{{p.id}}25" disabled></td>
+                                                                    <td><div class="a">{{rwStre.h2spartialpressure}}</div></td>
+                                                                    <td><input type="checkbox"  name="PresenceCyanides" id="{{p.id}}26" disabled></td>
+                                                                    <td><input type="checkbox"  name="EAGTA" id="{{p.id}}27" disabled></td>
+                                                                    <td><input type="checkbox"  name="EnvironmentCH2S" id="{{p.id}}28" disabled></td>
+                                                                    <td><input type="checkbox"  name="ECCAC" id="{{p.id}}29" disabled></td>
+                                                                    <td><div class="a">{{rwStre.co3concentration}}</div></td>
+                                                                    <td><div class="a">{{rwStre.chloride}}</div></td>
+                                                                    <td><input type="checkbox"  name="APDO" id="{{p.id}}30" disabled></td>
+                                                                    <td><input type="checkbox"  name="APDSD" id="{{p.id}}31" disabled></td>
+                                                                <script>
+                                                                    if({{ rwStre.materialexposedtoclint }})
+                                                                        $("#{{p.id}}21").attr('checked', 'checked');
+                                                                    if({{ rwStre.toxicconstituent }})
+                                                                        $("#{{p.id}}22").attr('checked', 'checked');
+                                                                    if({{ rwStre.hydrogen }})
+                                                                        $("#{{p.id}}23").attr('checked', 'checked');
+                                                                    if({{ rwStre.hydrofluoric }})
+                                                                        $("#{{p.id}}24").attr('checked', 'checked');
+                                                                    if({{ rwStre.cyanide }})
+                                                                        $("#{{p.id}}25").attr('checked', 'checked');
+                                                                    if({{ rwStre.exposedtosulphur }})
+                                                                        $("#{{p.id}}26").attr('checked', 'checked');
+                                                                    if({{ rwStre.exposedtogasamine }})
+                                                                        $("#{{p.id}}27").attr('checked', 'checked');
+                                                                    if({{ rwStre.h2s }})
+                                                                        $("#{{p.id}}28").attr('checked', 'checked');
+                                                                    if({{ rwStre.caustic }})
+                                                                        $("#{{p.id}}29").attr('checked', 'checked');
+                                                                    if({{ rwStre.aqueousoperation }})
+                                                                        $("#{{p.id}}30").attr('checked', 'checked');
+                                                                    if({{ rwStre.aqueousshutdown }})
+                                                                        $("#{{p.id}}31").attr('checked', 'checked');
+                                                                </script>
+                                                                {% endif %}
+                                                                {% endfor %}
+
+                                                                {% for rwmat in rwmaterial %}
+                                                                {% if p.id == rwmat.id_id %}
+                                                                    <td><div class="a">{{rwmat.designtemperature}}</div></td>
+                                                                {% endif %}
+                                                                {% endfor %}
+
+                                                                {% for rwComp in rwcomponent %}
+                                                                {% if p.id == rwComp.id_id %}
+                                                                    <td><div class="a">{{rwComp.allowablestress}}</div></td>
+                                                                {% endif %}
+                                                                {% endfor %}
+
+                                                                {% for rwmat in rwmaterial %}
+                                                                {% if p.id == rwmat.id_id %}
+                                                                    <td><div class="a">{{rwmat.designpressure}}</div></td>
+                                                                    <td><input type="checkbox"  name="sulfurcontent" id="{{p.id}}32" disabled></td>
+                                                                    <td><div class="a">{{rwmat.designpressure}}</div></td>
+                                                                    <td><div class="a">{{rwmat.sigmaphase}}</div></td>
+                                                                    <td><div class="a">{{rwmat.referencetemperature}}</div></td>
+                                                                    <td><input type="checkbox"  name="NickelAlloy" id="{{p.id}}33" disabled></td>
+                                                                    <td><div class="a">{{rwmat.costfactor}}</div></td>
+                                                                    <td><div class="a">{{rwmat.heattreatment}}</div></td>
+                                                                    <td><div class="a">{{rwmat.corrosionallowance}}</div></td>
+                                                                    <td><input type="checkbox"  name="Chromium" id="{{p.id}}34" disabled></td>
+                                                                    <td><input type="checkbox"  name="CoLAS" id="{{p.id}}35" disabled></td>
+                                                                    <td><input type="checkbox"  name="AusteniticSteel" id="{{p.id}}36" disabled></td>
+                                                                <script>
+                                                                    if({{ rwmat.temper }})
+                                                                        $("#{{p.id}}32").attr('checked', 'checked');
+                                                                    if({{ rwmat.nickelbased }})
+                                                                        $("#{{p.id}}33").attr('checked', 'checked');
+                                                                    if({{ rwmat.chromemoreequal12 }})
+                                                                        $("#{{p.id}}34").attr('checked', 'checked');
+                                                                    if({{ rwmat.carbonlowalloy }})
+                                                                        $("#{{p.id}}35").attr('checked', 'checked');
+                                                                    if({{ rwmat.austenitic }})
+                                                                        $("#{{p.id}}36").attr('checked', 'checked');
+                                                                </script>
+                                                                {% endif %}
+                                                                {% endfor %}
+
+                                                                {% for rwCoat in rwcoat %}
+                                                                {% if p.id == rwCoat.id_id %}
+                                                                    <td><input type="checkbox"  name="InternalCoating" id="{{p.id}}37" disabled></td>
+                                                                    <td><input type="checkbox"  name="ExternalCoating" id="{{p.id}}38" disabled></td>
+                                                                    <td><div class="a">{{rwCoat.externalcoatingdate}}</div></td>
+                                                                    <td><div class="a">{{rwCoat.externalcoatingquality}}</div></td>
+                                                                    <td><input type="checkbox"  name="ExternalCoating" id="{{p.id}}39" disabled></td>
+                                                                    <td><input type="checkbox"  name="InternalLining" id="{{p.id}}40" disabled></td>
+                                                                    <td><div class="a">{{rwCoat.internallinertype}}</div></td>
+                                                                    <td><div class="a">{{rwCoat.internallinercondition}}</div></td>
+                                                                    <td><input type="checkbox"  name="InternalCladding" id="{{p.id}}41" disabled></td>
+                                                                    <td><div class="a">{{rwCoat.claddingcorrosionrate}}</div></td>
+                                                                    <td><input type="checkbox"  name="ExternalInsulation" id="{{p.id}}42" disabled></td>
+                                                                    <td><div class="a">{{rwCoat.externalinsulationtype}}</div></td>
+                                                                    <td><div class="a">{{rwCoat.insulationcondition}}</div></td>
+                                                                    <td><input type="checkbox"  name="ExternalInsulation" id="{{p.id}}43" disabled></td>
+                                                                    <td><input type="checkbox"  name="ICC" id="{{p.id}}44" disabled></td>
+                                                                <script>
+                                                                    if({{ rwCoat.internalcoating }})
+                                                                        $("#{{p.id}}37").attr('checked', 'checked');
+                                                                    if({{ rwCoat.externalcoating }})
+                                                                        $("#{{p.id}}38").attr('checked', 'checked');
+                                                                    if({{ rwCoat.supportconfignotallowcoatingmaint }})
+                                                                        $("#{{p.id}}39").attr('checked', 'checked');
+                                                                    if({{ rwCoat.internallining }})
+                                                                        $("#{{p.id}}40").attr('checked', 'checked');
+                                                                    if({{ rwCoat.internalcladding }})
+                                                                        $("#{{p.id}}41").attr('checked', 'checked');
+                                                                    if({{ rwCoat.externalinsulation }})
+                                                                        $("#{{p.id}}42").attr('checked', 'checked');
+                                                                    if({{ rwCoat.externalinsulation }})
+                                                                        $("#{{p.id}}42").attr('checked', 'checked');
+                                                                    if({{ rwCoat.insulationcontainschloride }})
+                                                                        $("#{{p.id}}43").attr('checked', 'checked');
+                                                                </script>
+                                                                {% endif %}
+                                                                {% endfor %}
+
+                                                            </tr>
+                                                            {% endifnotequal %}
+                                                            {% endifnotequal %}
+                                                            {% endifnotequal %}
+                                                            {% endifnotequal %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                            {% endfor %}
+                                         {% endif %}
+                                        {% endfor %}
+                                        {% endfor %}
+
+                                        {% else %}
+                                       <tr>
+                                          <td><input type="checkbox" name=""></td>
+                                          <td>Anna</td>
+                                          <td>Pitt</td>
+                                          <td>35</td>
+                                          <td></td>
+                                          <td>USA</td>
+                                          <td >Female</td>
+                                          <td >Yes</td>
+                                          <td >Yes</td>
+                                          <td >Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>1</td>
+                                          <td>Anna</td>
+                                          <td>Pitt</td>
+                                          <td>35</td>
+                                          <td></td>
+                                          <td>USA</td>
+                                          <td>Female</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>1</td>
+                                          <td>Anna</td>
+                                          <td>Pitt</td>
+                                          <td>35</td>
+                                          <td>/td>
+                                          <td>USA</td>
+                                          <td>Female</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>1</td>
+                                          <td>Anna</td>
+                                          <td>Pitt</td>
+                                          <td>35</td>
+                                          <td></td>
+                                          <td>USA</td>
+                                          <td>Female</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>1</td>
+                                          <td>Anna</td>
+                                          <td>Pitt</td>
+                                          <td>35</td>
+                                          <td></td>
+                                          <td>USA</td>
+                                          <td>Female</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>1</td>
+                                          <td>Anna</td>
+                                          <td>Pitt</td>
+                                          <td>35</td>
+                                          <td></td>
+                                          <td>USA</td>
+                                          <td>Female</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td>Yes</td>
+                                          <td></td>
+                                        </tr>
+                                      {% endif %}
+                                      </tbody>
+                                        <tfoot>
+                                        <tr>
+                                          <th width="100px" style="text-align: center"><input type="checkbox" id=""></th>
+                                          <th >Equipment Number</th>
+                                            <th>Conponent</th>
+                                          <th>Conponent Number</th>
+                                          <th>Site</th>
+                                          <th>Facility</th>
+                                          <th>AP1</th>
+                                          <th>AP2</th>
+                                          <th>AP3</th>
+                                          <th>RLI9(months)</th>
+                                          <th>Assessment Name</th>
+                                          <th>Assessment Date</th>
+                                          <th>Commission Date</th>
+                                          <th>Risk Analysis Period</th>
+                                          <th>Equipment Type</th>
+                                          <th>Component Type</th>
+                                          <th>Inspection Due Date</th>
+                                          <th>Design Code</th>
+                                            <!------- Equipment Properties-------->
+                                          <th>Administrative Control for Upset Management</th>
+                                          <th>Contains Deadlegs</th>
+                                          <th>Presence of Sulphides,Moisture and Oxygen During Operation</th>
+                                          <th>Steamed Out Prior to Water Flushing</th>
+                                          <th>Thermal History</th>
+                                          <th>System Management Factor</th>
+                                          <th>PWHT</th>
+                                          <th>Pressurisation Controlled by Admin</th>
+                                          <th>Presence of Sulphides, Moisture and Oxygen During Shutdown</th>
+                                          <th>Online Monitoring</th>
+                                          <th>Min.Required Temperature Before Pressuresation Allowed by Admin(&deg;C)</th>
+                                          <th>Material is Exposed to Fluids,Mists or Solids Containing Chlorine Externally</th>
+                                          <th>Cylic Operation</th>
+                                          <th>Linner Online Monitoring</th>
+                                          <th>Downtime Protection Used</th>
+                                          <th>Equipment is Operating for Many Years at Lowest Expected Temperature</th>
+                                          <th>Equipment Volume (m<sup>3</sup>)</th>
+                                          <th>Interface at Soil or Water</th>
+                                          <th>External Environment</th>
+                                          <th>Heat Traced</th>
+                                          <th>Highly Effective Inspection for Deadlegs</th>
+                                            <!------- Component Properties-------->
+                                            <th>Minimum Measured Thickness(mm)</th>
+                                            <th>Nominal Thickness(mm)</th>
+                                            <th>Nominal Diameter(mm)</th>
+                                            <th>Min.Required Thickness(mm)</th>
+                                            <th>Current Corrosion Rate(mm/yr)</th>
+                                            <th>Presence of Cracks</th>
+                                            <th>Previous Failures</th>
+                                            <th>Damage Found During Inspection</th>
+                                            <th>Presence of Injection Mix Point</th>
+                                            <th>Highly Effective Inspection for Corrosion at Injection Mix Point</th>
+                                            <th>Tramp Elements</th>
+                                            <th>Delta FATT</th>
+                                            <th>Cylic Loading Connected within 15.25m</th>
+                                            <th>Maximum Brinnell Hardness of Weld</th>
+                                            <th>Number of Fittings on Pipe</th>
+                                            <th>Joint Type of Branch</th>
+                                            <th>Pipe Condition</th>
+                                            <th>Visible or Audible Sharking Detected</th>
+                                            <th>Accumulated Time Shaking of the Pipe</th>
+                                            <th>Corrective Action to Mitigate Vibration</th>
+                                            <th>Branch Diameter</th>
+                                            <th>Complexity of Protrusion</th>
+                                            <!------- Stream/Process Flow-------->
+                                            <th>Maximum Operating Temperature(&deg;C)</th>
+                                            <th>Minimum Operating Temperature(&deg;C)</th>
+                                            <th>Maximum Operating Pressure(MPa)</th>
+                                            <th>Minimum Operating Pressure(MPa)</th>
+                                            <th>Critical Exposure Temperature(&deg;C)</th>
+                                            <th>Amine Solution Composition</th>
+                                            <th>NaOH Concentration(%)</th>
+                                            <th>H2S Content in Water(ppm)</th>
+                                            <th>Material is Exposed to Fluids,Mists,or Solids Containing Chlorine Internally</th>
+                                            <th>Flow Rate(m<sup>3</sup>)</th>
+                                            <th>pH of Water</th>
+                                            <th>Toxic Constituents</th>
+                                            <th>Release Fluid Percent Toxic(%)</th>
+                                            <th>Process Contains Hydrogen</th>
+                                            <th>Presence of Hydrofluoric Acid</th>
+                                            <th>Exposure to Amine</th>
+                                            <th >Presence of Cyanides</th>
+                                            <th>Operating Hydrogen Partial Pressure(MPa)</th>
+                                            <th>Exposed to Sulphur-Bearing Compounds</th>
+                                            <th>Exposed to Acid Gas Treating Amine</th>
+                                            <th>Environment Contains H2S</th>
+                                            <th>Environment Contians Caustic in Any Concentration</th>
+                                            <th>CO3 Concentraion in Water(ppm)</th>
+                                            <th>Chloride Ion(ppm)</th>
+                                            <th>Aqueous Phase During Operation</th>
+                                            <th>Aqueous Phase During Shut Down</th>
+                                            <!------- Material-------->
+                                            <th>Design Temperature(&deg;C)</th>
+                                            <th>Allowable Stress at Assessment Temperature(MPa)</th>
+                                            <th>Design Pressure(MPa)</th>
+                                            <th>Susceptible to Temper</th>
+                                            <th>Sulfur Content</th>
+                                            <th>Sigma Phase(%)</th>
+                                            <th>Reference Temperature(&deg;C)</th>
+                                            <th>Nickel-based Alloy</th>
+                                            <th>Material Cost Factor</th>
+                                            <th>Heat Treatment</th>
+                                            <th>Corrosion Allowance(mm)</th>
+                                            <th>Chromium ≥12%</th>
+                                            <th>Carbon or Low Alloy Steel</th>
+                                            <th>Austenitic Steel</th>
+                                            <th>Internal Coating</th>
+                                            <th>External Coating</th>
+                                            <th>External Coating Installation Date</th>
+                                            <th>External Coating Quality</th>
+                                            <th>Support Configuration Which Does Not Allow Coating Maintenance</th>
+                                            <th>Internal Lining</th>
+                                            <th>Internal Liner Type</th>
+                                            <th>Internal Liner Condition</th>
+                                            <th>Internal Cladding</th>
+                                            <th>Cladding Corrosion Rate(mmm/yr)</th>
+                                            <th>External Insulation</th>
+                                            <th>External Insulation Type</th>
+                                            <th>Insulation Condition</th>
+                                            <th>Insulation Contains Chlorides</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th>lAB411</th>
+                                        </tr>
+                                      </tfoot>
+                                    </table>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!---------------- Tank------------------>
+                        <div id="tank" class="tab-pane fade in active">
+                            <div class="city" style="font-size: 13px; color: #444444;background-color:white">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-            <div class="modal" id="choosesite" style="margin-top: 10%">
-
-        <!-- Choose the Site -->
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content" style="width: 80%; margin: auto">
-
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <span aria-hidden="true" style="font-size: 24px;font-weight: bold;color: #444444;font-family: Calibri;font-weight: bold;">List of Inspection Plans</span>
-          <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
         </div>
 
-        <!-- Modal body -->
-        <div class="modal-body" style="width: 90%;margin: auto">
-            <table id="searchs">
-                <tr>
-                    <th width="100px" style="text-align: center"><input type="checkbox" id="chkHeader"></th>
-                    <th>Inspection/Migation Plan Name</th>
-                    <th>Inspection/Migation Plan Date</th>
-                </tr>
-                {% for a in inspection %}
-                <tr >
-                    <td align="center"><input type="checkbox" name="{{ a.id }}"></td>
-                    <td align="center">{{ a.inspectionplanname }}</td>
-                    <td align="center">{{ a.inspectiondate }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
+<!-------------- Inspection Method ---------------->
+        <div id="menu1" class="tab-pane fade">
+            <div class="city" style="font-size: 15px; color: #444444;background-color:white">
+                <!--------------choose Inspection type ---------------->
+                <div class="city" style="text-align: left">
+                    <caption><strong>Inspection Type:</strong></caption>
+                    <label><input type="checkbox" name="check" onclick="onlyOne(this)">Intrusive</label>
+                    <label> <input type="checkbox" name="check" onclick="onlyOne(this)">Non-Intrusive</label>
+                    <script>
+                        function onlyOne(checkbox) {
+                            var checkboxes = document.getElementsByName('check')
+                            checkboxes.forEach((item) => {
+                                if (item !== checkbox) item.checked = false
+                            })
+                        }
+                    </script>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="containerflex" title="choose inspection technique" data-toggle="tooltip" data-placement="top">
+                            <!-------------- Inspection Methods ---------------->
+                            <div class="flexitem">
+                                <caption><strong style="color:#03090C;">Inspection Methods</strong></caption>
+                                <div style="font-size: 15px; color: #444444;background-color:white; overflow:scroll; width: 530px; height: 200px;border: 1px solid black;">
+                                    {% for a in imitem %}
+                                        <label for="{{a.imitemid}}"><input type="radio" name="checkRadio" value="{{a.imdescription}}" id="{{a.imitemid}}" onclick="ShowHideDiv()"> {{a.imdescription}}</label>
+                                        <br>
+                                    {% endfor %}
+                                    <script type="text/javascript">
+                                        function ShowHideDiv() {
+                                            var bien={{a.imitemid}}
+                                            var b ={{b.imtypeid}}
+                                            var chkYes = document.getElementById("bien");
+                                            var dvPassport = document.getElementById("b");
+                                            dvPassport.style.display = chkYes.checked ? "block" : "none";
+                                        }
+                                    </script>
+                                    <br>
+                                    {% for b in imtype %}
+                                    <div id="{{b.imtypeid}}" style="display: none">
+                                        <label><input type="radio" name="selectRadio" value="{{b.imtypename}}"> {{b.imtypename}}</label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <!-------------- Inspection Technique---------------->
+                            <div class="flexitem">
+                                <caption><strong style="color:#03090C;">Inspection Technique</strong></caption>
+                                <div style="font-size: 15px; color: #444444;background-color:white; overflow:scroll; width: 530px; height: 200px;border: 1px solid black;">
 
-            <!-- Modal footer -->
-            <div class="modal-footer" style="margin: auto; width: 90%">
-                <button name="_delete" type="submit" class="btn btn-warning" id="sub" onclick="Sub()" ><i class="fa fa-trash-o">&emsp;Delete Selected</i></button>
-                <button name="_select" class="btn btn-primary" type="submit"><i class="fa fa-pencil">Select</i></button>
-                <button type="button" class="btn btn-success"  style="background-color: #4575B7; border: 1px solid #204d74" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="col-md-12" style="text-align: left"><button type="submit" class="btn btn-primary">Add</button>
+                </div>
             </div>
-          </div>
+            </div>
+        </div>
+
+<!-------------- Damage Mechanism ---------------->
+        <div id="menu2" class="tab-pane fade">
+          <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+
+        </div>
+
+          <!-------------- Inspection Findings/Description ---------------->
+        <div id="menu3" class="tab-pane fade">
+          <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+        </div>
+      </div>
+<!-------------- End Body ---------------->
+        <div class="row">
+            <div class="col-md-12" style="text-align: center">
+                <button type="submit" name="_ok" id="ok" class="btn btn-primary"><i class="fa fa-pencil">&emsp;OK</i></button>
+                <button type="submit" name="_cancel" class="btn btn-warning" id="cancel" onclick="Sub()"><i class="fa fa-trash-o">Cancel</i></button>
+            </div>
         </div>
     </div>
-        </form>
-    </div>
 
-
-      <!-------------- Inspection Method ---------------->
-    <div id="menu1" class="tab-pane fade">
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
-
-      <!-------------- Damage Mechanism ---------------->
-    <div id="menu2" class="tab-pane fade">
-      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-    </div>
-
-      <!-------------- Inspection Findings/Description ---------------->
-    <div id="menu3" class="tab-pane fade">
-      <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-    </div>
-  </div>
-    <!-------------- End Body ---------------->
-</div>
+</form>
 {% endblock %}

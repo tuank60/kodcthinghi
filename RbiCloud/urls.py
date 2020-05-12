@@ -38,8 +38,8 @@ urlpatterns = [
     path('manufacture/', views.base_manufacture, name= 'manufacture'),
     ########################## Facility UI################################
     path('inspection/plan/<int:siteID>/', views.InpsectionPlan, name='inspectionPlan'),
-    path('inspection/plan/<int:siteID>/InpsectionPlan<str:name>/InpsectionPlan<str:date>/', views.InpsectionPlan, name='inspectionPlan'),
-    path('add/<int:siteID>/<str:name>/<str:date>/plan/', views.AdddInssepctionPlan, name='addInspectionPlan'),
+    path('inspection/plan/<int:siteID>/InpsectionPlan<str:name>/InpsectionPlan<str:date>/', views.InpsectionPlan,name='inspectionPlan'),
+    path('add/<int:siteID>/<int:facilityID>/<int:equipID>/<str:name>/<str:date>/plan/', views.AdddInssepctionPlan,name='addInspectionPlan'),
     path('create/<int:siteID>/plan/', views.CreateInspectionPlan, name='createInspectionPlan'),
     path('facilities/display/<int:siteID>/', views.ListFacilities, name='facilitiesDisplay'),
     path('facilities/<int:siteID>/new/', views.NewFacilities, name='facilitiesNew'),
@@ -124,5 +124,8 @@ urlpatterns = [
     #############connect thingsboard _____ sensor, gateway #############
     path('newsensor/<int:componentID>/', views.NewSensor, name='newsensor')
 ]
-handler404 = 'cloud.views.handler404'
+'''
+Dkm cuong luong
+'''
 handler500 = 'cloud.views.handler404'
+handler404 = 'cloud.views.handler404'

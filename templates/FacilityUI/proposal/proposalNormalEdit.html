@@ -751,7 +751,7 @@
                         <div class="col-md-3">Allowable Stress at Assessment Temperature, psi:<span style="color: red">*</span></div>
                         <div class="col-md-3"><input type="number" class="form-control" step="0.01" max="100000" value="{{ rwComp.allowablestress }}" min="0" name="ASAT" placeholder="Allow stress" required/></div>
                         <div class="col-md-3">Brittle Fracture Governing Thickness, mm:<span style="color: red">*</span></div>
-                        <div class="col-md-3"><input type="number" class="form-control" step="0.01" max="100000" value="{{ rwMaterial.brittlefracturethickness }}" min="0" name="BFGT" placeholder="Brittle thickness" required/></div>
+                        <div class="col-md-3"><input type="number" class="form-control" step="0.01" max="100000" value="{{ rwComp.brittlefracturethickness }}" min="0" name="BFGT" placeholder="Brittle thickness" required/></div>
                     </div>
                     <div class="row">
                         <div class="col-md-3">Corrosion Allowance, mm:<span style="color: red">*</span></div>
@@ -847,12 +847,14 @@
                     <div class="row">
                         <div class="col-md-6">HTHA Material Grade:</div>
                         <div class="col-md-6"><select class="form-control" id="HTHAMaterial" name="HTHAMaterialGrade">
-                            <option value="" disabled>Please select HTHA material..</option>
+                            <option value="" disabled selected>Please select HTHA material..</option>
                             <option>1.25Cr-0.5Mo</option>
                             <option>1Cr-0.5Mo</option>
                             <option>2.25Cr-1Mo</option>
                             <option>C-0.5Mo (Annealed)</option>
                             <option>C-0.5Mo (Normalised)</option>
+                            <option>6Cr-0.5Mo</option>
+                            <option>3Cr-1Mo</option>
                             <option>Carbon Steel</option>
                             <option>Not Applicable</option>
                         </select></div>

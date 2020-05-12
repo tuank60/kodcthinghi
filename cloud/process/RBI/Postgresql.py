@@ -104,8 +104,10 @@ class POSTGRESQL:
             return tbl_214.number_101_6
 
     def GET_TBL_215(DeltaT, size):
+        print("GET_TBL_215")
         tbl_215 = models.Tbl215DmPwht.objects.get(tmin_tref= DeltaT)
         if size == 6.4:
+            print(tbl_215.number_6_4)
             return tbl_215.number_6_4
         elif size == 12.7:
             return tbl_215.number_12_7

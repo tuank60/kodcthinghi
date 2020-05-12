@@ -1116,16 +1116,16 @@ class RwDataChart(models.Model):
 
 class ZUser(models.Model):
     id=models.AutoField(primary_key=True,blank=True,null=False,db_column='id')
-    name = models.CharField(max_length=60, blank=True, null=True,db_column='name')
+    name = models.CharField(max_length=60, blank=True, null=True)
     email = models.CharField(max_length=100, blank=True, null=True,db_column='email')
     phone = models.CharField(max_length=11, blank=True, null=True,db_column='phone')
-    adress = models.CharField(max_length=200, blank=True, null=True,db_column='adress')
-    username = models.CharField(max_length=40, blank=True, null=True,db_column='username')
-    password = models.CharField(max_length=40, blank=True, null=True,db_column='password')
-    active = models.IntegerField(blank=True,null=False,default='0',db_column='active')
-    other_info = models.IntegerField(blank=True, null=True,db_column='other_info')
-    kind = models.CharField(max_length=20, blank=True, null=True,db_column='kind')
-    date_joined = models.DateTimeField(default=datetime.datetime.now(),db_column='date_joined')
+    adress = models.CharField(max_length=200, blank=True, null=True)
+    username = models.CharField(max_length=40, blank=True, null=True)
+    password = models.CharField(max_length=40, blank=True, null=True)
+    active = models.IntegerField(blank=True,null=False,default='0')
+    other_info = models.IntegerField(blank=True, null=True)
+    kind = models.CharField(max_length=20, blank=True, null=True)
+    date_joined = models.DateTimeField(default=datetime.datetime.now())
 
     class Meta:
         managed = False
@@ -1284,20 +1284,43 @@ class InspecPlan(models.Model):
     class Meta:
         managed = False
         db_table = 'inspection_plan'
+        ordering = ('id',)
 
-# class InspectionCoverage(models.Model):
-#     id = models.AutoField(primary_key=True, blank=True, null= False, db_column='ID')
-#     planid = models.ForeignKey('InspectionPlan',db_column='PlanID', on_delete=models.CASCADE, blank=True, null=True)
-#     equipmentid = models.ForeignKey('EquipmentMaster', db_column='EquipmentID', on_delete=models.CASCADE, blank=True, null=True)
-#     componentid = models.ForeignKey('ComponentMaster', db_column='ComponentID', on_delete=models.CASCADE, blank=True, null=True)
-#     remarks = models.CharField(db_column='Remarks', blank=True, max_length=250, null = True)
-#     findings = models.TextField(db_column='Findings',blank=True, null=True)
-#     findingrtf = models.TextField(db_column='FindingRTF', blank=True, null=True)
-#     created = models.DateTimeField(db_column='Created', default=datetime.datetime.now())
-#
-#     class Meta:
-#         managed = False
-#         db_table = 'inspection_coverage'
+class InspectionCoverage(models.Model):
+    id = models.AutoField(primary_key=True, blank=True, null= False, db_column='ID')
+    planid = models.ForeignKey('InspecPlan',db_column='PlanID', on_delete=models.CASCADE, blank=True, null=True)
+    equipmentid = models.ForeignKey('EquipmentMaster', db_column='EquipmentID', on_delete=models.CASCADE, blank=True, null=True)
+    componentid = models.ForeignKey('ComponentMaster', db_column='ComponentID', on_delete=models.CASCADE, blank=True, null=True)
+    remarks = models.CharField(db_column='Remarks', blank=True, max_length=250, null=True)
+    findings = models.TextField(db_column='Findings',blank=True, null=True)
+    findingrtf = models.TextField(db_column='FindingRTF', blank=True, null=True)
+    created = models.DateTimeField(db_column='Created', default=datetime.datetime.now())
+
+    class Meta:
+        managed = False
+        db_table = 'inspection_coverage'
+        ordering = ('id',)
+
+class IMType(models.Model):
+    imtypeid = models.IntegerField(db_column='IMTypeID',primary_key=True)
+    imitemid = models.ForeignKey('IMItem', db_column='IMItemID', on_delete=models.CASCADE, blank=True, null=True)
+    imtypename = models.CharField(db_column='IMTypeName', blank=True, max_length=100)
+    imtypecode = models.CharField(db_column='IMTypeCode', blank=True, max_length=50)
+
+    class Meta:
+        managed = False
+        db_table = 'im_type'
+        ordering = ('imtypeid',)
+
+class IMItem(models.Model):
+    imitemid = models.IntegerField(primary_key=True, db_column='IMItemID')
+    imdescription = models.CharField(db_column='IMDescription', blank=True, max_length=100)
+    imcode = models.CharField(db_column='IMCode', blank=True, max_length=50)
+
+    class Meta:
+        managed = False
+        db_table = 'im_items'
+        ordering = ('imitemid',)
 
 class DMCategory(models.Model):
     dmcategoryid = models.IntegerField(db_column='DMCategoryID', blank=True, null=True)
@@ -1337,6 +1360,7 @@ class InspectionCoverageDetail(models.Model):
     class Meta:
         managed = False
         db_table = 'inspection_coverage_detail'
+
 class RwInspectionDetail(models.Model):
     id = models.IntegerField(blank=True, null=True, db_column='ID')
     detailid = models.AutoField(db_column='DetailID', blank=True, null=False, primary_key=True)

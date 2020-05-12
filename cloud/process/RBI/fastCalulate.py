@@ -1,6 +1,5 @@
 import os,sys
 from django.core.wsgi import get_wsgi_application
-from sympy.polys.agca import modules
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'RbiCloud.settings'
 application = get_wsgi_application()
@@ -131,13 +130,14 @@ def calculateNormal(proposalID):
                                    DAMAGE_FOUND=bool(rwcomponent.damagefoundinspection),
                                    LOWEST_TEMP=bool(rwequipment.yearlowestexptemp),
                                    TEMPER_SUSCEP=bool(rwmaterial.temper), PWHT=bool(rwequipment.pwht),
-                                   BRITTLE_THICK=rwmaterial.brittlefracturethickness,
+                                   BRITTLE_THICK=rwcomponent.brittlefracturethickness,
                                    CARBON_ALLOY=bool(rwmaterial.carbonlowalloy),
                                    DELTA_FATT=rwcomponent.deltafatt,
                                    MAX_OP_TEMP=rwstream.maxoperatingtemperature,
                                    CHROMIUM_12=bool(rwmaterial.chromemoreequal12),
                                    MIN_OP_TEMP=rwstream.minoperatingtemperature,
                                    MIN_DESIGN_TEMP=rwmaterial.mindesigntemperature,
+                                   Hydrogen=rwstream.hydrogen,
                                    REF_TEMP=rwmaterial.referencetemperature,
                                    AUSTENITIC_STEEL=bool(rwmaterial.austenitic), PERCENT_SIGMA=rwmaterial.sigmaphase,
                                    EquipmentType=models.EquipmentType.objects.get(
@@ -192,6 +192,7 @@ def calculateNormal(proposalID):
                                    CO3_CONTENT=rwstream.co3concentration,
                                    PTA_SUSCEP=bool(rwmaterial.ispta), NICKEL_ALLOY=bool(rwmaterial.nickelbased),
                                    EXPOSED_SULFUR=bool(rwstream.exposedtosulphur),
+                                   Hydrogen= rwstream.hydrogen,
                                    ExposedSH2OOperation=bool(rwequipment.presencesulphideso2),
                                    ExposedSH2OShutdown=bool(rwequipment.presencesulphideso2shutdown),
                                    ThermalHistory=rwequipment.thermalhistory, PTAMaterial=rwmaterial.ptamaterialcode,
@@ -224,7 +225,7 @@ def calculateNormal(proposalID):
                                    DAMAGE_FOUND=bool(rwcomponent.damagefoundinspection),
                                    LOWEST_TEMP=bool(rwequipment.yearlowestexptemp),
                                    TEMPER_SUSCEP=bool(rwmaterial.temper), PWHT=bool(rwequipment.pwht),
-                                   BRITTLE_THICK=rwmaterial.brittlefracturethickness,
+                                   BRITTLE_THICK=rwcomponent.brittlefracturethickness,
                                    CARBON_ALLOY=bool(rwmaterial.carbonlowalloy),
                                    DELTA_FATT=rwcomponent.deltafatt,
                                    MAX_OP_TEMP=rwstream.maxoperatingtemperature,
@@ -503,7 +504,6 @@ def calculateTank(proposalID):
         damageMachinsm = models.RwDamageMechanism.objects.filter(id_dm=proposalID)
         countRefullfc = models.RwFullFcof.objects.filter(id=proposalID)
         chart = models.RwDataChart.objects.filter(id=proposalID)
-        FullFCof = models.RwFullFcof.objects.filter(id=proposalID)
 
         comp = models.ComponentMaster.objects.get(componentid=rwassessment.componentid_id)
         eq = models.EquipmentMaster.objects.get(equipmentid=rwassessment.equipmentid_id)
@@ -512,7 +512,7 @@ def calculateTank(proposalID):
         comptype = models.ComponentType.objects.get(componenttypeid=comp.componenttypeid_id)
 
         isshell = False
-        if comp.componenttypeid_id == 9 or comp.componenttypeid_id == 13:
+        if comp.componenttypeid_id == 8 or comp.componenttypeid_id == 14:
             isshell = True
         if not rwcoat.externalcoating:
             dm_cal = DM_CAL.DM_CAL(ComponentNumber=str(comp.componentnumber),
@@ -588,6 +588,7 @@ def calculateTank(proposalID):
                                    CHROMIUM_12=bool(rwmaterial.chromemoreequal12),
                                    MIN_OP_TEMP=rwstream.minoperatingtemperature,
                                    MIN_DESIGN_TEMP=rwmaterial.mindesigntemperature,
+                                   Hydrogen=rwstream.hydrogen,
                                    REF_TEMP=rwmaterial.referencetemperature,
                                    AUSTENITIC_STEEL=bool(rwmaterial.austenitic), PERCENT_SIGMA=rwmaterial.sigmaphase,
                                    EquipmentType=models.EquipmentType.objects.get(
@@ -649,6 +650,7 @@ def calculateTank(proposalID):
                                    CO3_CONTENT=rwstream.co3concentration,
                                    PTA_SUSCEP=bool(rwmaterial.ispta), NICKEL_ALLOY=bool(rwmaterial.nickelbased),
                                    EXPOSED_SULFUR=bool(rwstream.exposedtosulphur),
+                                   Hydrogen=rwstream.hydrogen,
                                    ExposedSH2OOperation=bool(rwequipment.presencesulphideso2),
                                    ExposedSH2OShutdown=bool(rwequipment.presencesulphideso2shutdown),
                                    ThermalHistory=rwequipment.thermalhistory, PTAMaterial=rwmaterial.ptamaterialcode,
@@ -725,16 +727,9 @@ def calculateTank(proposalID):
                                     P_offsite=rwstream.fluidgooffsitepercent,
                                     MATERIAL_COST=rwmaterial.costfactor,
                                     API_COMPONENT_TYPE_NAME=models.ApiComponentType.objects.get(apicomponenttypeid= comp.apicomponenttypeid).apicomponenttypename,
-                                    PRODUCTION_COST=rwinputca.productioncost,
-                                    Soil_type=rwequipment.typeofsoil,
-                                    TANK_FLUID=rwstream.tankfluidname,
-                                    CHT=rwcomponent.shellheight,
-                                    EQUIPMENT_COST = FullFCof.equipcost)
+                                    PRODUCTION_COST=rwinputca.productioncost)
             if countRwcatank.count() != 0:
                 rwcatank = models.RwCaTank.objects.get(id=proposalID)
-                rwcatank.hydraulic_water = cacal.k_h_water()
-                rwcatank.hydraulic_fluid = cacal.k_h_prod()
-                rwcatank.seepage_velocity = cacal.vel_s_prod()
                 rwcatank.flow_rate_d1 = cacal.W_n_Tank(1)
                 rwcatank.flow_rate_d2 = cacal.W_n_Tank(2)
                 rwcatank.flow_rate_d3 = cacal.W_n_Tank(3)
@@ -747,9 +742,9 @@ def calculateTank(proposalID):
                 rwcatank.release_volume_leak_d2 = cacal.Bbl_leak_n(2)
                 rwcatank.release_volume_leak_d3 = cacal.Bbl_leak_n(3)
                 rwcatank.release_volume_leak_d4 = cacal.Bbl_leak_n(4)
-                rwcatank.release_volume_rupture = cacal.Bbl_rupture_n()
-                rwcatank.liquid_height = cacal.LHT_above(3)
-                rwcatank.volume_fluid = cacal.Lvol_abouve(3)
+                rwcatank.release_volume_rupture = cacal.Bbl_rupture_release()
+                rwcatank.liquid_height = cacal.FLUID_HEIGHT
+                rwcatank.volume_fluid = cacal.Bbl_total_shell()
                 rwcatank.time_leak_ground = cacal.ld_tank(4)
                 rwcatank.volume_subsoil_leak_d1 = cacal.Bbl_leak_release()
                 rwcatank.volume_subsoil_leak_d4 = cacal.Bbl_rupture_release()
@@ -773,14 +768,10 @@ def calculateTank(proposalID):
                 rwcatank.consequencecategory = cacal.FC_Category(cacal.FC_total_shell())
                 rwcatank.save()
             else:
-                rwcatank = models.RwCaTank(id=rwassessment, hydraulic_water = cacal.k_h_water(),
-                                           hydraulic_fluid = cacal.k_h_prod(),
-                                           seepage_velocity=cacal.vel_s_prod(),
-                                           flow_rate_d1=cacal.W_n_Tank(1),
+                rwcatank = models.RwCaTank(id=rwassessment, flow_rate_d1=cacal.W_n_Tank(1),
                                            flow_rate_d2=cacal.W_n_Tank(2),
                                            flow_rate_d3=cacal.W_n_Tank(3),
-                                           flow_rate_d4=cacal.W_n_Tank(4),
-                                           leak_duration_d1=cacal.ld_tank(1),
+                                           flow_rate_d4=cacal.W_n_Tank(4), leak_duration_d1=cacal.ld_tank(1),
                                            leak_duration_d2=cacal.ld_tank(2),
                                            leak_duration_d3=cacal.ld_tank(3), leak_duration_d4=cacal.ld_tank(4),
                                            release_volume_leak_d1=cacal.Bbl_leak_n(1),
@@ -788,8 +779,8 @@ def calculateTank(proposalID):
                                            release_volume_leak_d3=cacal.Bbl_leak_n(3),
                                            release_volume_leak_d4=cacal.Bbl_leak_n(4),
                                            release_volume_rupture=cacal.Bbl_rupture_release(),
-                                           liquid_height=cacal.LHT_above(3),
-                                           volume_fluid=cacal.Lvol_abouve(3),
+                                           liquid_height=cacal.FLUID_HEIGHT,
+                                           volume_fluid=cacal.Bbl_total_shell(),
                                            time_leak_ground=cacal.ld_tank(4),
                                            volume_subsoil_leak_d1=cacal.Bbl_leak_release(),
                                            volume_subsoil_leak_d4=cacal.Bbl_rupture_release(),
@@ -1073,7 +1064,7 @@ def ReCalculate(proposalID):
     try:
         rwAss = models.RwAssessment.objects.get(id=proposalID)
         component = models.ComponentMaster.objects.get(componentid=rwAss.componentid_id)
-        if component.componenttypeid_id == 9 or component.componenttypeid_id == 12 or component.componenttypeid_id == 13 or component.componenttypeid_id == 15:
+        if component.componenttypeid_id == 8 or component.componenttypeid_id == 12 or component.componenttypeid_id == 14 or component.componenttypeid_id == 15:
             isTank = 1
         else:
             isTank = 0

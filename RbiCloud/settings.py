@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -82,12 +83,11 @@ WSGI_APPLICATION = 'RbiCloud.wsgi.application'
 DATABASES = {
      'default': {
          'ENGINE': 'django.db.backends.mysql',
-         'NAME': 'heroku_4ac83cb6d972cfc',
-         'USER': 'bf80840e448c33',
-         'PASSWORD': '333c72b0',
-         'HOST': 'us-cdbr-east-06.cleardb.net',
-         # 'PORT': '3306',
-         'OPTIONS': {'ssl': {'ca':'/path/cleardb-ca.pem', 'cert':'/path/bf80840e448c33-cert.pem', 'key':'/path/bf80840e448c33-key.pem'},},
+         'NAME': 'rbi-web2',
+         'USER': 'root',
+         'PASSWORD': '1',
+         'HOST': 'localhost',
+         'PORT': '3306',
      }
   }
 
@@ -156,4 +156,4 @@ EMAIL_HOST_USER = "tuank60lab411@gmail.com"
 EMAIL_HOST_PASSWORD = "anhtuan1997"
 EMAIL_PORT = 587
 # Allow host
-ALLOWED_HOSTS = ['cortekrbi.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['deploycortek.herokuapp.com','127.0.0.1']

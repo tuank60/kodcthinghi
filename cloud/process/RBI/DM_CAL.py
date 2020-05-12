@@ -58,7 +58,8 @@ class DM_CAL:
                  EquipmentType="", PREVIOUS_FAIL="", AMOUNT_SHAKING="", TIME_SHAKING="", CYLIC_LOAD="",
                  CORRECT_ACTION="", NUM_PIPE="", PIPE_CONDITION="", JOINT_TYPE="", BRANCH_DIAMETER="",PRESSSURE_CONTROL=False,
                  FABRICATED_STEEL=False, EQUIPMENT_SATISFIED=False, NOMINAL_OPERATING_CONDITIONS=False,CET_THE_MAWP=False,
-                 CYCLIC_SERVICE = False, EQUIPMENT_CIRCUIT_SHOCK=False,MIN_TEMP_PRESSURE=0
+                 CYCLIC_SERVICE = False, EQUIPMENT_CIRCUIT_SHOCK=False,MIN_TEMP_PRESSURE=0,
+                 Hydrogen = 0,HTHADamageObserved=0
                  # PRIMARY_SOIL_TYPE="", PARTICAL_SIZE_UNIFORMITY="",
                  # MOSTURE_LEVEL="",EquipmentTemperature=0, CATHODIC_PROTECTION_EFF="", SoilResistivity_ConsideredforbaseCR=False,
                  # AST_PAD_TYPE_FACTOR="",AST_DRAINAGE_TYPE="",AST_PAD_TYPE_BOTTOM="",SoilSideTemperature=0,
@@ -218,6 +219,8 @@ class DM_CAL:
         self.HTHA_PRESSURE = HTHA_PRESSURE
         self.CRITICAL_TEMP = CRITICAL_TEMP
         self.DAMAGE_FOUND = DAMAGE_FOUND
+        self.Hydrogen = Hydrogen
+        self.HTHADamageObserved = HTHADamageObserved
 
         # BRITTLE input
         self.LOWEST_TEMP = LOWEST_TEMP
@@ -1340,33 +1343,34 @@ class DM_CAL:
         return ART_EXT
 
     def DF_EXTERNAL_CORROSION(self, age):
-        if (self.EXTERNAL_EXPOSED_FLUID_MIST or (
-            self.CARBON_ALLOY and not (self.MAX_OP_TEMP < -23 or self.MIN_OP_TEMP > 121))):
-            self.EXTERNAL_INSP_EFF = DAL_CAL.POSTGRESQL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[11])
-            self.EXTERNAL_INSP_NUM = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[11])
-            #self.NoINSP_EXTERNAL = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[11])
-            if (self.EXTERNAL_INSP_EFF == "" or self.EXTERNAL_INSP_NUM == 0):
-                self.EXTERNAL_INSP_EFF = "E"
-            if (self.APIComponentType == "TANKBOTTOM" or self.APIComponentType == "TANKROOFFLOAT"):
-                if (self.NomalThick == 0 or self.CurrentThick == 0):
-                    return 1390
-                else:
-                    return DAL_CAL.POSTGRESQL.GET_TBL_512(self.API_ART(self.API_ART_EXTERNAL(age)), self.EXTERNAL_INSP_NUM,
-                                                         self.EXTERNAL_INSP_EFF)
+        # if (self.EXTERNAL_EXPOSED_FLUID_MIST or (
+        #     self.CARBON_ALLOY and not (self.MAX_OP_TEMP < -23 or self.MIN_OP_TEMP > 121))):
+        self.EXTERNAL_INSP_EFF = DAL_CAL.POSTGRESQL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[11])
+        self.EXTERNAL_INSP_NUM = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[11])
+        #self.NoINSP_EXTERNAL = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[11])
+        if (self.EXTERNAL_INSP_EFF == "" or self.EXTERNAL_INSP_NUM == 0):
+            self.EXTERNAL_INSP_EFF = "E"
+        if (self.APIComponentType == "TANKBOTTOM" or self.APIComponentType == "TANKROOFFLOAT"):
+            if (self.NomalThick == 0 or self.CurrentThick == 0 or self.WeldJointEffciency or self.TensileStrengthDesignTemp):
+                return 6500;
+                # return 1390
             else:
-                if (self.NomalThick == 0 or self.CurrentThick == 0):
-                    return 1900
-                else:
-                    try:
-                        a = self.Po_P1_EXTERNAL() * self.ncdf(- self.B1_EXTERNAL(age))
-                        b = self.Po_P2_EXTERNAL() * self.ncdf(- self.B2_EXTERNAL(age))
-                        c = self.Pr_P3_EXTERNAL() * self.ncdf(- self.B3_EXTERNAL(age))
-                        return (a + b + c) / (1.56 * pow(10, -4))
-                    except Exception as e:
-                        print(e)
-                        return 0
+                return DAL_CAL.POSTGRESQL.GET_TBL_512(self.API_ART(self.API_ART_EXTERNAL(age)), self.EXTERNAL_INSP_NUM,
+                                                     self.EXTERNAL_INSP_EFF)
         else:
-            return 0
+            if (self.NomalThick == 0 or self.CurrentThick == 0 or self.WeldJointEffciency or self.TensileStrengthDesignTemp):
+                return 6500;
+            else:
+                try:
+                    a = self.Po_P1_EXTERNAL() * self.ncdf(- self.B1_EXTERNAL(age))
+                    b = self.Po_P2_EXTERNAL() * self.ncdf(- self.B2_EXTERNAL(age))
+                    c = self.Pr_P3_EXTERNAL() * self.ncdf(- self.B3_EXTERNAL(age))
+                    return (a + b + c) / (1.56 * pow(10, -4))
+                except Exception as e:
+                    print(e)
+                    return 0
+        # else:
+        #     return 0
     def Pr_P1_EXTERNAL(self):
         if self.CR_Confidents_Level == "Low":
             return 0.5
@@ -1778,100 +1782,109 @@ class DM_CAL:
             return 0
 
     def HTHA_SUSCEP(self, age):
-        PV = self.HTHA_PV(age)
-        if (self.HTHA_PRESSURE > 8.274):
-            self.HTHA_MATERIAL = "1.25Cr-0.5Mo"
-        if (self.HTHA_MATERIAL == "Carbon Steel"):
-            if (PV > 4.7):
+        SUSCEP = ""
+        if (self.HTHADamageObserved == 1):
+            if (self.MAX_OP_TEMP > 177 and self.HTHA_PRESSURE >= 0.345):
                 SUSCEP = "High"
-            elif (PV > 4.61 and PV <= 4.7):
-                SUSCEP = "Medium"
-            elif (PV > 4.53 and PV <= 4.61):
-                SUSCEP = "Low"
             else:
-                SUSCEP = "Not"
-        elif (self.HTHA_MATERIAL == "C-0.5Mo (Annealed)"):
-            if (PV > 4.95):
-                SUSCEP = "High"
-            elif (PV > 4.87 and PV <= 4.95):
-                SUSCEP = "Medium"
-            elif (PV > 4.78 and PV <= 4.87):
-                SUSCEP = "Low"
-            else:
-                SUSCEP = "Not"
-        elif (self.HTHA_MATERIAL == "C-0.5Mo (Normalised)"):
-            if (PV > 5.6):
-                SUSCEP = "High"
-            elif (PV > 5.51 and PV <= 5.6):
-                SUSCEP = "Medium"
-            elif (PV > 5.43 and PV <= 5.51):
-                SUSCEP = "Low"
-            else:
-                SUSCEP = "Not"
-        elif (self.HTHA_MATERIAL == "1Cr-0.5Mo"):
-            if (PV > 5.8):
-                SUSCEP = "High"
-            elif (PV > 5.71 and PV <= 5.8):
-                SUSCEP = "Medium"
-            elif (PV > 5.63 and PV <= 5.71):
-                SUSCEP = "Low"
-            else:
-                SUSCEP = "Not"
-        elif (self.HTHA_MATERIAL == "1.25Cr-0.5Mo"):
-            if (PV > 6.0):
-                SUSCEP = "High"
-            elif (PV > 5.92 and PV <= 6.0):
-                SUSCEP = "Medium"
-            elif (PV > 5.83 and PV <= 5.92):
-                SUSCEP = "Low"
-            else:
-                SUSCEP = "Not"
-        elif (self.HTHA_MATERIAL == "2.25Cr-1Mo"):
-            if (PV > 6.53):
-                SUSCEP = "High"
-            elif (PV > 6.45 and PV <= 6.53):
-                SUSCEP = "Medium"
-            elif (PV > 6.36 and PV <= 6.45):
-                SUSCEP = "Low"
-            else:
-                SUSCEP = "Not"
+                SUSCEP = "No"
         else:
-            SUSCEP = "Not"
+            HTHA_PRESSURE_psia = self.HTHA_PRESSURE * 145;
+            TemperatureAdjusted = self.MAX_OP_TEMP * 9 / 5 + 32;
+            deltaT = 0;
+            if (self.MATERIAL_SUSCEP_HTHA== True):
+                if(self.HTHA_MATERIAL == "Carbon Steel" or self.HTHA_MATERIAL=="C-0.5Mo (Annealed)" or self.HTHA_MATERIAL=="C-0.5Mo (Normalised)"):
+                    if (self.MAX_OP_TEMP > 177 and self.HTHA_PRESSURE >= 0.345):
+                        SUSCEP = "High"
+                    else:
+                        SUSCEP = "No"
+                if(self.HTHA_MATERIAL=="1Cr-0.5Mo"):
+                    if (self.HTHA_PRESSURE_psia >= 50.0 and HTHA_PRESSURE_psia < 700.0):
+                        deltaT = TemperatureAdjusted - ((-0.2992 * HTHA_PRESSURE_psia) + 1100.0)
+                    elif((HTHA_PRESSURE_psia >= 700.0) and (HTHA_PRESSURE_psia < 1250.0)):
+                        deltaT = (TemperatureAdjusted - 905.0)
+                    elif ((HTHA_PRESSURE_psia >= 1250.0) and (HTHA_PRESSURE_psia < 1800.0)):
+                        deltaT = (TemperatureAdjusted - (1171.11 * pow(HTHA_PRESSURE_psia - 1215.03, -0.092)))
+                    elif ((self.HTHA_PRESSURE_psia >= 1800.0) and (HTHA_PRESSURE_psia < 2600.0)):
+                        deltaT = (TemperatureAdjusted - (((4E-05 * pow(HTHA_PRESSURE_psia, 2.0)) - (0.2042 * HTHA_PRESSURE_psia)) + 903.69));
+                    elif ((HTHA_PRESSURE_psia >= 2600.0) and (HTHA_PRESSURE_psia < 13000.0)):
+                        deltaT = (TemperatureAdjusted - 625.0);
+                if(self.HTHA_MATERIAL=="1.25Cr-0.5Mo"):
+                    if((HTHA_PRESSURE_psia >= 50.0) and (HTHA_PRESSURE_psia < 1250.0)):
+                        deltaT = (TemperatureAdjusted - ((-0.1668 * HTHA_PRESSURE_psia) + 1150.0))
+                    elif((HTHA_PRESSURE_psia >= 1250.0) and (HTHA_PRESSURE_psia < 1800.0)):
+                        deltaT = (TemperatureAdjusted - (1171.11 * pow(HTHA_PRESSURE_psia - 1215.03, -0.092)))
+                    elif((HTHA_PRESSURE_psia >= 1800.0) and (HTHA_PRESSURE_psia < 2600.0)):
+                        deltaT = (TemperatureAdjusted - (((4E-05 * pow(HTHA_PRESSURE_psia,2.0)) - (0.2042 * HTHA_PRESSURE_psia)) + 903.69))
+                    elif((HTHA_PRESSURE_psia >= 2600.0) and (HTHA_PRESSURE_psia < 13000.0)):
+                        deltaT = (TemperatureAdjusted - 625.0)
+                if(self.HTHA_MATERIAL=="2.25Cr-1Mo"):
+                    if((HTHA_PRESSURE_psia >= 50.0) and (HTHA_PRESSURE_psia < 2000.0)):
+                        deltaT = (TemperatureAdjusted - ((-0.1701 * HTHA_PRESSURE_psia) + 1200.0))
+                    elif((HTHA_PRESSURE_psia >= 2000.0) and (HTHA_PRESSURE_psia < 6000.0)):
+                        deltaT = (TemperatureAdjusted - 855.0)
+                    elif(self.HTHA_MATERIAL=="3Cr-1Mo"):
+                        if((HTHA_PRESSURE_psia >= 50.0) and (HTHA_PRESSURE_psia < 1800.0)):
+                            deltaT = (TemperatureAdjusted - ((-0.1659 * HTHA_PRESSURE_psia) + 1250.0))
+                        elif((HTHA_PRESSURE_psia >= 1800.0) and (HTHA_PRESSURE_psia < 6000.0)):
+                            deltaT = (TemperatureAdjusted - 950.0)
+                if(self.HTHA_MATERIAL=="6Cr-0.5Mo"):
+                    if((HTHA_PRESSURE_psia >= 50.0) and (HTHA_PRESSURE_psia < 1100.0)):
+                        deltaT = (TemperatureAdjusted - ((-0.1254 * HTHA_PRESSURE_psia) + 1300.0))
+                    elif((HTHA_PRESSURE_psia >= 1100.0) and (HTHA_PRESSURE_psia < 6000.0)):
+                        deltaT = (TemperatureAdjusted - 1120.0)
+                if(self.HTHA_MATERIAL=="Not Applicable"):
+                    SUSCEP = "None"
+            if(SUSCEP == ""):
+                if(deltaT >= 0):
+                    SUSCEP = "High"
+                elif(deltaT < 0 and deltaT >= -50):
+                    SUSCEP = "Medium"
+                elif(deltaT < -50 and deltaT >= -100):
+                    SUSCEP = "Low"
+                else:
+                    SUSCEP = "None"
         return SUSCEP
 
-    def API_DF_HTHA(self, age):
-        API_HTHA = DAL_CAL.POSTGRESQL.GET_TBL_204(self.HTHA_SUSCEP(age))
-        self.HTHA_EFFECT = DAL_CAL.POSTGRESQL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[15])
-        self.HTHA_NUM_INSP = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[15])
-        if self.HTHA_NUM_INSP > 2:
-            self.HTHA_NUM_INSP = 2
-
-        if (self.DAMAGE_FOUND):
-            return 2000
-        else:
-            if (self.HTHA_NUM_INSP == 0):
-                return API_HTHA[0]
-            elif (self.HTHA_NUM_INSP == 1 and self.HTHA_EFFECT == "D"):
-                return API_HTHA[1]
-            elif (self.HTHA_NUM_INSP == 1 and self.HTHA_EFFECT == "C"):
-                return API_HTHA[2]
-            elif (self.HTHA_NUM_INSP == 1 and self.HTHA_EFFECT == "B"):
-                return API_HTHA[3]
-            elif (self.HTHA_NUM_INSP == 2 and self.HTHA_EFFECT == "D"):
-                return API_HTHA[4]
-            elif (self.HTHA_NUM_INSP == 2 and self.HTHA_EFFECT == "C"):
-                return API_HTHA[5]
-            else:
-                return API_HTHA[6]
+    # def API_DF_HTHA(self, age):
+    #     API_HTHA = DAL_CAL.POSTGRESQL.GET_TBL_204(self.HTHA_SUSCEP(age))
+    #     self.HTHA_EFFECT = DAL_CAL.POSTGRESQL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[15])
+    #     self.HTHA_NUM_INSP = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[15])
+    #     if self.HTHA_NUM_INSP > 2:
+    #         self.HTHA_NUM_INSP = 2
+    #
+    #     if (self.DAMAGE_FOUND):
+    #         return 2000
+    #     else:
+    #         if (self.HTHA_NUM_INSP == 0):
+    #             return API_HTHA[0]
+    #         elif (self.HTHA_NUM_INSP == 1 and self.HTHA_EFFECT == "D"):
+    #             return API_HTHA[1]
+    #         elif (self.HTHA_NUM_INSP == 1 and self.HTHA_EFFECT == "C"):
+    #             return API_HTHA[2]
+    #         elif (self.HTHA_NUM_INSP == 1 and self.HTHA_EFFECT == "B"):
+    #             return API_HTHA[3]
+    #         elif (self.HTHA_NUM_INSP == 2 and self.HTHA_EFFECT == "D"):
+    #             return API_HTHA[4]
+    #         elif (self.HTHA_NUM_INSP == 2 and self.HTHA_EFFECT == "C"):
+    #             return API_HTHA[5]
+    #         else:
+    #             return API_HTHA[6]
 
     def DF_HTHA(self, age):
-        if (self.MATERIAL_SUSCEP_HTHA):
-            if (self.MAX_OP_TEMP <= 204 and self.HTHA_PRESSURE <= 0.552):
-                return 1
-            else:
-                return self.API_DF_HTHA(age)
+        if(self.Hydrogen == 0 or self.MAX_OP_TEMP == 0):
+            return 0 # sua thanh -1 khi dung inspection plan
+        if(self.HTHA_SUSCEP(age) == "No"):
+            return 0 # sua thanh -1 khi dung inspection plan
+        elif(self.HTHA_SUSCEP(age) == "Observed" or self.HTHA_SUSCEP(age) == "High"):
+            kq = 5000
+        elif(self.HTHA_SUSCEP(age) == "Medium"):
+            kq = 2000
+        elif(self.HTHA_SUSCEP(age) == "Low"):
+            kq = 100
         else:
-            return 0
+            kq = 0
+        return kq
 
     # Calculate BRITTLE
     def DFB_BRIITLE(self):
@@ -1890,7 +1903,7 @@ class DM_CAL:
     def DF_BRITTLE(self,i):
         Fse = 1
         if(self.BRITTLE_THICK<=12.7 or (self.FABRICATED_STEEL and self.EQUIPMENT_SATISFIED and self.NOMINAL_OPERATING_CONDITIONS
-        and self.CET_THE_MAWP and self.CYCLIC_SERVICE and self.EQUIPMENT_CIRCUIT_SHOCK and (self.BRITTLE_THICK <=50.8))):
+        and self.CET_THE_MAWP and self.CYCLIC_SERVICE and self.EQUIPMENT_CIRCUIT_SHOCK and (self.NomalThick <=50.8))):
             Fse = 0.01
         if (self.CARBON_ALLOY and (self.CRITICAL_TEMP < self.MIN_DESIGN_TEMP or self.MAX_OP_TEMP < self.MIN_DESIGN_TEMP)):
             # if (self.LOWEST_TEMP):
@@ -2114,8 +2127,6 @@ class DM_CAL:
                     DFB_SIGMA = 34
                 else:
                     DFB_SIGMA = 4196
-            print("Damage Factor:")
-            print(DFB_SIGMA)
             return DFB_SIGMA
         else:
             return 0
@@ -2198,7 +2209,6 @@ class DM_CAL:
                 FBD = 0.02
             else:
                 FBD = 1
-
             return self.DFB_PIPE() * FCA * FPC * FCP * FJB * FBD
         else:
             return 0
@@ -2303,6 +2313,8 @@ class DM_CAL:
 
     def DF_TOTAL_API(self,i):#testing df_htha
         try:
+            TOTAL_DF_API = max(self.DF_THINNING_TOTAL_API(i), self.DF_EXT_TOTAL_API(i)) + self.DF_SSC_TOTAL_API(
+                i) + self.DF_HTHA_API(i) + self.DF_BRIT_TOTAL_API(i) + self.DF_PIPE_API(i)
             TOTAL_DF_API = max(self.DF_THINNING_TOTAL_API(i),self.DF_EXT_TOTAL_API(i)) + self.DF_SSC_TOTAL_API(i) + self.DF_HTHA_API(i) + self.DF_BRIT_TOTAL_API(i) + self.DF_PIPE_API(i)
         except Exception as e:
             print(e)

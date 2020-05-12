@@ -318,13 +318,12 @@
                             </script>
                         </div>
                         <div class="row">
-{#                            tuan#}
-{#                            {% if isshell %}#}
-{#                             <!----- do nothing ------>#}
-{#                            {% else %}#}
+                            {% if isshell %}
+                             <!----- do nothing ------>
+                            {% else %}
                             <div class="col-md-6">Distance To Ground Water, m:<span style="color: red">*</span></div>
                             <div class="col-md-6"><input type="number" step="0.01" max="100000" class="form-control" min="0" name="Distance" value="{{ rwEq.distancetogroundwater }}" placeholder="Distance to ground water" required/></div>
-{#                            {% endif %}#}
+                            {% endif %}
                         </div>
                     </fieldset>
                 </fieldset>
@@ -367,10 +366,10 @@
                             <div class="col-md-3"><input type="number" class="form-control" step="0.01" min="0" max="1000" placeholder="StructuralThickness" value="{{ rwComp.structuralthickness }}" name="StructuralThickness" required/></div>
                             <div class="col-md-3">Current Corrosion Rate, mm/yr:<span style="color: red">*</span></div>
                             <div class="col-md-3"><input type="number" step="0.01" min="0" max="1000" class="form-control" value="{{ rwComp.currentcorrosionrate }}" name="CurrentCorrosionRate" placeholder="Corrosion rate" required/></div>
-{#                            {% if isshell %}#}
-{#                            <div class="col-md-3">Shell Course Height, m:<span style="color: red">*</span></div>#}
-{#                            <div class="col-md-3"><input type="number" step="0.01" class="form-control" max="1000" value="{{ rwComp.shellheight }}" min="0" name="shellHeight" placeholder="Shell course height" required/></div>#}
-{#                            {% endif %}#}
+                            {% if isshell %}
+                            <div class="col-md-3">Shell Course Height, m:<span style="color: red">*</span></div>
+                            <div class="col-md-3"><input type="number" step="0.01" class="form-control" max="1000" value="{{ rwComp.shellheight }}" min="0" name="shellHeight" placeholder="Shell course height" required/></div>
+                            {% endif %}
                         </div>
                         <div class="row">
                             <div class="col-md-5">Damage Found During Inspection</div>
@@ -520,9 +519,9 @@
                     </fieldset>
                     <fieldset class="scheduler-border">
                         <legend class="scheduler-border"><b>Tank Consequence of Failure Properties</b></legend>
-{#                        {% if isshell %}#}
-{#                        <!----------do no thing------------>#}
-{#                        {% else %}#}
+                        {% if isshell %}
+                        <!----------do no thing------------>
+                        {% else %}
                         <div class="row">
                             <div class="col-md-5">Release Prevention Barrier</div>
                             <div class="col-md-1"><input type="checkbox" name="ReleasePreventionBarrier" id="ReleasePreventionBarrier"/></div>
@@ -539,7 +538,7 @@
                             <div class="col-md-7">Height of Each Shell Course<span style="color: red">*</span></div>
                             <div class="col-md-3"><input type="number" step="0.01" min="0" value="{{ rwComp.shellheight }}" max="100000" class="form-control" name="HeightEShellC" placeholder="Height of Each Shell Course" required/></div>
                         </div>
-{#                        {% endif %}#}
+                        {% endif %}
                     </fieldset>
                 </fieldset>
             </div>

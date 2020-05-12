@@ -7,6 +7,7 @@
 {% block ca%}{% url 'fullyConsequence' proposalID %}{% endblock %}
 {% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
 {% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
 {% block backProposal %}{% url 'proposalDisplay' ass.componentid_id %}{% endblock %}
 <!---------------END BLOCK--------------->
 
@@ -15,172 +16,110 @@
     {% csrf_token %}
         <div class="input-data">
             <fieldset class="scheduler-border">
-                <legend class="scheduler-border"><b>Fully-Quantitative Financial Cosequense of Failure</b></legend>
+                <legend class="scheduler-border"><b>Fully-Quantitative Financial Cosequense of Failure and Category</b></legend>
                 <!---------- BLOCK DATA--------------->
                 <!-------- block 1------------->
-                <fieldset class="scheduler-border">
-                    <legend class="scheduler-border"><b>Fully-Quantitative Financial Cosequense of Failure and Category</b></legend>
-                    <div class="row">
-                        <div class="col-md-8">The total consequence, $:</div>
-                        <div class="col-md-4">{{ data.consequence }}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8">Consequence Category, $:</div>
-                        <div class="col-md-4"><b>{{ data.consequencecategory }}</b></div>
-                    </div>
-                </fieldset>
-                <!-------- block 2------------->
-                <fieldset class="scheduler-border">
-                    <legend class="scheduler-border"><b>Fully-Quantitative Financial Cosequense of Failure and Category</b></legend>
-                    <legend class="scheduler-border"><b>Intermediate Values</b></legend>
-                    <div class="row">
-                        <div class="col-md-10">The hydraulic conductivity for water, m/day:</div>
-                        <div class="col-md-2">{{ data.hydraulic_water }}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-10">The hydraulic conductivity for fluid, m/day:</div>
-                        <div class="col-md-2">{{ data.hydraulic_fluid }}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-10">The product seepage velocity, m/day:</div>
-                        <div class="col-md-2">{{ data.seepage_velocity }}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4"></div>
-                        <div class="col-md-2"><b>D1</b></div>
-                        <div class="col-md-2"><b>D2</b></div>
-                        <div class="col-md-2"><b>D3</b></div>
-                        <div class="col-md-2"><b>D4</b></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">Flow Rate, bbls/day:</div>
-                        <div class="col-md-2">{{ data.flow_rate_d1 }}</div>
-                        <div class="col-md-2">{{ data.flow_rate_d2 }}</div>
-                        <div class="col-md-2">{{ data.flow_rate_d3 }}</div>
-                        <div class="col-md-2">{{ data.flow_rate_d4 }}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8">The liquid height above the shell in question, m^3</div>
-                        <div class="col-md-2">{{ data.liquid_height }}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8">The volume of fluid above the shell in question, m^3</div>
-                        <div class="col-md-2">{{ data.volume_fluid }}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">Leak duration, days:</div>
-                        <div class="col-md-2">{{ data.leak_duration_d1 }}</div>
-                        <div class="col-md-2">{{ data.leak_duration_d2 }}</div>
-                        <div class="col-md-2">{{ data.leak_duration_d3 }}</div>
-                        <div class="col-md-2">{{ data.leak_duration_d4 }}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">Release volume from leakage, m<sup>3</sup>:</div>
-                        <div class="col-md-2">{{ data.release_volume_leak_d1 }}</div>
-                        <div class="col-md-2">{{ data.release_volume_leak_d2 }}</div>
-                        <div class="col-md-2">{{ data.release_volume_leak_d3 }}</div>
-                        <div class="col-md-2">{{ data.release_volume_leak_d4 }}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">Realease volume from rupture, barrels:</div>
-                        <div class="col-md-2">{{ data.release_volume_rupture }}</div>
-                    </div>
-                </fieldset>
-                <!-------------- block 3 ------------->
-                <fieldset class="scheduler-border">
-                    <legend class="scheduler-border"><b>Fully-Quantitative Financial Cosequense of Failure and Category</b></legend>
-                    <div class="row">
-                        <div class="col-md-8">The material factor:</div>
-                        <div class="col-md-4">{{ data.material_factor }}</div>
-                    </div>
-                    <div class="row"><br></div>
-                    <div class="row">
-                        <div class="col-md-8"><h4>Release Type</h4></div>
-                        <div class="col-md-2">Leakage</div>
-                        <div class="col-md-2">Rupture</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8">The total barrels of fluid within the dike, barrels:</div>
-                        <div class="col-md-2">{{ data.barrel_dike_leak }}</div>
-                        <div class="col-md-2">{{ data.barrel_dike_rupture }}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8">The total barrels of fluid in the on-site surface soil from, barrels:</div>
-                        <div class="col-md-2">{{ data.barrel_onsite_leak }}</div>
-                        <div class="col-md-2">{{ data.barrel_onsite_rupture }}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8">The total barrels of fluid in the off-site surface soil, barrels:</div>
-                        <div class="col-md-2">{{ data.barrel_offsite_leak }}</div>
-                        <div class="col-md-2">{{ data.barrel_offsite_rupture }}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8">The total barrels of fluid that reach water, barrels:</div>
-                        <div class="col-md-2">{{ data.barrel_water_leak }}</div>
-                        <div class="col-md-2">{{ data.barrel_water_rupture }}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8">The financial environmental cost, $:</div>
-                        <div class="col-md-2">{{ data.fc_environ_leak }}</div>
-                        <div class="col-md-2">{{ data.fc_environ_rupture }}</div>
-                    </div>
-                    <div class="row"><br></div>
-                    <div class="row">
-                        <div class="col-md-8">The total financial environmental cost, $:</div>
-                        <div class="col-md-4">{{ data.fc_environ }}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8">The component damage cost, $:</div>
-                        <div class="col-md-4">{{ data.component_damage_cost }}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8">Cost of damage to surrounding equipment, $:</div>
-                        <div class="col-md-4">0</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8">The cost of business interruption, $:</div>
-                        <div class="col-md-4">0</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8">Cost Associated with personnel Injury, $:</div>
-                        <div class="col-md-4">0</div>
-                    </div>
-                </fieldset>
-
-
-
-{#                <div class="row"></div>#}
-{##}
-{#                <div class="row">#}
-{#                    <div class="col-md-8">The time to initate leakage to the ground water, days:</div>#}
-{#                    <div class="col-md-4">{{ data.time_leak_ground }}</div>#}
-{#                </div>#}
-{#                <!-------------- block 3 ----------->#}
-{#                <div class="row"></div>#}
-{#                <div class="row">#}
-{#                    <div class="col-md-8"></div>#}
-{#                    <div class="col-md-2"><b>D1</b></div>#}
-{#                    <div class="col-md-2"><b>D4</b></div>#}
-{#                </div>#}
-{#                <div class="row">#}
-{#                    <div class="col-md-8">The volume of the product in the subsoil from lakage, barrels:</div>#}
-{#                    <div class="col-md-2">{{ data.volume_subsoil_leak_d1 }}</div>#}
-{#                    <div class="col-md-2">{{ data.volume_subsoil_leak_d4 }}</div>#}
-{#                </div>#}
-{#                <div class="row">#}
-{#                    <div class="col-md-8">The volume of the product in the ground water from leakage, m<sup>3</sup>:</div>#}
-{#                    <div class="col-md-2">{{ data.volume_ground_water_leak_d1 }}</div>#}
-{#                    <div class="col-md-2">{{ data.volume_ground_water_leak_d4 }}</div>#}
-{#                </div>#}
-{#                <!------------ block 4 ---------->#}
-{#                <div class="row"></div>#}
-
-
-
-
-
-
-
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-2"><b>D1</b></div>
+                    <div class="col-md-2"><b>D2</b></div>
+                    <div class="col-md-2"><b>D3</b></div>
+                    <div class="col-md-2"><b>D4</b></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">Flow Rate, bbls/day:</div>
+                    <div class="col-md-2">{{ data.flow_rate_d1 }}</div>
+                    <div class="col-md-2">{{ data.flow_rate_d2 }}</div>
+                    <div class="col-md-2">{{ data.flow_rate_d3 }}</div>
+                    <div class="col-md-2">{{ data.flow_rate_d4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">Leak duration, days:</div>
+                    <div class="col-md-2">{{ data.leak_duration_d1 }}</div>
+                    <div class="col-md-2">{{ data.leak_duration_d2 }}</div>
+                    <div class="col-md-2">{{ data.leak_duration_d3 }}</div>
+                    <div class="col-md-2">{{ data.leak_duration_d4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">Release volume from leakage, m<sup>3</sup>:</div>
+                    <div class="col-md-2">{{ data.release_volume_leak_d1 }}</div>
+                    <div class="col-md-2">{{ data.release_volume_leak_d2 }}</div>
+                    <div class="col-md-2">{{ data.release_volume_leak_d3 }}</div>
+                    <div class="col-md-2">{{ data.release_volume_leak_d4 }}</div>
+                </div>
+                <!-------------- block 2 ------------->
+                <div class="row"></div>
+                <div class="row">
+                    <div class="col-md-8">Realease volume from rupture, barrels:</div>
+                    <div class="col-md-4">{{ data.release_volume_rupture }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The time to initate leakage to the ground water, days:</div>
+                    <div class="col-md-4">{{ data.time_leak_ground }}</div>
+                </div>
+                <!-------------- block 3 ----------->
+                <div class="row"></div>
+                <div class="row">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-2"><b>D1</b></div>
+                    <div class="col-md-2"><b>D4</b></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The volume of the product in the subsoil from lakage, barrels:</div>
+                    <div class="col-md-2">{{ data.volume_subsoil_leak_d1 }}</div>
+                    <div class="col-md-2">{{ data.volume_subsoil_leak_d4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The volume of the product in the ground water from leakage, m<sup>3</sup>:</div>
+                    <div class="col-md-2">{{ data.volume_ground_water_leak_d1 }}</div>
+                    <div class="col-md-2">{{ data.volume_ground_water_leak_d4 }}</div>
+                </div>
+                <!------------ block 4 ---------->
+                <div class="row"></div>
+                <div class="row">
+                    <div class="col-md-8">The total barrels of fluid within the dike from rupture, barrels:</div>
+                    <div class="col-md-4">{{ data.barrel_dike_rupture }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The total barrels of fluid in the on-site surface soil from a rupture, barrels:</div>
+                    <div class="col-md-4">{{ data.barrel_onsite_rupture }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The total barrels of fluid in the off-site surface soil from a rupture, barrels:</div>
+                    <div class="col-md-4">{{ data.barrel_offsite_rupture }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The total barrels of fluid that reach water from a rupture, barrels:</div>
+                    <div class="col-md-4">{{ data.barrel_water_rupture }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The financial environmental cost from leakage, $:</div>
+                    <div class="col-md-4">{{ data.fc_environ_leak }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The financial environmental cost from rupture, $:</div>
+                    <div class="col-md-4">{{ data.fc_environ_rupture }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The total financial environmental cost, $:</div>
+                    <div class="col-md-4">{{ data.fc_environ }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The component damage cost, $:</div>
+                    <div class="col-md-4">{{ data.component_damage_cost }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The cost of business interruption, $:</div>
+                    <div class="col-md-4">{{ data.business_cost }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The total consequence, $:</div>
+                    <div class="col-md-4">{{ data.consequence }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">Consequence Category, $:</div>
+                    <div class="col-md-4"><b>{{ data.consequencecategory }}</b></div>
+                </div>
             </fieldset>
         </div>
     </form>

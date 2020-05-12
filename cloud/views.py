@@ -79,15 +79,30 @@ def InpsectionPlan(request, siteID,name='Plan Name',date='Plan Date'):
     noti = models.ZNotification.objects.all().filter(id_user=request.session['id'])
     countnoti = noti.filter(state=0).count()
     inspection = models.InspecPlan.objects.all()
+    inspecCover = models.InspectionCoverage.objects.all()
     try:
         error = {}
+        data = []
+        for a in inspection:
+            if (a.inspectionplanname == name):
+                inspecCover = models.InspectionCoverage.objects.filter(planid_id=a.id)
+                for b in inspecCover:
+                    obj = {}
+                    equip = models.EquipmentMaster.objects.get(equipmentid=b.equipmentid_id)
+                    comp = models.ComponentMaster.objects.get(componentid=b.componentid_id)
+                    obj['InspectionPlanID'] = name
+                    obj['InspectionPlanDate'] = date
+                    obj['Equipment'] = equip.equipmentnumber
+                    obj['Component'] = comp.componentnumber
+                    data.append(obj)
+
         if '_creat' in request.POST:
             return redirect('createInspectionPlan', siteID=siteID)
         if '_add' in request.POST:
             if name =='Plan Name':
                 error['exist'] = "Please create/select an inspection plan before adding inspection coverage!"
             else:
-                return redirect('addInspectionPlan', siteID=siteID,name=name,date=date)
+                return redirect('addInspectionPlan', siteID=siteID,name=name,date=date,facilityID=0,equipID=0)
         try:
             if '_delete' in request.POST:
                 for a in inspection:
@@ -97,7 +112,7 @@ def InpsectionPlan(request, siteID,name='Plan Name',date='Plan Date'):
             if '_select' in request.POST:
                 for a in inspection:
                     if (request.POST.get('%d' % a.id)):
-                        return redirect('inspectionPlan',siteID=a.id,name=a.inspectionplanname,date=a.inspectiondate)
+                        return redirect('inspectionPlan',siteID=siteID,name=a.inspectionplanname,date=a.inspectionplandate)
         except Exception as e:
             print(e)
             raise Http404
@@ -105,24 +120,152 @@ def InpsectionPlan(request, siteID,name='Plan Name',date='Plan Date'):
         print(e)
         raise Http404
     return render(request, 'FacilityUI/inspection_plan/inspectionPlanNew.html',
-                  {'page': 'inspectionPlan', 'siteID': siteID, 'count': count, 'info': request.session,
-                   'noti': noti, 'countnoti': countnoti,'name':name,'date':date,'error':error,'inspection':inspection})
-def AdddInssepctionPlan(request,siteID,name,date):
+                  {'page': 'inspectionPlan', 'siteID': siteID, 'count': count, 'info': request.session,'noti': noti, 'countnoti': countnoti,
+                   'name':name,'date':date,'error':error,'inspection':inspection,'data':data})
+def AdddInssepctionPlan(request,siteID,facilityID,equipID,name,date):
     count = models.Emailto.objects.filter(Q(Emailt=models.ZUser.objects.filter(id=request.session['id'])[0].email),
                                           Q(Is_see=0)).count()
     noti = models.ZNotification.objects.all().filter(id_user=request.session['id'])
     countnoti = noti.filter(state=0).count()
+
     site = models.Sites.objects.all()
-    facility = models.Facility.objects.all()
-    euip = models.RwEquipment.objects.all()
+    faci = models.Facility.objects.all()
+    desi = models.DesignCode.objects.all()
+
+    equi = models.EquipmentMaster.objects.all()
+    equiptype = models.EquipmentType.objects.all()
+
+    comp = models.ComponentMaster.objects.all()
+    comptype = models.ComponentType.objects.all()
+    rwcomponent = models.RwComponent.objects.all()
+
+    rwstream = models.RwStream.objects.all()
+    rwmaterial = models.RwMaterial.objects.all()
+    rwcoat = models.RwCoating.objects.all()
+
+    rwfullpof = models.RwFullPof.objects.all()
+    rwfullfcof = models.RwFullFcof.objects.all()
+
+    pros =models.RwAssessment.objects.all()
+    rwdam = models.RwDamageMechanism.objects.all()
+    rwequip = models.RwEquipment.objects.all()
+
+    siteT = models.Sites.objects.get(siteid=siteID)
+    facility = models.Facility.objects.filter(siteid_id=siteID)
+    facilityT = models.Facility.objects.filter(facilityid=facilityID)
+
+    inspecplan = models.InspecPlan.objects.all()
+    imtype = models.IMType.objects.all()
+    imitem = models.IMItem.objects.all()
+
     try:
-        a=1
+        dataF = []
+        error = {}
+        data = {}
+        datarw = []  # kiem tra id proposal co ton tai trong bang RwDamageMechanism
+        datapof = []  # kiem tra id  proposal co ton tai trong bang RwFullPof
+        for a in inspecplan:
+            if (a.inspectionplanname == name):
+                inspecCover = models.InspectionCoverage.objects.filter(planid_id=a.id)
+                for b in inspecCover:
+                    obj = {}
+                    array = b.componentid_id
+                    dataF.append(array)
+
+        for a in rwdam:
+            array=a.id_dm_id
+            datarw.append(array)
+        for b in rwfullpof:
+            brray= b.id_id
+            datapof.append(brray)
+
+        if request.POST.get('allSite'):
+            allSite = 1
+        else:
+            allSite = 0
+
+        if not facilityID:
+            allSite=1
+            facilityID=1
+            equipID=3
+            fac = models.Facility.objects.get(facilityid=facilityID)
+            facName = "All"
+            equip = models.EquipmentMaster.objects.filter(facilityid_id=facilityID)
+            equipName = "All"
+        else:
+            facilityID=facilityID
+            fac = models.Facility.objects.get(facilityid=facilityID)
+            facName=fac.facilityname
+            equip = models.EquipmentMaster.objects.filter(facilityid_id=facilityID)
+            equipName = models.EquipmentMaster.objects.get(equipmentid=equipID)
+
+        if '_ok' in request.POST:
+            for b in inspecplan:
+                inspectionCover = models.InspectionCoverage.objects.filter(planid_id=b.id)
+                if (b.inspectionplanname == name):
+                    if(inspectionCover.count() > 0):
+                        for c in inspectionCover:
+                            c.delete()
+            for a in pros:
+                if (request.POST.get('%d' % a.id)):
+                    print(a.id)
+                    for b in inspecplan:
+                        if (b.inspectionplanname == name):
+                            inspecCover = models.InspectionCoverage(planid_id=b.id, equipmentid_id=a.equipmentid_id,componentid_id=a.componentid_id)
+                            inspecCover.save()
+            return redirect('inspectionPlan',siteID=siteID,name=name,date=date)
+
+        if '_cancel' in request.POST:
+            return redirect('inspectionPlan',siteID=siteID,name='Plan Name',date='Plan Date')
+        if '_delete' in request.POST:
+            for a in site:
+                if (request.POST.get('%d' % a.siteid)):
+                    a.delete()
+            return redirect('addInspectionPlan', siteID=a.siteid,name=name,date=date,facilityID=0,equipID=0)
+        if '_select' in request.POST:
+            for a in site:
+                if (request.POST.get('%d' % a.siteid)):
+                    print("cuong")
+                    return redirect('addInspectionPlan', siteID=a.siteid, name=name, date=date,facilityID=1,equipID=3)
+        if '_selectFac' in request.POST:
+            for a in facility:
+                if (request.POST.get('%d' % a.facilityid)):
+                    return redirect('addInspectionPlan', siteID=siteID, name=name, date=date, facilityID=a.facilityid,equipID=3)
+        if '_selectEquip' in request.POST:
+            for a in equip:
+                if (request.POST.get('%d' % a.equipmentid)):
+                    return redirect('addInspectionPlan', siteID=siteID, name=name, date=date, facilityID=facilityID,equipID=a.equipmentid)
     except Exception as e:
         print(e)
         raise Http404
     return render(request,'FacilityUI/inspection_plan/addInspectionPlan.html',
-                  {'page':'addInspectionPlan','siteID':siteID, 'count': count, 'info': request.session,
-                   'noti': noti, 'countnoti': countnoti,'name':name,'date':date,'site':site})
+                  {'page':'addInspectionPlan','siteID':siteID, 'count': count, 'info': request.session,'noti': noti, 'countnoti': countnoti,
+                   'name':name,'date':date,'siteT':siteT,'desi':desi,'facility':facility,'facilityT':facilityT,'facName':facName,'equip':equip,
+                   'equipName':equipName,'allSite':allSite,'site':site,'faci':faci,'equi':equi,'equiptype':equiptype,'comp':comp,'comptype':comptype,
+                   'pros':pros,'rwdam':rwdam,'rwequip':rwequip,'rwcomponent':rwcomponent,'rwstream':rwstream,'rwmaterial':rwmaterial,'rwcoat':rwcoat,
+                   'rwfullpof':rwfullpof,'rwfullfcof':rwfullfcof,'facilityID':facilityID,'datarw':datarw,'datapof':datapof,'dataF':dataF,
+                   'imitem':imitem,'imtype':imtype})
+# def ajax_get_Site(request):
+#     data = []
+#     list = []
+#     try:
+#         if request.method == 'POST':
+#             print("get Site")
+#             sitename = request.POST.get('setSite')
+#             print(sitename)
+#             site = models.Sites.objects.get(sitename=sitename)
+#             data ={
+#                 'is_taken':models.Facility.objects.filter(siteid_id=site.siteid),
+#                 'es': models.Facility.objects.filter(siteid_id=site.siteid).exists()
+#             }
+#             for a in data['is_taken']:
+#                 list.append(a.facilityname)
+#             print(list)
+#             if data['es']:
+#                 data['error_message'] = 'A user with this username already exists.'
+#     except Exception as e:
+#         print(e)
+#     return JsonResponse(data)
 def CreateInspectionPlan(request, siteID):
     count = models.Emailto.objects.filter(Q(Emailt=models.ZUser.objects.filter(id=request.session['id'])[0].email),Q(Is_see=0)).count()
     noti = models.ZNotification.objects.all().filter(id_user=request.session['id'])
@@ -140,9 +283,9 @@ def CreateInspectionPlan(request, siteID):
             if countIns > 0:
                 error['exist'] = "This Inspection Plan Name already exists!"
             else:
-                ins = models.InspecPlan(inspectionplanname= data['inspectionplanname'],inspectiondate= data['inspectiondate'])
+                ins = models.InspecPlan(inspectionplanname= data['inspectionplanname'],inspectionplandate= data['inspectiondate'])
                 ins.save()
-                return redirect('inspectionPlan',siteID=siteID,name=ins.inspectionplanname,date=ins.inspectiondate)
+                return redirect('inspectionPlan',siteID=siteID,name=ins.inspectionplanname,date=ins.inspectionplandate)
     except Exception as e:
         print(e)
         raise Http404
@@ -754,7 +897,7 @@ def ListProposal(request, componentID):
             istank = 1
         else:
             istank = 0
-        if comp.componenttypeid_id == 9 or comp.componenttypeid_id == 13:#tuansua
+        if comp.componenttypeid_id == 8 or comp.componenttypeid_id == 14:
             isshell = 1
         else:
             isshell = 0
@@ -770,12 +913,9 @@ def ListProposal(request, componentID):
             elif '_edit' in request.POST:
                 for a in rwass:
                     if request.POST.get('%d' %a.id):
-                        if istank: #tuansua
+                        if istank:
                             print("tank")
                             return redirect('tankEdit', proposalID= a.id)
-                        elif isshell:
-                            print("tank")
-                            return redirect('tankEdit', proposalID=a.id)
                         else:
                             print("nottank")
                             return redirect('prosalEdit', proposalID= a.id)
@@ -783,8 +923,6 @@ def ListProposal(request, componentID):
                 try:
                     if api.apicomponenttypename=='TANKBOTTOM':
                         return redirect('tankNew' , componentID=componentID)
-                    elif isshell:
-                        return redirect('tankNew', componentID=componentID)
                     else:
                         return redirect('proposalNew', componentID=componentID)
                 except Exception as e:
@@ -1313,7 +1451,7 @@ def NewTank(request, componentID):
         datafaci = models.Facility.objects.get(facilityid= eq.facilityid_id)
         data={}
         isshell = False
-        if comp.componenttypeid_id == 9 or comp.componenttypeid_id == 13:
+        if comp.componenttypeid_id == 8 or comp.componenttypeid_id == 14:
             isshell = True
         if request.method =='POST':
             # Data Assessment
@@ -2394,7 +2532,7 @@ def EditTank(request, proposalID):
         datafaci = models.Facility.objects.get(facilityid= eq.facilityid_id)
         data={}
         isshell = False
-        if comp.componenttypeid_id == 9 or comp.componenttypeid_id == 13:#tuansua
+        if comp.componenttypeid_id == 8 or comp.componenttypeid_id == 14:
             isshell = True
         if request.method =='POST':
             # Data Assessment
@@ -3039,7 +3177,7 @@ def FullyConsequence(request, proposalID):
             isBottom = 1
         else:
             isBottom = 0
-        if component.componenttypeid_id == 9 or component.componenttypeid_id == 13:
+        if component.componenttypeid_id == 8 or component.componenttypeid_id == 14:
             isShell = 1
         else:
             isShell = 0
@@ -3075,9 +3213,6 @@ def FullyConsequence(request, proposalID):
             return render(request, 'FacilityUI/risk_summary/fullyBottomConsequence.html', {'page':'fullyConse', 'data': data, 'proposalID':proposalID, 'ass':rwAss,'info':request.session,'noti':noti,'countnoti':countnoti,'count':count})
         elif isShell:
             shellConsequences = models.RwCaTank.objects.get(id=proposalID)
-            data['hydraulic_water'] = roundData.roundFC(shellConsequences.hydraulic_water)#tuansua
-            data['hydraulic_fluid'] = roundData.roundFC(shellConsequences.hydraulic_fluid)#tuansua
-            data['seepage_velocity'] = roundData.roundFC(shellConsequences.seepage_velocity)#tuansua
             data['flow_rate_d1'] = roundData.roundFC(shellConsequences.flow_rate_d1)
             data['flow_rate_d2'] = roundData.roundFC(shellConsequences.flow_rate_d2)
             data['flow_rate_d3'] = roundData.roundFC(shellConsequences.flow_rate_d3)
@@ -3091,8 +3226,6 @@ def FullyConsequence(request, proposalID):
             data['release_volume_leak_d3'] = roundData.roundFC(shellConsequences.release_volume_leak_d3)
             data['release_volume_leak_d4'] = roundData.roundFC(shellConsequences.release_volume_leak_d4)
             data['release_volume_rupture'] = roundData.roundFC(shellConsequences.release_volume_rupture)
-            data['liquid_height'] = roundData.roundFC(shellConsequences.liquid_height)
-            data['volume_fluid'] = roundData.roundFC(shellConsequences.volume_fluid)
             data['time_leak_ground'] = roundData.roundFC(shellConsequences.time_leak_ground)
             data['volume_subsoil_leak_d1'] = roundData.roundFC(shellConsequences.volume_subsoil_leak_d1)
             data['volume_subsoil_leak_d4'] = roundData.roundFC(shellConsequences.volume_subsoil_leak_d4)
@@ -3109,13 +3242,6 @@ def FullyConsequence(request, proposalID):
             data['business_cost'] = roundData.roundMoney(shellConsequences.business_cost)
             data['consequence'] = roundData.roundMoney(shellConsequences.consequence)
             data['consequencecategory'] = shellConsequences.consequencecategory
-            #tuansua
-            data['material_factor'] = shellConsequences.material_factor
-            data['barrel_dike_leak'] = roundData.roundFC(shellConsequences.barrel_dike_leak)
-            data['barrel_onsite_leak'] = roundData.roundFC(shellConsequences.barrel_onsite_leak)
-            data['barrel_offsite_leak'] = roundData.roundFC(shellConsequences.barrel_offsite_leak)
-            data['barrel_water_leak'] = roundData.roundFC(shellConsequences.barrel_water_leak)
-            data['fc_environ_leak'] = roundData.roundFC(shellConsequences.fc_environ_leak)
             return render(request, 'FacilityUI/risk_summary/fullyShellConsequence.html', {'page':'fullyConse' , 'data': data, 'proposalID':proposalID, 'ass':rwAss,'info':request.session,'noti':noti,'countnoti':countnoti,'count':count})
         else:
             ca = models.RwCaLevel1.objects.get(id= proposalID)
@@ -3229,42 +3355,45 @@ def RegularVerification():
 
 def signin(request):
     error = ''
-    t1 = threading.Thread(target=RegularVerification)
-    t1.setDaemon(True)
-    t1.start()
-    if request.session.has_key('id'):
-        if request.session['kind']=='citizen':
-            return redirect('citizenHome')
-        elif request.session['kind']=='factory':
-            facilityID1 = models.Sites.objects.filter(userID_id=request.session['id'])[0].siteid
-            return redirect('facilitiesDisplay',facilityID1)
-        elif request.session['kind']=='manager':
-            return redirect('manager',3)
-    else:
-        if request.method=='POST':
-            xuser=request.POST.get('txtuser')
-            xpass=request.POST.get('txtpass')
-            data=models.ZUser.objects.filter(Q(username=xuser),Q(password=xpass),Q(active=1))
-            if data.count():
-                request.session['id']=data[0].id
-                request.session['name']=data[0].name
-                request.session['kind']=data[0].kind
-                request.session['phone']=data[0].phone
-                request.session['address'] = data[0].adress
-                request.session['email'] = data[0].email
-                request.session['other_info'] = data[0].other_info
-                request.session.set_expiry(0)
-                if request.session['kind']=='citizen':
-                    return redirect('citizenHome')
-                elif request.session['kind']=='factory':
-                    facilityID = models.Sites.objects.filter(userID_id=request.session['id'])[0].siteid
-                    return redirect('facilitiesDisplay',facilityID)
+    try:
+        t1 = threading.Thread(target=RegularVerification)
+        t1.setDaemon(True)
+        t1.start()
+        if request.session.has_key('id'):
+            if request.session['kind']=='citizen':
+                return redirect('citizenHome')
+            elif request.session['kind']=='factory':
+                facilityID1 = models.Sites.objects.filter(userID_id=request.session['id'])[0].siteid
+                return redirect('facilitiesDisplay',facilityID1)
+            elif request.session['kind']=='manager':
+                return redirect('manager',3)
+        else:
+            if request.method=='POST':
+                xuser=request.POST.get('txtuser')
+                xpass=request.POST.get('txtpass')
+                data=models.ZUser.objects.filter(Q(username=xuser),Q(password=xpass),Q(active=1))
+                if data.count():
+                    request.session['id']=data[0].id
+                    request.session['name']=data[0].name
+                    request.session['kind']=data[0].kind
+                    request.session['phone']=data[0].phone
+                    request.session['address'] = data[0].adress
+                    request.session['email'] = data[0].email
+                    request.session['other_info'] = data[0].other_info
+                    request.session.set_expiry(0)
+                    if request.session['kind']=='citizen':
+                        return redirect('citizenHome')
+                    elif request.session['kind']=='factory':
+                        facilityID = models.Sites.objects.filter(userID_id=request.session['id'])[0].siteid
+                        return redirect('facilitiesDisplay',facilityID)
+                    else:
+                        return redirect('manager',3)
                 else:
-                    return redirect('manager',3)
-            else:
-                error="Tài khoản hoặc mật khẩu không đúng"
-        return render(request,'Home/index.html',{'error':error})
-
+                    error="Tài khoản hoặc mật khẩu không đúng"
+            return render(request,'Home/index.html',{'error':error})
+    except Exception as e:
+        print(e)
+        raise Http404
 def logout(request):
     try:
         del request.session['id']
