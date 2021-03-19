@@ -57,7 +57,7 @@ openpyxl==2.5.0
 paho-mqtt==1.4.0
 parso==0.1.1
 pickleshare==0.7.4
-Pillow==5.0.0
+Pillow==8.1.1
 pipenv==2018.11.26
 prompt-toolkit==1.0.15
 protobuf==3.5.0.post1
