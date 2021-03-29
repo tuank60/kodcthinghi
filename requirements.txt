@@ -78,7 +78,7 @@ pyexcel-xlsx==0.5.5
 pyflakes==1.6.0
 pygal==2.4.0
 pyglet==1.3.0
-Pygments==2.2.0
+Pygments==2.7.4
 pykalman==0.9.5
 PyMySQL==0.8.0
 pyparsing==2.2.0
