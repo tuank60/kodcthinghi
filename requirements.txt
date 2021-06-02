@@ -97,7 +97,7 @@ sympy==1.1.1
 texttable==1.2.1
 traitlets==4.3.2
 uritemplate==3.0.0
-urllib3==1.22
+urllib3==1.26.5
 virtualenv==20.0.19
 virtualenv-clone==0.5.4
 wcwidth==0.1.7
