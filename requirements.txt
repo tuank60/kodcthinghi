@@ -58,7 +58,7 @@ paho-mqtt==1.4.0
 parso==0.1.1
 pickleshare==0.7.4
 Pillow==5.0.0
-pipenv==2018.11.26
+pipenv==2022.1.8
 prompt-toolkit==1.0.15
 protobuf==3.5.0.post1
 psycopg2==2.7.3.2
